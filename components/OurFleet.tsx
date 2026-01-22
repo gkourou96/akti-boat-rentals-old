@@ -125,7 +125,7 @@ export default function OurFleet() {
           },
         }}
         spaceBetween={28}
-        slidesPerView={1.1}
+        slidesPerView={1.07}
         grabCursor={true}
         loop={true}
         speed={800}
@@ -152,7 +152,7 @@ export default function OurFleet() {
                     alt={boat.name}
                     fill
                     // Kept your internal fade logic, compatible with the new slide effect
-                    className="object-cover opacity-0 transition-opacity duration-500 ease-out [.swiper-slide-active_&,_.swiper-slide-next_&]:opacity-100"
+                    className="object-cover opacity-0 transition-opacity duration-500 ease-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
                   />
                 </div>
               </div>
@@ -198,7 +198,7 @@ export default function OurFleet() {
                 </p>
 
                 <div className="mt-10 flex items-center justify-between xl:justify-start xl:gap-20">
-                  <button className="flex h-11.5 w-40.5 items-center justify-center rounded-full border border-[#0D4168] font-ubuntu text-[24px] font-normal text-[#0D4168] transition hover:bg-[#0D4168] hover:text-white">
+                  <button className="flex h-11.5 w-40.5 items-center justify-center rounded-full border border-[#0D4168] font-ubuntu text-[24px] font-normal text-[#0D4168] transition-opacity duration-300 ease-out active:opacity-50 pb-0.5 cursor-pointer">
                     Explore →
                   </button>
                 </div>
@@ -214,7 +214,7 @@ export default function OurFleet() {
                         src={thumbSrc}
                         alt={`Thumbnail ${index + 1}`}
                         fill
-                        className="object-cover opacity-0 transition-opacity duration-1200 ease-in-out [.swiper-slide-active_&,_.swiper-slide-next_&]:opacity-100"
+                        className="object-cover opacity-0 transition-opacity duration-1200 ease-in-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
                       />
                     </div>
                   ))}

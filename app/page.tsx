@@ -1,4 +1,5 @@
 import InteractiveBanner from "@/components/InteractiveBanner";
+import NoLicenseBoats from "@/components/NoLicenseBoats";
 import OurFleet from "@/components/OurFleet";
 
 export default function Landing() {
@@ -6,6 +7,7 @@ export default function Landing() {
     <main>
       <InteractiveBanner />
       <OurFleet />
+      <NoLicenseBoats />
     </main>
   );
 }
