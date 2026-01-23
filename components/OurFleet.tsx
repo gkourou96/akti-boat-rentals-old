@@ -94,7 +94,7 @@ export default function OurFleet() {
   return (
     <section className="h-221 mx-auto max-w-360 bg-white pt-22 xl:ps-30">
       <div className="mb-16 relative inline-block">
-        <h2 className="font-ubuntu text-[44px] font-bold text-[#0D4168] relative z-10">
+        <h2 className="font-ubuntu text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
           Our Fleet
         </h2>
         <div className="absolute left-18.75 -bottom-2.25 w-full h-auto">
