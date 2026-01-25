@@ -1,3 +1,4 @@
+import Experiences from "@/components/Experiences";
 import IdealDestinations from "@/components/IdealDestinations";
 import InteractiveBanner from "@/components/InteractiveBanner";
 import NoLicenseBoats from "@/components/NoLicenseBoats";
@@ -10,6 +11,7 @@ export default function Landing() {
       <OurFleet />
       <NoLicenseBoats />
       <IdealDestinations />
+      <Experiences />
     </main>
   );
 }

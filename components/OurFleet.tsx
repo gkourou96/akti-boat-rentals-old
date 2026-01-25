@@ -1,18 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-// 1. Import EffectCreative
 import { Autoplay, Navigation, EffectCreative } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 
 import "swiper/css";
 import "swiper/css/navigation";
-// 2. Import Creative Effect CSS
 import "swiper/css/effect-creative";
 
-const boats = [
+// Import the new Modal Component
+import FleetModal, { Boat } from "./FleetModal"; // Adjust path if needed
+
+const boats: Boat[] = [
   {
     id: 1,
     name: "Name of vehicle",
@@ -21,6 +22,8 @@ const boats = [
     length: "9.8m",
     description:
       "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
+    description2:
+      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
     image: "/images/boat-1.png",
     thumbnails: [
       "/images/boat-3.png",
@@ -36,6 +39,8 @@ const boats = [
     length: "12.5m",
     description:
       "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
+    description2:
+      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
     image: "/images/boat-2.png",
     thumbnails: ["/images/boat-4.png"],
   },
@@ -47,6 +52,8 @@ const boats = [
     length: "8.5m",
     description:
       "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
+    description2:
+      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
     image: "/images/boat-3.png",
     thumbnails: [
       "/images/boat-3.png",
@@ -62,12 +69,27 @@ const boats = [
     length: "14.2m",
     description:
       "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
+    description2:
+      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
     image: "/images/boat-4.png",
     thumbnails: ["/images/boat-4.png"],
   },
 ];
 
 export default function OurFleet() {
+  // --- Modal State ---
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBoat, setSelectedBoat] = useState<Boat | null>(null);
+
+  const handleOpenModal = (boat: Boat) => {
+    setSelectedBoat(boat);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const onAutoplayTimeLeft = (
     s: SwiperType,
     time: number,
@@ -92,7 +114,7 @@ export default function OurFleet() {
   };
 
   return (
-    <section className="h-221 mx-auto max-w-360 bg-white pt-22 xl:ps-30">
+    <section className="h-221 mx-auto max-w-360 bg-white pt-22 xl:ps-30 relative">
       <div className="mb-16 relative inline-block">
         <h2 className="font-ubuntu text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
           Our Fleet
@@ -108,19 +130,16 @@ export default function OurFleet() {
       </div>
 
       <Swiper
-        modules={[Autoplay, Navigation, EffectCreative]} // Ensure EffectCreative is here
-        effect="creative" // Activate Creative Effect
+        modules={[Autoplay, Navigation, EffectCreative]}
+        effect="creative"
         creativeEffect={{
-          limitProgress: 2, // Important: Allows the next slide to be visible (the peek)
+          limitProgress: 2,
           prev: {
             shadow: false,
-            // [0,0,-1] means: Don't move X or Y, just sit behind (Z -1)
             translate: [0, 0, -1],
-            // Fade out the previous slide
             opacity: 0,
           },
           next: {
-            // ['100%', 0, 0] means: Start 100% to the right, then slide in to 0
             translate: ["100%", 0, 0],
           },
         }}
@@ -142,27 +161,22 @@ export default function OurFleet() {
       >
         {boats.map((boat) => (
           <SwiperSlide key={boat.id} className="bg-white">
-            {/* Added bg-white to slide to ensure clean layering during transition */}
             <div className="relative grid h-full w-full grid-cols-1 items-start gap-10 xl:grid-cols-[500px_1fr] xl:gap-16">
-              {/* LEFT: Main Image Container */}
               <div className="relative w-full xl:w-125">
                 <div className="relative h-125 w-full overflow-hidden rounded-[20px] bg-gray-200">
                   <Image
                     src={boat.image}
                     alt={boat.name}
                     fill
-                    // Kept your internal fade logic, compatible with the new slide effect
                     className="object-cover opacity-0 transition-opacity duration-500 ease-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
                   />
                 </div>
               </div>
 
-              {/* RIGHT: Content */}
               <div className="flex flex-col">
                 <h3 className="font-ubuntu text-[32px] font-bold text-[#0D4168]">
                   {boat.name}
                 </h3>
-
                 <span className="font-ubuntu text-[24px] mt-1 font-normal text-[#F2992F]">
                   {boat.category}
                 </span>
@@ -179,7 +193,6 @@ export default function OurFleet() {
                       {boat.capacity}
                     </span>
                   </div>
-
                   <div className="flex items-center gap-1">
                     <Image
                       src="/icons/straighten.svg"
@@ -198,12 +211,14 @@ export default function OurFleet() {
                 </p>
 
                 <div className="mt-10 flex items-center justify-between xl:justify-start xl:gap-20">
-                  <button className="flex h-11.5 w-40.5 items-center justify-center rounded-full border border-[#0D4168] font-ubuntu text-[24px] font-normal text-[#0D4168] transition-opacity duration-300 ease-out active:opacity-50 pb-0.5 cursor-pointer">
+                  <button
+                    onClick={() => handleOpenModal(boat)}
+                    className="flex h-11.5 w-40.5 items-center justify-center rounded-full border border-[#0D4168] font-ubuntu text-[24px] font-normal text-[#0D4168] transition-opacity duration-300 ease-out active:opacity-50 pb-0.5 cursor-pointer"
+                  >
                     Explore →
                   </button>
                 </div>
 
-                {/* Thumbnails */}
                 <div className="mt-10 flex gap-4">
                   {boat.thumbnails.map((thumbSrc, index) => (
                     <div
@@ -221,7 +236,6 @@ export default function OurFleet() {
                 </div>
               </div>
 
-              {/* Arrow Button */}
               <button className="custom-next-button absolute right-18.25 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full text-[#0D4168] cursor-pointer">
                 <Image
                   src="/icons/arrow_forward_ios.svg"
@@ -241,6 +255,13 @@ export default function OurFleet() {
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* --- RENDER THE NEW MODAL COMPONENT --- */}
+      <FleetModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        boat={selectedBoat}
+      />
     </section>
   );
 }
