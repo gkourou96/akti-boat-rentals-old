@@ -3,6 +3,7 @@ import IdealDestinations from "@/components/IdealDestinations";
 import InteractiveBanner from "@/components/InteractiveBanner";
 import NoLicenseBoats from "@/components/NoLicenseBoats";
 import OurFleet from "@/components/OurFleet";
+import Testimonials from "@/components/Testimonials";
 
 export default function Landing() {
   return (
@@ -12,6 +13,7 @@ export default function Landing() {
       <NoLicenseBoats />
       <IdealDestinations />
       <Experiences />
+      <Testimonials />
     </main>
   );
 }

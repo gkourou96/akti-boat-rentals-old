@@ -2,7 +2,8 @@ export default function InteractiveBanner() {
   return (
     <section className="flex h-134.5 w-full flex-col items-center justify-center bg-[#00C6DB]/40">
       {/* Top Text: Ubuntu 400, 24px, Black */}
-      <div className="max-w-360">
+      {/* Added text-center to ensure text aligns to the middle */}
+      <div className="max-w-360 text-center">
         <span className="text-2xl font-normal text-black">
           Interactive banner
         </span>
