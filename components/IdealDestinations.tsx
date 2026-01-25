@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import DestinationModal from "./DestinationModal"; // Ensure correct import path
 
 // 1. Data Array
 const destinations = [
@@ -83,23 +84,32 @@ const destinations = [
 ];
 
 // Reusable component
+// Added onClick prop to handle selection
 const DestinationCard = ({
   width,
   height,
   name,
   image,
+  onClick,
 }: {
   width: number;
   height: number;
   name: string;
   image: string;
+  onClick: () => void;
 }) => (
   <div
-    className="relative shrink-0 overflow-hidden rounded-[15px] bg-gray-300"
+    onClick={onClick}
+    className="relative shrink-0 overflow-hidden rounded-[15px] bg-gray-300 cursor-pointer group"
     style={{ width: `${width}px`, height: `${height}px` }}
   >
     {/* Real Image Render */}
-    <Image src={image} alt={name} fill className="object-cover z-0" />
+    <Image
+      src={image}
+      alt={name}
+      fill
+      className="object-cover z-0 transition-transform"
+    />
 
     {/* Custom Gradient Overlay with Multiply Blend Mode */}
     <div
@@ -111,9 +121,9 @@ const DestinationCard = ({
       }}
     />
 
-    {/* Title Container (z-20 to ensure text sits above the overlay) */}
-    <div className="absolute bottom-0 left-0 p-[18px] w-full z-20">
-      <h3 className="font-ubuntu text-[24px] font-bold leading-tight text-white break-words">
+    {/* Title Container */}
+    <div className="absolute bottom-0 left-0 p-4.5 w-full z-20">
+      <h3 className="font-ubuntu text-[24px] font-bold leading-tight text-white wrap-break-word">
         {name}
       </h3>
     </div>
@@ -121,15 +131,30 @@ const DestinationCard = ({
 );
 
 export default function IdealDestinations() {
+  // State for modal
+  const [selectedDestination, setSelectedDestination] = useState<
+    (typeof destinations)[0] | null
+  >(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCardClick = (dest: (typeof destinations)[0]) => {
+    setSelectedDestination(dest);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <section className="mx-auto h-[1025px] max-w-[1440px] bg-white">
+    <section className="mx-auto h-256.25 max-w-360 bg-white">
       {/* Header Container */}
-      <div className="pt-[88px] pl-[120px]">
+      <div className="pt-22 pl-30">
         <div className="relative inline-block">
           <h2 className="relative z-10 font-ubuntu text-[44px] font-bold leading-none tracking-normal text-[#0D4168] p-2.5">
             Ideal Destinations
           </h2>
-          <div className="absolute -right-[5px] -bottom-[9px] w-37.25 h-8">
+          <div className="absolute -right-1.25 -bottom-2.25 w-37.25 h-8">
             <Image
               src="/icons/no-license-boats-accent.svg"
               alt="accent"
@@ -141,41 +166,78 @@ export default function IdealDestinations() {
       </div>
 
       {/* Grid Container */}
-      <div className="mt-[64px] pl-[120px]">
-        <div className="flex h-[678px] w-[1200px] gap-[12px]">
+      <div className="mt-16 pl-30">
+        <div className="flex h-169.5 w-300 gap-3">
           {/* --- LEFT BLOCK --- */}
-          <div className="flex flex-col gap-[12px]">
+          <div className="flex flex-col gap-3">
             {/* ROW 1 */}
-            <div className="flex gap-[12px]">
-              <DestinationCard {...destinations[0]} />
-              <DestinationCard {...destinations[1]} />
+            <div className="flex gap-3">
+              <DestinationCard
+                {...destinations[0]}
+                onClick={() => handleCardClick(destinations[0])}
+              />
+              <DestinationCard
+                {...destinations[1]}
+                onClick={() => handleCardClick(destinations[1])}
+              />
 
-              <div className="flex flex-col gap-[12px]">
-                <DestinationCard {...destinations[2]} />
-                <DestinationCard {...destinations[3]} />
+              <div className="flex flex-col gap-3">
+                <DestinationCard
+                  {...destinations[2]}
+                  onClick={() => handleCardClick(destinations[2])}
+                />
+                <DestinationCard
+                  {...destinations[3]}
+                  onClick={() => handleCardClick(destinations[3])}
+                />
               </div>
             </div>
 
             {/* ROW 2 */}
-            <div className="flex gap-[12px]">
-              <DestinationCard {...destinations[4]} />
+            <div className="flex gap-3">
+              <DestinationCard
+                {...destinations[4]}
+                onClick={() => handleCardClick(destinations[4])}
+              />
 
-              <div className="flex flex-col gap-[12px]">
-                <DestinationCard {...destinations[5]} />
-                <DestinationCard {...destinations[6]} />
+              <div className="flex flex-col gap-3">
+                <DestinationCard
+                  {...destinations[5]}
+                  onClick={() => handleCardClick(destinations[5])}
+                />
+                <DestinationCard
+                  {...destinations[6]}
+                  onClick={() => handleCardClick(destinations[6])}
+                />
               </div>
 
-              <DestinationCard {...destinations[7]} />
+              <DestinationCard
+                {...destinations[7]}
+                onClick={() => handleCardClick(destinations[7])}
+              />
             </div>
           </div>
 
           {/* --- RIGHT COLUMN --- */}
-          <div className="flex flex-col gap-[12px]">
-            <DestinationCard {...destinations[8]} />
-            <DestinationCard {...destinations[9]} />
+          <div className="flex flex-col gap-3">
+            <DestinationCard
+              {...destinations[8]}
+              onClick={() => handleCardClick(destinations[8])}
+            />
+            <DestinationCard
+              {...destinations[9]}
+              onClick={() => handleCardClick(destinations[9])}
+            />
           </div>
         </div>
       </div>
+
+      {/* RENDER THE MODAL */}
+      <DestinationModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        destination={selectedDestination}
+      />
     </section>
   );
 }
