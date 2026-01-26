@@ -70,9 +70,9 @@ export default function NoLicenseBoats() {
 
               {/* CONTENT WRAPPER */}
               {/* FIXED: Changed translate-y-[326px] to translate-y-[310px] to restore the 24px bottom spacing */}
-              <div className="absolute inset-0 z-20 flex flex-col p-6 transition-transform duration-500 ease-in-out translate-y-[310px] group-hover:translate-y-0">
+              <div className="absolute inset-0 z-20 flex flex-col p-6 transition-transform duration-500 ease-in-out translate-y-77.5 group-hover:translate-y-0">
                 {/* 1. TITLE */}
-                <h3 className="font-ubuntu text-[32px] pt-[14px] font-medium leading-none tracking-normal text-white shrink-0">
+                <h3 className="font-ubuntu text-[32px] pt-3.5 font-medium leading-none tracking-normal text-white shrink-0">
                   {boat.name}
                 </h3>
 
@@ -113,7 +113,7 @@ export default function NoLicenseBoats() {
                   </p>
 
                   {/* 4. PRICING & GUARANTEE */}
-                  <div className="my-[32px]">
+                  <div className="my-8">
                     <div className="flex justify-between w-full">
                       <span className="font-ubuntu text-[20px] text-white">
                         190€ – 5h
@@ -128,7 +128,7 @@ export default function NoLicenseBoats() {
                   </div>
 
                   {/* 5. BUTTON */}
-                  <button className="mb-[24px] flex h-[46px] w-[188px] items-center justify-center rounded-full border border-white bg-transparent transition-colors hover:bg-white/10 cursor-pointer">
+                  <button className="mb-6 flex h-11.5 w-47 items-center justify-center rounded-full border border-white bg-transparent transition-colors hover:bg-white/10 cursor-pointer">
                     <span className="font-ubuntu text-[20px] text-white pb-0.5">
                       Book Now →
                     </span>
