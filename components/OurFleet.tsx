@@ -119,7 +119,7 @@ export default function OurFleet() {
         <h2 className="font-ubuntu text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
           Our Fleet
         </h2>
-        <div className="absolute left-18.75 -bottom-2.25 w-full h-auto">
+        <div className="absolute left-21.25 top-12.75 w-full h-auto">
           <Image
             src="/icons/accent.svg"
             alt="decoration"
