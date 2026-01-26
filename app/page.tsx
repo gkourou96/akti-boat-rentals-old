@@ -1,3 +1,4 @@
+import ContactUs from "@/components/ContactUs";
 import Experiences from "@/components/Experiences";
 import IdealDestinations from "@/components/IdealDestinations";
 import InteractiveBanner from "@/components/InteractiveBanner";
@@ -16,6 +17,7 @@ export default function Landing() {
       <Experiences />
       <Testimonials />
       <OurLocation />
+      <ContactUs />
     </main>
   );
 }
