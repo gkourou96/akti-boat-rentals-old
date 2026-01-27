@@ -9,13 +9,33 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
-// Placeholder data for the slides (same text for all as requested)
+// UPDATED DATA: Added 'text' property to support unique reviews
 const testimonialsData = [
-  { id: 1, name: "John D." },
-  { id: 2, name: "Maria S." },
-  { id: 3, name: "Alex P." },
-  { id: 4, name: "Sarah K." },
-  { id: 5, name: "Michael T." },
+  {
+    id: 1,
+    name: "Maria K.",
+    text: "Amazing experience! The boat trip was fantastic, and the crew was very professional and friendly. The views were breathtaking, and the service was top-notch. Highly recommend!",
+  },
+  {
+    id: 2,
+    name: "John D.",
+    text: "Best boat tour in Athens! The captain was knowledgeable and made sure we had a great time. The stops were perfect, and the swimming spots were beautiful.",
+  },
+  {
+    id: 3,
+    name: "Sophia M.",
+    text: "Incredible day on the water! The boat was clean and comfortable, and the staff went above and beyond to make our experience memorable. Will definitely come back!",
+  },
+  {
+    id: 4,
+    name: "Alex P.",
+    text: "Perfect day trip! The organization was excellent, and the crew was very attentive. The views of the coastline were stunning, and the swimming spots were amazing.",
+  },
+  {
+    id: 5,
+    name: "Elena T.",
+    text: "Wonderful experience! The boat was modern and well-maintained, and the crew was professional and friendly. The tour was well-planned and the views were spectacular.",
+  },
 ];
 
 export default function Testimonials() {
@@ -60,7 +80,6 @@ export default function Testimonials() {
         </div>
 
         {/* SWIPER WRAPPER */}
-        {/* Wraps Stars, Text, and Name to slide them together */}
         <Swiper
           modules={[Navigation]}
           grabCursor={true}
@@ -89,17 +108,14 @@ export default function Testimonials() {
               </div>
 
               {/* 4. TESTIMONIAL TEXT CONTAINER: 692x79px */}
-              {/* Padding Top: 20px. Font: Open Sans 400 24px */}
+              {/* Rendering item.text from the array */}
               <div className="mx-auto w-173 pt-5 text-center">
-                <p className="font-open text-[24px] font-normal text-[#0D4168]">
-                  Best boat tour in Athens! The captain was knowledgeable{" "}
-                  <br></br>and made sure we had a great time. The stops were
-                  perfect, <br></br>and the swimming spots were beautiful.
+                <p className="font-open text-[24px] font-normal text-[#0D4168] leading-tight">
+                  {item.text}
                 </p>
               </div>
 
               {/* 5. NAME CONTAINER: 672x33px */}
-              {/* Padding Top: 20px. Font: Open Sans 800 (ExtraBold) 24px */}
               <div className="mx-auto w-2xl pt-5 text-center">
                 <span className="font-open text-[24px] font-extrabold leading-none text-[#0D4168]">
                   {item.name}
@@ -110,13 +126,14 @@ export default function Testimonials() {
         </Swiper>
 
         {/* 6. BUTTON: 333x46px (Static - Outside Swiper Loop) */}
-        {/* Margin Top: 32px. Bg: #00C6DB. Font: Ubuntu Medium 24px. */}
         <div className="mt-8 flex justify-center relative z-10">
-          <button className="flex h-11.5 w-83.25 items-center justify-center rounded-full bg-[#00C6DB] px-6">
-            <span className="font-ubuntu text-[24px] font-medium leading-none text-white pb-0.5">
-              See all reviews on Google
-            </span>
-          </button>
+          <a href="https://maps.app.goo.gl/bM9BD7yCVcdDE8vSA" target="_blank">
+            <button className="flex h-11.5 w-83.25 items-center justify-center rounded-full bg-[#00C6DB] px-6">
+              <span className="font-ubuntu text-[24px] font-medium leading-none text-white pb-0.5">
+                See all reviews on Google
+              </span>
+            </button>
+          </a>
         </div>
       </div>
     </section>

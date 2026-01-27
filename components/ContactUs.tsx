@@ -6,16 +6,16 @@ import ContactForm from "./ContactForm";
 
 export default function ContactUs() {
   return (
-    <section className="mx-auto h-[700px] max-w-[1440px] bg-white relative px-[120px] pt-[88px]">
+    <section className="mx-auto h-175 max-w-360 bg-white relative px-30 pt-22">
       {/* 1. TITLE CONTAINER: 249x71px */}
-      <div className="relative flex h-[71px] w-[249px] items-center">
+      <div className="relative flex h-17.75 w-62.25 items-center">
         {/* H2: Contact Us */}
         <h2 className="relative z-10 p-2.5 font-ubuntu text-[44px] font-bold leading-none text-[#0D4168]">
           Contact Us
         </h2>
 
         {/* Accent */}
-        <div className="absolute -bottom-1 -right-[38px] -z-0 h-[32px] w-[149px]">
+        <div className="absolute -bottom-1 -right-9.5 z-0 h-8 w-37.25">
           <Image
             src="/icons/accent.svg"
             alt="accent"
@@ -27,13 +27,13 @@ export default function ContactUs() {
       </div>
 
       {/* 2. MAIN CONTENT WRAPPER: 1200x353px */}
-      <div className="mt-[64px] flex w-[1200px] items-start gap-[24px]">
+      <div className="mt-16 flex w-300 items-start gap-6">
         {/* LEFT: Contact Form (Existing Component) */}
         {/* This component is approx 791px wide */}
         <ContactForm />
 
         {/* RIGHT: Contact Information Container (400x353px) */}
-        <div className="flex h-[353px] w-[400px] flex-col justify-between">
+        <div className="flex h-88.25 w-100 flex-col justify-between">
           {/* Top Section: Contact Info */}
           <div className="flex flex-col gap-6">
             <h3 className="font-ubuntu text-[32px] font-bold text-[#0D4168]">

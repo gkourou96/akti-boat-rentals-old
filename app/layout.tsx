@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Ubuntu, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 // 1. Configure Ubuntu (Static Font: Needs specific weights)
 const ubuntu = Ubuntu({
@@ -33,9 +34,9 @@ export default function RootLayout({
         className={`${ubuntu.variable} ${openSans.variable} antialiased bg-white text-[#0D4168]`}
       >
         <Navbar />
-
         {/* 4. Main Wrapper: Width restricted, centered, NO padding */}
         <main className="w-full mx-auto">{children}</main>
+        <Footer />
       </body>
     </html>
   );
