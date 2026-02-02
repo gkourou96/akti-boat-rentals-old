@@ -134,7 +134,7 @@ const TiltCard = ({
       onClick={onClick}
       className="relative w-full h-full perspective-1000 cursor-pointer group z-20"
     >
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#0D4168]/20 to-[#F2992F]/20 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none -z-10 scale-110" />
+      <div className="absolute inset-0 bg-linear-to-tr from-[#0D4168]/20 to-[#F2992F]/20 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none -z-10 scale-110" />
       {children}
     </motion.div>
   );
@@ -191,7 +191,7 @@ export default function OurFleet() {
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30 mix-blend-multiply z-0 pointer-events-none" />
 
       {/* FRAME CONTAINER */}
-      <div className="relative w-full max-w-[1440px] h-auto lg:h-[884px] z-10 grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-16 px-4 lg:px-16 items-center">
+      <div className="relative w-full max-w-360 h-auto lg:h-221 z-10 grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-16 px-4 lg:px-16 items-center">
         {/* --- LEFT: CONTENT --- */}
         <div className="lg:col-span-5 flex flex-col justify-center h-auto lg:h-full relative z-20 order-2 lg:order-1 pt-8 lg:pt-0">
           <Swiper
@@ -232,7 +232,7 @@ export default function OurFleet() {
                           variants={textVariants}
                           className="relative z-10 flex items-center gap-3 mb-4 lg:mb-8 mt-4 lg:mt-0"
                         >
-                          <div className="w-10 h-[2px] bg-[#F2992F]" />
+                          <div className="w-10 h-0.5 bg-[#F2992F]" />
                           <span className="font-ubuntu text-[#F2992F] text-xs lg:text-sm font-bold tracking-[0.25em] uppercase">
                             {boat.category}
                           </span>
@@ -251,7 +251,7 @@ export default function OurFleet() {
                           variants={textVariants}
                           className="relative z-10 flex flex-wrap gap-4 lg:gap-6 mb-8 lg:mb-12"
                         >
-                          <div className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-[#0D4168]/10 p-4 lg:p-5 min-w-[120px] lg:min-w-[130px]">
+                          <div className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-[#0D4168]/10 p-4 lg:p-5 min-w-30 lg:min-w-32.5">
                             <div className="flex items-center gap-2 text-[#F2992F] mb-2">
                               <Users size={16} />
                               <span className="font-ubuntu text-[10px] lg:text-xs font-bold uppercase tracking-wider text-[#0D4168]/60">
@@ -262,7 +262,7 @@ export default function OurFleet() {
                               {boat.capacity}
                             </span>
                           </div>
-                          <div className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-[#0D4168]/10 p-4 lg:p-5 min-w-[120px] lg:min-w-[130px]">
+                          <div className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-[#0D4168]/10 p-4 lg:p-5 min-w-30 lg:min-w-32.5">
                             <div className="flex items-center gap-2 text-[#F2992F] mb-2">
                               <Ruler size={16} />
                               <span className="font-ubuntu text-[10px] lg:text-xs font-bold uppercase tracking-wider text-[#0D4168]/60">
@@ -327,7 +327,7 @@ export default function OurFleet() {
               </button>
             </div>
             {/* Progress Bar */}
-            <div className="flex-1 lg:flex-none lg:w-48 h-[3px] bg-[#0D4168]/10 relative overflow-hidden">
+            <div className="flex-1 lg:flex-none lg:w-48 h-0.75 bg-[#0D4168]/10 relative overflow-hidden">
               <motion.div
                 className="absolute inset-0 bg-[#F2992F]"
                 style={{ width: `${progress * 100}%` }}
@@ -338,7 +338,7 @@ export default function OurFleet() {
 
         {/* --- RIGHT: IMAGE --- */}
         <div className="lg:col-span-7 w-full relative flex items-center justify-center order-1 lg:order-2 mb-8 lg:mb-0">
-          <div className="relative w-full h-[350px] lg:h-[750px]">
+          <div className="relative w-full h-87.5 lg:h-187.5">
             <AnimatePresence mode="wait">
               <motion.div
                 key={boats[activeIndex].id}
@@ -359,7 +359,7 @@ export default function OurFleet() {
                     />
 
                     {/* Overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D4168]/60 via-transparent to-transparent opacity-60" />
+                    <div className="absolute inset-0 bg-linear-to-t from-[#0D4168]/60 via-transparent to-transparent opacity-60" />
                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none" />
                   </div>
                 </TiltCard>
@@ -369,7 +369,7 @@ export default function OurFleet() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 w-full h-px bg-gradient-to-r from-transparent via-[#0D4168]/20 to-transparent">
+      <div className="absolute bottom-0 w-full h-px bg-linear-to-r from-transparent via-[#0D4168]/20 to-transparent">
         <div className="absolute inset-0 blur-md bg-[#F2992F]/10" />
       </div>
 
