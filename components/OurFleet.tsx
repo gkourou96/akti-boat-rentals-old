@@ -1,58 +1,35 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { Ubuntu, Open_Sans } from "next/font/google";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade } from "swiper/modules";
+import { Autoplay, Navigation, EffectCreative } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import {
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-  Users,
-  Ruler,
-} from "lucide-react";
 
 import "swiper/css";
-import "swiper/css/effect-fade";
+import "swiper/css/navigation";
+import "swiper/css/effect-creative";
 
-// Import Modal
-import FleetModal, { Boat } from "./FleetModal";
+// Import the new Modal Component
+import FleetModal, { Boat } from "./FleetModal"; // Adjust path if needed
 
-// --- FONTS ---
-const ubuntu = Ubuntu({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-ubuntu",
-});
-
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-open",
-});
-
-// --- DATA ---
 const boats: Boat[] = [
   {
     id: 1,
-    name: "The Obsidian",
-    category: "Super Sport",
+    name: "Name of vehicle",
+    category: "Category etc here",
     capacity: 10,
     length: "9.8m",
     description:
-      "Designed for those who refuse to compromise. The Obsidian cuts through waves with surgical precision, offering an adrenaline-fueled experience.",
-    description2: "",
+      "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
+    description2:
+      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
     image: "/images/boat-1.png",
-    thumbnails: ["/images/boat-3.png", "/images/boat-1.png"],
+    thumbnails: [
+      "/images/boat-3.png",
+      "/images/boat-1.png",
+      "/images/boat-3.png",
+    ],
   },
   {
     id: 2,
@@ -61,8 +38,9 @@ const boats: Boat[] = [
     capacity: 8,
     length: "12.5m",
     description:
-      "A floating palace designed for intimate gatherings. With Italian leather interiors and a silent propulsion system.",
-    description2: "",
+      "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
+    description2:
+      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
     image: "/images/boat-2.png",
     thumbnails: ["/images/boat-4.png"],
   },
@@ -73,10 +51,15 @@ const boats: Boat[] = [
     capacity: 6,
     length: "8.5m",
     description:
-      "Agile, fierce, and stunningly beautiful. The Phantom is perfect for island hopping and reaching secluded bays.",
-    description2: "",
+      "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
+    description2:
+      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
     image: "/images/boat-3.png",
-    thumbnails: ["/images/boat-3.png"],
+    thumbnails: [
+      "/images/boat-3.png",
+      "/images/boat-1.png",
+      "/images/boat-3.png",
+    ],
   },
   {
     id: 4,
@@ -85,72 +68,26 @@ const boats: Boat[] = [
     capacity: 12,
     length: "14.2m",
     description:
-      "The crown jewel of stability and space. Featuring a wide beam and extended sun deck for ultimate comfort.",
-    description2: "",
+      "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
+    description2:
+      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
     image: "/images/boat-4.png",
     thumbnails: ["/images/boat-4.png"],
   },
 ];
 
-// --- 3D TILT CARD ---
-const TiltCard = ({
-  children,
-  onClick,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-}) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={onClick}
-      className="relative w-full h-full perspective-1000 cursor-pointer group z-20"
-    >
-      <div className="absolute inset-0 bg-linear-to-tr from-[#0D4168]/20 to-[#F2992F]/20 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none -z-10 scale-110" />
-      {children}
-    </motion.div>
-  );
-};
-
-// --- MAIN COMPONENT ---
 export default function OurFleet() {
+  // --- Modal State ---
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBoat, setSelectedBoat] = useState<Boat | null>(null);
-  const [progress, setProgress] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const swiperRef = useRef<SwiperType | null>(null);
 
   const handleOpenModal = (boat: Boat) => {
     setSelectedBoat(boat);
     setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   const onAutoplayTimeLeft = (
@@ -158,224 +95,171 @@ export default function OurFleet() {
     time: number,
     progress: number,
   ) => {
-    setProgress(1 - progress);
+    const activeSlide = s.slides[s.activeIndex];
+    if (activeSlide) {
+      const progressBar = activeSlide.querySelector(
+        ".slide-progress-bar",
+      ) as HTMLElement;
+      if (progressBar) {
+        progressBar.style.width = `${(1 - progress) * 100}%`;
+      }
+    }
   };
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-      },
-    },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.4 } },
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-    },
-    exit: { opacity: 0 },
+  const onSlideChange = (s: SwiperType) => {
+    s.slides.forEach((slide) => {
+      const bar = slide.querySelector(".slide-progress-bar") as HTMLElement;
+      if (bar) bar.style.width = "0%";
+    });
   };
 
   return (
-    <section
-      className={`relative w-full bg-[#FFFFFF] overflow-hidden py-12 lg:py-20 flex justify-center ${ubuntu.variable} ${openSans.variable}`}
-    >
-      {/* Texture & Gradients */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30 mix-blend-multiply z-0 pointer-events-none" />
-
-      {/* FRAME CONTAINER */}
-      <div className="relative w-full max-w-360 h-auto lg:h-221 z-10 grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-16 px-4 lg:px-16 items-center">
-        {/* --- LEFT: CONTENT --- */}
-        <div className="lg:col-span-5 flex flex-col justify-center h-auto lg:h-full relative z-20 order-2 lg:order-1 pt-8 lg:pt-0">
-          <Swiper
-            modules={[Autoplay, EffectFade]}
-            effect="fade"
-            fadeEffect={{ crossFade: true }}
-            speed={1000}
-            loop={true}
-            onSwiper={(s) => {
-              swiperRef.current = s;
-            }}
-            onSlideChange={(s) => setActiveIndex(s.realIndex)}
-            onAutoplayTimeLeft={onAutoplayTimeLeft}
-            autoplay={{ delay: 6000, disableOnInteraction: false }}
-            className="w-full h-auto"
-            autoHeight={true}
-            allowTouchMove={false}
-          >
-            {boats.map((boat) => (
-              <SwiperSlide key={boat.id} className="h-auto">
-                {({ isActive }) => (
-                  <AnimatePresence mode="wait">
-                    {isActive && (
-                      <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        className="flex flex-col text-left relative pb-20 lg:pb-0"
-                      >
-                        {/* WATERMARK */}
-                        <div className="absolute top-2 lg:top-0 -left-1 text-[12vw] lg:text-[6rem] leading-none font-bold text-[#0D4168] opacity-10 pointer-events-none select-none uppercase font-ubuntu whitespace-nowrap z-0">
-                          {boat.category.split(" ")[0]}
-                        </div>
-
-                        {/* Category Tag */}
-                        <motion.div
-                          variants={textVariants}
-                          className="relative z-10 flex items-center gap-3 mb-4 lg:mb-8 mt-4 lg:mt-0"
-                        >
-                          <div className="w-10 h-0.5 bg-[#F2992F]" />
-                          <span className="font-ubuntu text-[#F2992F] text-xs lg:text-sm font-bold tracking-[0.25em] uppercase">
-                            {boat.category}
-                          </span>
-                        </motion.div>
-
-                        {/* Title */}
-                        <motion.h2
-                          variants={textVariants}
-                          className="relative z-10 font-ubuntu text-4xl lg:text-7xl font-bold text-[#0D4168] mb-6 lg:mb-10 leading-[1.1]"
-                        >
-                          {boat.name}
-                        </motion.h2>
-
-                        {/* Specs */}
-                        <motion.div
-                          variants={textVariants}
-                          className="relative z-10 flex flex-wrap gap-4 lg:gap-6 mb-8 lg:mb-12"
-                        >
-                          <div className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-[#0D4168]/10 p-4 lg:p-5 min-w-30 lg:min-w-32.5">
-                            <div className="flex items-center gap-2 text-[#F2992F] mb-2">
-                              <Users size={16} />
-                              <span className="font-ubuntu text-[10px] lg:text-xs font-bold uppercase tracking-wider text-[#0D4168]/60">
-                                Capacity
-                              </span>
-                            </div>
-                            <span className="font-open text-xl lg:text-2xl text-[#0D4168] font-semibold">
-                              {boat.capacity}
-                            </span>
-                          </div>
-                          <div className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-[#0D4168]/10 p-4 lg:p-5 min-w-30 lg:min-w-32.5">
-                            <div className="flex items-center gap-2 text-[#F2992F] mb-2">
-                              <Ruler size={16} />
-                              <span className="font-ubuntu text-[10px] lg:text-xs font-bold uppercase tracking-wider text-[#0D4168]/60">
-                                Length
-                              </span>
-                            </div>
-                            <span className="font-open text-xl lg:text-2xl text-[#0D4168] font-semibold">
-                              {boat.length}
-                            </span>
-                          </div>
-                        </motion.div>
-
-                        {/* Description */}
-                        <motion.p
-                          variants={textVariants}
-                          className="relative z-10 font-open text-gray-600 text-base lg:text-lg leading-relaxed mb-8 lg:mb-12 max-w-xl pl-4 lg:pl-6 border-l-2 border-[#F2992F]/30"
-                        >
-                          {boat.description}
-                        </motion.p>
-
-                        {/* Button */}
-                        <motion.div
-                          variants={textVariants}
-                          className="relative z-10"
-                        >
-                          <button
-                            onClick={() => handleOpenModal(boat)}
-                            className="group relative px-8 lg:px-10 py-3 lg:py-4 bg-transparent border-2 border-[#0D4168] overflow-hidden rounded-full w-full lg:w-auto"
-                          >
-                            <div className="absolute inset-0 w-full h-full bg-[#0D4168] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.25, 0.46, 0.45, 0.94]" />
-                            <span className="relative z-10 flex items-center justify-center gap-3 font-ubuntu text-[#0D4168] group-hover:text-white font-bold uppercase tracking-widest text-xs lg:text-sm transition-colors">
-                              Explore Vessel
-                              <ArrowRight
-                                size={16}
-                                className="group-hover:translate-x-1 transition-transform"
-                              />
-                            </span>
-                          </button>
-                        </motion.div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                )}
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          {/* Controls - FIXED: lg:bottom-24 moves it upwards on desktop */}
-          <div className="absolute bottom-0 lg:bottom-16 left-0 flex items-center gap-6 lg:gap-8 pt-8 w-full z-20">
-            <div className="flex gap-3">
-              <button
-                onClick={() => swiperRef.current?.slidePrev()}
-                className="w-12 h-12 lg:w-14 lg:h-14 border-2 border-[#0D4168]/20 text-[#0D4168] flex items-center justify-center hover:border-[#0D4168] hover:bg-[#0D4168] hover:text-white transition-all duration-300 group active:scale-95"
-              >
-                <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6 group-hover:-translate-x-0.5 transition-transform" />
-              </button>
-              <button
-                onClick={() => swiperRef.current?.slideNext()}
-                className="w-12 h-12 lg:w-14 lg:h-14 bg-[#0D4168] text-white flex items-center justify-center shadow-lg shadow-[#0D4168]/20 hover:bg-[#082a44] transition-all duration-300 group active:scale-95"
-              >
-                <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6 group-hover:translate-x-0.5 transition-transform" />
-              </button>
-            </div>
-            {/* Progress Bar */}
-            <div className="flex-1 lg:flex-none lg:w-48 h-0.75 bg-[#0D4168]/10 relative overflow-hidden">
-              <motion.div
-                className="absolute inset-0 bg-[#F2992F]"
-                style={{ width: `${progress * 100}%` }}
-              />
-            </div>
-          </div>
+    <section className="h-221 mx-auto max-w-360 bg-white pt-22 xl:ps-30 relative">
+      <div className="mb-16 relative inline-block">
+        <h2 className="font-ubuntu text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
+          Our Fleet
+        </h2>
+        <div className="absolute left-21.25 top-12.75 w-full h-auto">
+          <Image
+            src="/icons/accent.svg"
+            alt="decoration"
+            width={149}
+            height={32}
+          />
         </div>
+      </div>
 
-        {/* --- RIGHT: IMAGE --- */}
-        <div className="lg:col-span-7 w-full relative flex items-center justify-center order-1 lg:order-2 mb-8 lg:mb-0">
-          <div className="relative w-full h-87.5 lg:h-187.5">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={boats[activeIndex].id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="w-full h-full"
-              >
-                <TiltCard onClick={() => handleOpenModal(boats[activeIndex])}>
-                  <div className="relative w-full h-full overflow-hidden shadow-2xl shadow-[#0D4168]/10 bg-white rounded-[20px]">
+      <Swiper
+        modules={[Autoplay, Navigation, EffectCreative]}
+        effect="creative"
+        creativeEffect={{
+          limitProgress: 2,
+          prev: {
+            shadow: false,
+            translate: [0, 0, -1],
+            opacity: 0,
+          },
+          next: {
+            translate: ["100%", 0, 0],
+          },
+        }}
+        spaceBetween={28}
+        slidesPerView={1.07}
+        grabCursor={true}
+        loop={true}
+        speed={800}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        onAutoplayTimeLeft={onAutoplayTimeLeft}
+        onSlideChange={onSlideChange}
+        navigation={{
+          nextEl: ".custom-next-button",
+        }}
+        className="h-auto w-full"
+      >
+        {boats.map((boat) => (
+          <SwiperSlide key={boat.id} className="bg-white">
+            <div className="relative grid h-full w-full grid-cols-1 items-start gap-10 xl:grid-cols-[500px_1fr] xl:gap-16">
+              <div className="relative w-full xl:w-125">
+                <div className="relative h-125 w-full overflow-hidden rounded-[20px] bg-gray-200">
+                  <Image
+                    src={boat.image}
+                    alt={boat.name}
+                    fill
+                    className="object-cover opacity-0 transition-opacity duration-500 ease-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col">
+                <h3 className="font-ubuntu text-[32px] font-bold text-[#0D4168]">
+                  {boat.name}
+                </h3>
+                <span className="font-ubuntu text-[24px] mt-1 font-normal text-[#F2992F]">
+                  {boat.category}
+                </span>
+
+                <div className="mt-6 flex items-center gap-6">
+                  <div className="flex items-center gap-1">
                     <Image
-                      src={boats[activeIndex].image}
-                      alt="Boat"
-                      fill
-                      className="object-cover"
-                      priority
+                      src="/icons/group.svg"
+                      alt="Capacity"
+                      width={40}
+                      height={40}
                     />
-
-                    {/* Overlays */}
-                    <div className="absolute inset-0 bg-linear-to-t from-[#0D4168]/60 via-transparent to-transparent opacity-60" />
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none" />
+                    <span className="font-ubuntu text-[24px] font-normal text-[#0D4168]">
+                      {boat.capacity}
+                    </span>
                   </div>
-                </TiltCard>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
+                  <div className="flex items-center gap-1">
+                    <Image
+                      src="/icons/straighten.svg"
+                      alt="Length"
+                      width={40}
+                      height={40}
+                    />
+                    <span className="font-ubuntu text-[24px] font-normal text-[#0D4168]">
+                      {boat.length}
+                    </span>
+                  </div>
+                </div>
 
-      <div className="absolute bottom-0 w-full h-px bg-linear-to-r from-transparent via-[#0D4168]/20 to-transparent">
-        <div className="absolute inset-0 blur-md bg-[#F2992F]/10" />
-      </div>
+                <p className="font-open mt-6 max-w-112.75 text-[18px] font-normal leading-none tracking-normal text-gray-600">
+                  {boat.description}
+                </p>
 
+                <div className="mt-10 flex items-center justify-between xl:justify-start xl:gap-20">
+                  <button
+                    onClick={() => handleOpenModal(boat)}
+                    className="flex h-11.5 w-40.5 items-center justify-center rounded-full border border-[#0D4168] font-ubuntu text-[24px] font-normal text-[#0D4168] transition-opacity duration-300 ease-out active:opacity-50 pb-0.5 cursor-pointer"
+                  >
+                    Explore →
+                  </button>
+                </div>
+
+                <div className="mt-10 flex gap-4">
+                  {boat.thumbnails.map((thumbSrc, index) => (
+                    <div
+                      key={index}
+                      className="relative h-20.25 w-20.25 mt-6 rounded-[20px] bg-gray-200 overflow-hidden"
+                    >
+                      <Image
+                        src={thumbSrc}
+                        alt={`Thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover opacity-0 transition-opacity duration-1200 ease-in-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <button className="custom-next-button absolute right-18.25 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full text-[#0D4168] cursor-pointer">
+                <Image
+                  src="/icons/arrow_forward_ios.svg"
+                  alt="Next slide"
+                  width={21}
+                  height={39}
+                />
+              </button>
+            </div>
+
+            <div className="mt-8 h-1.25 w-full bg-[#FFFFFF]">
+              <div
+                className="slide-progress-bar h-full bg-[#D9D9D9]"
+                style={{ width: "0%" }}
+              ></div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {/* --- RENDER THE NEW MODAL COMPONENT --- */}
       <FleetModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         boat={selectedBoat}
       />
     </section>
