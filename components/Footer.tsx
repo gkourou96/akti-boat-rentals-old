@@ -15,37 +15,42 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative w-full overflow-hidden bg-[#0D4168] text-white">
-      {/* 1. MAIN FOOTER BODY (490px) */}
-      <div className="relative h-122.5 w-full">
+    <footer className="relative w-full overflow-hidden bg-[#144B51] text-white">
+      {/* 1. MAIN FOOTER BODY */}
+      {/* Mobile: h-auto with padding. Desktop: h-122.5 fixed. */}
+      <div className="relative h-auto w-full pb-16 xl:h-122.5 xl:pb-0">
         {/* ABSOLUTE VECTOR IMAGE */}
-        <div className="absolute top-15.5 -right-17.5 z-0">
+        {/* Mobile: Smaller, lower opacity, positioned to fit. Desktop: Original size/pos. */}
+        <div className="absolute -right-20 -top-10 z-0 opacity-20 xl:top-15.5 xl:-right-17.5 xl:opacity-100">
           <Image
             src="/icons/footer-vector.svg"
             alt="footer design element"
             width={368}
             height={366}
-            className="h-91.5 w-92"
+            className="h-80 w-80 xl:h-91.5 xl:w-92"
           />
         </div>
 
         {/* MAIN CONTENT CONTAINER */}
-        <div className="mx-auto h-full max-w-360 px-30 relative z-10 flex items-start justify-between">
-          {/* LEFT COLUMN: 343x339px Container */}
-          <div className="flex h-84.75 w-85.75 flex-col py-[75.47px]">
-            {/* LOGO-FOOTER.SVG */}
-            <div className="pb-11">
+        {/* Mobile: flex-col, standard padding. Desktop: flex-row, px-30. */}
+        <div className="mx-auto h-full max-w-360 px-6 pt-16 relative z-10 flex flex-col items-start xl:flex-row xl:justify-between xl:px-30 xl:pt-0">
+          {/* LEFT COLUMN */}
+          {/* Mobile: w-full, h-auto. Desktop: w-85.75, h-84.75, py-[75.47px]. */}
+          <div className="flex h-auto w-full flex-col py-0 xl:h-84.75 xl:w-85.75 xl:py-[75.47px]">
+            {/* LOGO */}
+            <div className="pb-8 xl:pb-11">
               <Image
-                src="/images/logo-footer.svg"
+                src="/images/footer-logo.svg"
                 alt="Akti Boat Rentals"
-                width={245}
-                height={75}
-                className="h-auto w-auto object-contain"
+                width={226}
+                height={85}
+                className="h-auto w-56.5 object-contain xl:w-auto"
               />
             </div>
 
             {/* ADDRESS/INFO CONTAINER */}
-            <div className="h-31 w-85.75 flex flex-col gap-4 justify-start">
+            {/* Mobile: h-auto. Desktop: h-31. */}
+            <div className="flex h-auto w-full flex-col gap-4 justify-start xl:h-31 xl:w-85.75">
               <div className="flex items-center gap-6">
                 <Image
                   src="/icons/distance.svg"
@@ -58,7 +63,7 @@ export default function Footer() {
                 </p>
               </div>
 
-              <div className="flex h-12.5 w-49 items-center gap-6">
+              <div className="flex h-auto w-full items-center gap-6 xl:h-12.5 xl:w-49">
                 <Image
                   src="/icons/phone.svg"
                   alt="Phone"
@@ -85,7 +90,8 @@ export default function Footer() {
             </div>
 
             {/* SOCIAL ICONS CONTAINER */}
-            <div className="mt-11 flex h-[29.05px] w-[188.21px] items-center gap-6">
+            {/* Mobile: Added vertical margin. Desktop: mt-11. */}
+            <div className="mt-10 mb-12 flex h-[29.05px] w-[188.21px] items-center gap-6 xl:my-0 xl:mt-11">
               <Link href="#">
                 <Image
                   src="/icons/facebook.svg"
@@ -116,9 +122,9 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* MIDDLE COLUMN: INDEX (140x238px) */}
-          {/* REVISED: mr-[233px] distance from the right-hand vector element */}
-          <div className="flex flex-col h-59.5 w-35.25 py-31.5 mr-58.25">
+          {/* MIDDLE COLUMN: INDEX */}
+          {/* Mobile: w-full, reset margins. Desktop: specific width/margins/padding. */}
+          <div className="flex flex-col h-auto w-full py-0 xl:h-59.5 xl:w-35.25 xl:py-31.5 xl:mr-58.25">
             <h3 className="font-ubuntu text-[24px] font-bold text-[#F2994A] mb-6">
               Index
             </h3>
@@ -136,9 +142,33 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      {/* 2. ADDITIONAL DECORATIVE STRIP */}
+      <div className="w-full h-auto py-4 bg-[#0B282C] xl:h-8.5 xl:py-0">
+        <div className="mx-auto flex h-full max-w-360 flex-col items-center justify-between px-6 text-[12px] xl:text-[12px] font-normal text-white/80 xl:flex-row xl:px-30">
+          {/* Left: Copyright */}
+          <div className="mb-2 text-center xl:mb-0 xl:text-left">
+            <span>
+              All rights reserved © Designed by{" "}
+              <a href="#" className="text-[#47C2CF]">
+                Lookumation Studio
+              </a>
+            </span>
+          </div>
 
-      {/* 2. ADDITIONAL DECORATIVE STRIP (34px) */}
-      <div className="w-full h-8.5 bg-[#00C6DB]" />
+          {/* Right: Legal Links */}
+          <div className="flex items-center gap-4 xl:gap-6">
+            <Link href="#" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="hover:text-white transition-colors">
+              Cookie Policy
+            </Link>
+            <Link href="#" className="hover:text-white transition-colors">
+              GDPR
+            </Link>
+          </div>
+        </div>
+      </div>{" "}
     </footer>
   );
 }

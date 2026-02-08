@@ -11,7 +11,7 @@ import "swiper/css/navigation";
 import "swiper/css/effect-creative";
 
 // Import the new Modal Component
-import FleetModal, { Boat } from "./FleetModal"; // Adjust path if needed
+import FleetModal, { Boat } from "./FleetModal";
 
 const boats: Boat[] = [
   {
@@ -77,7 +77,6 @@ const boats: Boat[] = [
 ];
 
 export default function OurFleet() {
-  // --- Modal State ---
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBoat, setSelectedBoat] = useState<Boat | null>(null);
 
@@ -114,18 +113,23 @@ export default function OurFleet() {
   };
 
   return (
-    <section className="h-221 mx-auto max-w-360 bg-white pt-22 xl:ps-30 relative">
-      <div className="mb-16 relative inline-block">
-        <h2 className="font-ubuntu text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
-          Our Fleet
-        </h2>
-        <div className="absolute left-21.25 top-12.75 w-full h-auto">
-          <Image
-            src="/icons/accent.svg"
-            alt="decoration"
-            width={149}
-            height={32}
-          />
+    // CHANGED: Removed xl:ps-30 from here (moved to Swiper) to allow title centering
+    <section className="mx-auto max-w-360 bg-white px-4 pt-10 pb-10 xl:px-0 xl:pt-22 xl:pb-20 relative">
+      {/* CHANGED: Added wrapper 'w-full xl:flex xl:justify-center' to center title on desktop */}
+      <div className="w-full xl:flex xl:justify-center mb-8 xl:mb-16">
+        <div className="relative inline-block">
+          <h2 className="font-ubuntu text-[30px] leading-tight xl:text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
+            Our Fleet
+          </h2>
+          <div className="absolute left-2 top-8 w-[100px] xl:w-auto xl:left-21.25 xl:top-12.75 h-auto">
+            <Image
+              src="/icons/accent_orange.svg"
+              alt="decoration"
+              width={149}
+              height={32}
+              className="w-full h-auto"
+            />
+          </div>
         </div>
       </div>
 
@@ -143,8 +147,16 @@ export default function OurFleet() {
             translate: ["100%", 0, 0],
           },
         }}
-        spaceBetween={28}
-        slidesPerView={1.07}
+        breakpoints={{
+          0: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+          1280: {
+            slidesPerView: 1.07,
+            spaceBetween: 28,
+          },
+        }}
         grabCursor={true}
         loop={true}
         speed={800}
@@ -157,13 +169,15 @@ export default function OurFleet() {
         navigation={{
           nextEl: ".custom-next-button",
         }}
-        className="h-auto w-full"
+        // CHANGED: Added xl:pl-30 here to restore the left alignment for the boat slider
+        className="h-auto w-full xl:pl-30"
       >
         {boats.map((boat) => (
           <SwiperSlide key={boat.id} className="bg-white">
-            <div className="relative grid h-full w-full grid-cols-1 items-start gap-10 xl:grid-cols-[500px_1fr] xl:gap-16">
+            <div className="relative grid h-full w-full grid-cols-1 gap-8 xl:grid-cols-[500px_1fr] xl:gap-16">
+              {/* Boat Image */}
               <div className="relative w-full xl:w-125">
-                <div className="relative h-125 w-full overflow-hidden rounded-[20px] bg-gray-200">
+                <div className="relative h-64 xl:h-125 w-full overflow-hidden rounded-[20px] bg-gray-200">
                   <Image
                     src={boat.image}
                     alt={boat.name}
@@ -173,23 +187,25 @@ export default function OurFleet() {
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <h3 className="font-ubuntu text-[32px] font-bold text-[#0D4168]">
+              {/* Boat Details Column */}
+              <div className="flex flex-col h-auto pt-0 xl:h-125 xl:pt-22">
+                <h3 className="font-ubuntu text-2xl xl:text-[32px] font-bold text-[#0D4168]">
                   {boat.name}
                 </h3>
-                <span className="font-ubuntu text-[24px] mt-1 font-normal text-[#F2992F]">
+                <span className="font-ubuntu text-lg xl:text-[24px] mt-1 font-normal text-[#F2992F]">
                   {boat.category}
                 </span>
 
-                <div className="mt-6 flex items-center gap-6">
+                <div className="mt-4 xl:mt-6 flex items-center gap-6">
                   <div className="flex items-center gap-1">
                     <Image
                       src="/icons/group.svg"
                       alt="Capacity"
                       width={40}
                       height={40}
+                      className="w-8 h-8 xl:w-10 xl:h-10"
                     />
-                    <span className="font-ubuntu text-[24px] font-normal text-[#0D4168]">
+                    <span className="font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168]">
                       {boat.capacity}
                     </span>
                   </div>
@@ -199,31 +215,24 @@ export default function OurFleet() {
                       alt="Length"
                       width={40}
                       height={40}
+                      className="w-8 h-8 xl:w-10 xl:h-10"
                     />
-                    <span className="font-ubuntu text-[24px] font-normal text-[#0D4168]">
+                    <span className="font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168]">
                       {boat.length}
                     </span>
                   </div>
                 </div>
 
-                <p className="font-open mt-6 max-w-112.75 text-[18px] font-normal leading-none tracking-normal text-gray-600">
+                <p className="font-open mt-4 xl:mt-6 max-w-112.75 text-base xl:text-[18px] font-normal leading-normal xl:leading-none tracking-normal text-gray-600">
                   {boat.description}
                 </p>
 
-                <div className="mt-10 flex items-center justify-between xl:justify-start xl:gap-20">
-                  <button
-                    onClick={() => handleOpenModal(boat)}
-                    className="flex h-11.5 w-40.5 items-center justify-center rounded-full border border-[#0D4168] font-ubuntu text-[24px] font-normal text-[#0D4168] transition-opacity duration-300 ease-out active:opacity-50 pb-0.5 cursor-pointer"
-                  >
-                    Explore →
-                  </button>
-                </div>
-
-                <div className="mt-10 flex gap-4">
+                {/* Thumbnails */}
+                <div className="mt-8 xl:mt-auto flex gap-4">
                   {boat.thumbnails.map((thumbSrc, index) => (
                     <div
                       key={index}
-                      className="relative h-20.25 w-20.25 mt-6 rounded-[20px] bg-gray-200 overflow-hidden"
+                      className="relative h-16 w-16 xl:h-20.25 xl:w-20.25 mt-0 xl:mt-6 rounded-[16px] xl:rounded-[20px] bg-gray-200 overflow-hidden"
                     >
                       <Image
                         src={thumbSrc}
@@ -236,16 +245,19 @@ export default function OurFleet() {
                 </div>
               </div>
 
-              <button className="custom-next-button absolute right-18.25 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full text-[#0D4168] cursor-pointer">
+              {/* Next Slide Arrow Button */}
+              <button className="custom-next-button absolute right-4 top-32 xl:right-18.25 xl:top-1/2 z-10 flex h-10 w-10 xl:h-12 xl:w-12 -translate-y-1/2 items-center justify-center rounded-full text-[#0D4168] cursor-pointer bg-white/80 xl:bg-transparent shadow-sm xl:shadow-none backdrop-blur-sm xl:backdrop-blur-none">
                 <Image
                   src="/icons/arrow_forward_ios.svg"
                   alt="Next slide"
                   width={21}
                   height={39}
+                  className="w-4 h-8 xl:w-[21px] xl:h-[39px]"
                 />
               </button>
             </div>
 
+            {/* Progress Bar */}
             <div className="mt-8 h-1.25 w-full bg-[#FFFFFF]">
               <div
                 className="slide-progress-bar h-full bg-[#D9D9D9]"
@@ -256,7 +268,13 @@ export default function OurFleet() {
         ))}
       </Swiper>
 
-      {/* --- RENDER THE NEW MODAL COMPONENT --- */}
+      {/* --- EXPLORE ALL BUTTON --- */}
+      <div className="w-full flex justify-center mt-8">
+        <button className="flex h-[46px] items-center justify-center rounded-full border border-[#0D4168] px-6 xl:px-8 font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168] transition-colors hover:bg-[#0D4168] hover:text-white cursor-pointer whitespace-nowrap">
+          Explore our entire Fleet →
+        </button>
+      </div>
+
       <FleetModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
