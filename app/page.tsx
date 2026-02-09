@@ -12,12 +12,12 @@ export default function Landing() {
     <main>
       <InteractiveBanner />
       <OurFleet />
-      {/* <NoLicenseBoats />
+      <NoLicenseBoats />
       <IdealDestinations />
       <Experiences />
       <Testimonials />
       <OurLocation />
-      <ContactUs /> */}
+      <ContactUs />
     </main>
   );
 }

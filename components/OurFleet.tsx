@@ -112,16 +112,25 @@ export default function OurFleet() {
     });
   };
 
+  const fleetBackground = {
+    background:
+      "linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, rgba(242, 234, 214, 0.5), rgba(242, 234, 214, 0.5))",
+  };
+
   return (
-    // CHANGED: Removed xl:ps-30 from here (moved to Swiper) to allow title centering
-    <section className="mx-auto max-w-360 bg-white px-4 pt-10 pb-10 xl:px-0 xl:pt-22 xl:pb-20 relative">
-      {/* CHANGED: Added wrapper 'w-full xl:flex xl:justify-center' to center title on desktop */}
+    <section
+      id="our-fleet"
+      // CHANGED: Added xl:pl-30 and xl:pr-0 to align the start of content to the left grid
+      // while allowing the right side to overflow/remain as is.
+      className="mx-auto max-w-360 px-4 pt-10 pb-10 xl:pl-30 xl:pr-0 xl:pt-22 xl:pb-20 relative"
+      style={fleetBackground}
+    >
       <div className="w-full xl:flex xl:justify-center mb-8 xl:mb-16">
         <div className="relative inline-block">
           <h2 className="font-ubuntu text-[30px] leading-tight xl:text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
             Our Fleet
           </h2>
-          <div className="absolute left-2 top-8 w-[100px] xl:w-auto xl:left-21.25 xl:top-12.75 h-auto">
+          <div className="absolute left-2 top-8 w-25 xl:w-auto xl:left-21.25 xl:top-12.75 h-auto">
             <Image
               src="/icons/accent_orange.svg"
               alt="decoration"
@@ -169,14 +178,17 @@ export default function OurFleet() {
         navigation={{
           nextEl: ".custom-next-button",
         }}
-        // CHANGED: Added xl:pl-30 here to restore the left alignment for the boat slider
-        className="h-auto w-full xl:pl-30"
+        // CHANGED: Removed xl:pl-30 from here as it's now handled by the parent section
+        className="h-auto w-full"
       >
         {boats.map((boat) => (
-          <SwiperSlide key={boat.id} className="bg-white">
+          <SwiperSlide key={boat.id} className="bg-transparent">
             <div className="relative grid h-full w-full grid-cols-1 gap-8 xl:grid-cols-[500px_1fr] xl:gap-16">
               {/* Boat Image */}
-              <div className="relative w-full xl:w-125">
+              <div
+                className="relative w-full xl:w-125 cursor-pointer"
+                onClick={() => handleOpenModal(boat)}
+              >
                 <div className="relative h-64 xl:h-125 w-full overflow-hidden rounded-[20px] bg-gray-200">
                   <Image
                     src={boat.image}
@@ -232,7 +244,7 @@ export default function OurFleet() {
                   {boat.thumbnails.map((thumbSrc, index) => (
                     <div
                       key={index}
-                      className="relative h-16 w-16 xl:h-20.25 xl:w-20.25 mt-0 xl:mt-6 rounded-[16px] xl:rounded-[20px] bg-gray-200 overflow-hidden"
+                      className="relative h-16 w-16 xl:h-20.25 xl:w-20.25 mt-0 xl:mt-6 rounded-2xl xl:rounded-[20px] bg-gray-200 overflow-hidden"
                     >
                       <Image
                         src={thumbSrc}
@@ -252,7 +264,7 @@ export default function OurFleet() {
                   alt="Next slide"
                   width={21}
                   height={39}
-                  className="w-4 h-8 xl:w-[21px] xl:h-[39px]"
+                  className="w-4 h-8 xl:w-5.25 xl:h-9.75"
                 />
               </button>
             </div>
@@ -270,7 +282,7 @@ export default function OurFleet() {
 
       {/* --- EXPLORE ALL BUTTON --- */}
       <div className="w-full flex justify-center mt-8">
-        <button className="flex h-[46px] items-center justify-center rounded-full border border-[#0D4168] px-6 xl:px-8 font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168] transition-colors hover:bg-[#0D4168] hover:text-white cursor-pointer whitespace-nowrap">
+        <button className="flex h-11.5 items-center justify-center rounded-full border border-[#0D4168] px-6 xl:px-8 font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168] transition-colors hover:bg-[#0D4168] hover:text-white cursor-pointer whitespace-nowrap">
           Explore our entire Fleet →
         </button>
       </div>

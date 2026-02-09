@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import DestinationModal from "./DestinationModal"; // Ensure correct import path
+import DestinationModal from "./DestinationModal";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
-// 1. Data Array
 const destinations = [
   // --- ROW 1 ---
   {
@@ -83,27 +84,26 @@ const destinations = [
   },
 ];
 
-// Reusable component
-// Added onClick prop to handle selection
 const DestinationCard = ({
   width,
   height,
   name,
   image,
   onClick,
+  className = "",
 }: {
   width: number;
   height: number;
   name: string;
   image: string;
   onClick: () => void;
+  className?: string;
 }) => (
   <div
     onClick={onClick}
-    className="relative shrink-0 overflow-hidden rounded-[15px] bg-gray-300 cursor-pointer group"
+    className={`relative shrink-0 overflow-hidden rounded-[15px] bg-gray-300 cursor-pointer group ${className}`}
     style={{ width: `${width}px`, height: `${height}px` }}
   >
-    {/* Real Image Render */}
     <Image
       src={image}
       alt={name}
@@ -111,7 +111,6 @@ const DestinationCard = ({
       className="object-cover z-0 transition-transform"
     />
 
-    {/* Custom Gradient Overlay with Multiply Blend Mode */}
     <div
       className="absolute inset-0 z-10 pointer-events-none"
       style={{
@@ -121,7 +120,6 @@ const DestinationCard = ({
       }}
     />
 
-    {/* Title Container */}
     <div className="absolute bottom-0 left-0 p-4.5 w-full z-20">
       <h3 className="font-ubuntu text-[24px] font-bold leading-tight text-white wrap-break-word">
         {name}
@@ -131,7 +129,6 @@ const DestinationCard = ({
 );
 
 export default function IdealDestinations() {
-  // State for modal
   const [selectedDestination, setSelectedDestination] = useState<
     (typeof destinations)[0] | null
   >(null);
@@ -146,27 +143,58 @@ export default function IdealDestinations() {
     setIsModalOpen(false);
   };
 
+  const sectionBackground = {
+    background:
+      "linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, rgba(242, 234, 214, 0.5), rgba(242, 234, 214, 0.5))",
+  };
+
   return (
-    <section className="mx-auto h-256.25 max-w-360 bg-white">
-      {/* Header Container */}
-      <div className="pt-22 pl-30">
+    <section
+      className="mx-auto h-auto xl:h-256.25 max-w-360 py-16 xl:py-0"
+      style={sectionBackground}
+      id="destinations"
+    >
+      <div className="px-6 xl:px-0 xl:pt-22 xl:pl-0 w-full flex justify-start xl:justify-center">
         <div className="relative inline-block">
-          <h2 className="relative z-10 font-ubuntu text-[44px] font-bold leading-none tracking-normal text-[#0D4168] p-2.5">
+          <h2 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none tracking-normal text-[#0D4168] p-2.5">
             Ideal Destinations
           </h2>
-          <div className="absolute -right-1.25 -bottom-2.25 w-37.25 h-8">
+          <div className="absolute -right-1.25 -bottom-2.25 w-32 xl:w-37.25 h-auto">
             <Image
-              src="/icons/no-license-boats-accent.svg"
+              src="/icons/no-license-accent.svg"
               alt="accent"
               width={149}
               height={32}
+              className="w-full h-auto"
             />
           </div>
         </div>
       </div>
 
-      {/* Grid Container */}
-      <div className="mt-16 pl-30">
+      {/* --- MOBILE VIEW: SWIPER (Visible < xl) --- */}
+      {/* FIXED: Added 'overflow-hidden' here to prevent the Swiper from causing layout shifts/scrollbars */}
+      <div className="block xl:hidden w-full mt-10 px-0 overflow-hidden">
+        <Swiper
+          spaceBetween={20}
+          slidesPerView={1.2}
+          centeredSlides={true}
+          loop={true}
+          className="w-full overflow-visible!"
+        >
+          {destinations.map((dest) => (
+            <SwiperSlide key={dest.id}>
+              <DestinationCard
+                {...dest}
+                className="w-full! h-100!"
+                onClick={() => handleCardClick(dest)}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      {/* --- DESKTOP VIEW: ORIGINAL GRID (Visible >= xl) --- */}
+      <div className="hidden xl:block mt-16 pl-30">
         <div className="flex h-169.5 w-300 gap-3">
           {/* --- LEFT BLOCK --- */}
           <div className="flex flex-col gap-3">
@@ -232,7 +260,6 @@ export default function IdealDestinations() {
         </div>
       </div>
 
-      {/* RENDER THE MODAL */}
       <DestinationModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}

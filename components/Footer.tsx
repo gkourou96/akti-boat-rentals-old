@@ -14,13 +14,35 @@ export default function Footer() {
     { name: "Contact Us", href: "#contact-us" },
   ];
 
+  // UPDATED: Logic to handle smooth scrolling with Navbar Offset
+  const handleScroll = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    href: string,
+  ) => {
+    e.preventDefault();
+    const targetId = href.replace("#", "");
+    const elem = document.getElementById(targetId);
+
+    if (elem) {
+      // Determine offset based on screen width (assuming xl/1280px is the desktop breakpoint)
+      // Mobile height: 80px | Desktop height: 123.98px
+      const offset = window.innerWidth >= 1280 ? 123.98 : 80;
+
+      const elementPosition = elem.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <footer className="relative w-full overflow-hidden bg-[#144B51] text-white">
       {/* 1. MAIN FOOTER BODY */}
-      {/* Mobile: h-auto with padding. Desktop: h-122.5 fixed. */}
       <div className="relative h-auto w-full pb-16 xl:h-122.5 xl:pb-0">
         {/* ABSOLUTE VECTOR IMAGE */}
-        {/* Mobile: Smaller, lower opacity, positioned to fit. Desktop: Original size/pos. */}
         <div className="absolute -right-20 -top-10 z-0 opacity-20 xl:top-15.5 xl:-right-17.5 xl:opacity-100">
           <Image
             src="/icons/footer-vector.svg"
@@ -32,10 +54,8 @@ export default function Footer() {
         </div>
 
         {/* MAIN CONTENT CONTAINER */}
-        {/* Mobile: flex-col, standard padding. Desktop: flex-row, px-30. */}
         <div className="mx-auto h-full max-w-360 px-6 pt-16 relative z-10 flex flex-col items-start xl:flex-row xl:justify-between xl:px-30 xl:pt-0">
           {/* LEFT COLUMN */}
-          {/* Mobile: w-full, h-auto. Desktop: w-85.75, h-84.75, py-[75.47px]. */}
           <div className="flex h-auto w-full flex-col py-0 xl:h-84.75 xl:w-85.75 xl:py-[75.47px]">
             {/* LOGO */}
             <div className="pb-8 xl:pb-11">
@@ -49,7 +69,6 @@ export default function Footer() {
             </div>
 
             {/* ADDRESS/INFO CONTAINER */}
-            {/* Mobile: h-auto. Desktop: h-31. */}
             <div className="flex h-auto w-full flex-col gap-4 justify-start xl:h-31 xl:w-85.75">
               <div className="flex items-center gap-6">
                 <Image
@@ -90,7 +109,6 @@ export default function Footer() {
             </div>
 
             {/* SOCIAL ICONS CONTAINER */}
-            {/* Mobile: Added vertical margin. Desktop: mt-11. */}
             <div className="mt-10 mb-12 flex h-[29.05px] w-[188.21px] items-center gap-6 xl:my-0 xl:mt-11">
               <Link href="#">
                 <Image
@@ -123,7 +141,6 @@ export default function Footer() {
           </div>
 
           {/* MIDDLE COLUMN: INDEX */}
-          {/* Mobile: w-full, reset margins. Desktop: specific width/margins/padding. */}
           <div className="flex flex-col h-auto w-full py-0 xl:h-59.5 xl:w-35.25 xl:py-31.5 xl:mr-58.25">
             <h3 className="font-ubuntu text-[24px] font-bold text-[#F2994A] mb-6">
               Index
@@ -133,6 +150,7 @@ export default function Footer() {
                 <Link
                   key={link.name}
                   href={link.href}
+                  onClick={(e) => handleScroll(e, link.href)}
                   className="font-open text-[18px] font-medium text-white transition-opacity hover:opacity-75"
                 >
                   {link.name}
