@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
 import Image from "next/image";
+import React, { useRef, useState } from "react";
 import DestinationModal from "./DestinationModal";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
@@ -98,35 +99,102 @@ const DestinationCard = ({
   image: string;
   onClick: () => void;
   className?: string;
-}) => (
-  <div
-    onClick={onClick}
-    className={`relative shrink-0 overflow-hidden rounded-[15px] bg-gray-300 cursor-pointer group ${className}`}
-    style={{ width: `${width}px`, height: `${height}px` }}
-  >
-    <Image
-      src={image}
-      alt={name}
-      fill
-      className="object-cover z-0 transition-transform"
-    />
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
 
+  // 1. Mouse Tracking Logic
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Spring physics
+  const springConfig = { damping: 25, stiffness: 200 };
+  const mouseX = useSpring(x, springConfig);
+  const mouseY = useSpring(y, springConfig);
+
+  // Helper to calculate coordinates
+  const getMousePos = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return { x: 0, y: 0 };
+    const rect = ref.current.getBoundingClientRect();
+    return {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    };
+  };
+
+  // THE FIX: "Snap" the spring immediately on entry
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    const pos = getMousePos(e);
+
+    // Update the target values
+    x.set(pos.x);
+    y.set(pos.y);
+
+    // CRITICAL: Manually set the spring values to the same position.
+    // This bypasses the spring physics for the initial "show" moment,
+    // causing it to appear instantly at the cursor.
+    mouseX.set(pos.x);
+    mouseY.set(pos.y);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const pos = getMousePos(e);
+    x.set(pos.x);
+    y.set(pos.y);
+  };
+
+  return (
     <div
-      className="absolute inset-0 z-10 pointer-events-none"
-      style={{
-        background:
-          "linear-gradient(180deg, rgba(13, 65, 104, 0) 49.04%, #0D4168 100%)",
-        mixBlendMode: "multiply",
-      }}
-    />
+      ref={ref}
+      onClick={onClick}
+      onMouseEnter={handleMouseEnter} // Triggers the snap
+      onMouseMove={handleMouseMove}
+      className={`group relative shrink-0 overflow-hidden rounded-[15px] bg-gray-300 cursor-none ${className}`}
+      style={{ width: `${width}px`, height: `${height}px` }}
+    >
+      <Image
+        src={image}
+        alt={name}
+        fill
+        className="object-cover z-0 transition-transform duration-700 group-hover:scale-110"
+      />
 
-    <div className="absolute bottom-0 left-0 p-4.5 w-full z-20">
-      <h3 className="font-ubuntu text-[24px] font-bold leading-tight text-white wrap-break-word">
-        {name}
-      </h3>
+      {/* Gradient Overlay */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(13, 65, 104, 0) 49.04%, #0D4168 100%)",
+          mixBlendMode: "multiply",
+        }}
+      />
+
+      {/* 2. Custom "VIEW" Cursor Follower */}
+      <motion.div
+        style={{
+          x: mouseX,
+          y: mouseY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+        className="pointer-events-none absolute left-0 top-0 z-30 h-20 w-20 rounded-full bg-[#F2992F] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      >
+        <span className="flex h-full w-full items-center justify-center font-ubuntu text-sm font-bold uppercase leading-none tracking-widest text-white">
+          View
+        </span>
+      </motion.div>
+
+      {/* 3. Content Container (Title & Underline) */}
+      <div className="absolute bottom-0 left-0 w-full p-8 z-20">
+        <div className="overflow-hidden">
+          <motion.h3 className="translate-y-full font-ubuntu text-[24px] font-bold uppercase text-white transition-transform duration-500 ease-out group-hover:translate-y-0">
+            {name}
+          </motion.h3>
+        </div>
+        <div className="mt-2 h-0.5 w-0 bg-[#F2992F] transition-all duration-700 ease-out group-hover:w-16" />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function IdealDestinations() {
   const [selectedDestination, setSelectedDestination] = useState<

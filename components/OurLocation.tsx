@@ -20,7 +20,7 @@ export default function OurLocation() {
       {/* Background Accent - Centered & Buried */}
       <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-0 select-none opacity-30 xl:opacity-100 w-full xl:w-auto">
         <Image
-          src="/icons/our-location-accent.svg"
+          src="/icons/light-brown-accent.svg"
           alt="Location decoration"
           width={1440}
           height={200}
@@ -41,7 +41,7 @@ export default function OurLocation() {
             {/* Accent - Repositioned for mobile text size */}
             <div className="absolute -bottom-3.5 left-24 xl:left-32 xl:-bottom-1.25 z-0 h-6 w-24 xl:h-8 xl:w-37.25">
               <Image
-                src="/icons/no-license-accent.svg"
+                src="/icons/experiences-orange-accent.svg"
                 alt="accent"
                 width={149}
                 height={32}
