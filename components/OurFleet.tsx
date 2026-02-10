@@ -117,10 +117,15 @@ export default function OurFleet() {
     <div className="bg-[#F2EAD680]">
       <section
         id="our-fleet"
-        // Preserved container styling
-        className=" mx-auto max-w-360 px-4 pt-10 pb-10 xl:pl-30 xl:pr-0 xl:pt-22 xl:pb-20 relative"
+        // UPDATED:
+        // 1. Removed xl:px-[120px] and replaced with xl:pl-[120px] xl:pr-0
+        //    This keeps the left alignment strict but allows the right side to bleed to the edge.
+        className="w-full px-4 pt-10 pb-10 xl:pl-[120px] xl:pr-0 xl:pt-22 xl:pb-20 relative"
       >
-        <div className="w-full xl:flex xl:justify-center mb-8 xl:mb-16">
+        {/* Title Container */}
+        {/* ADDED: xl:pr-[120px] to counterbalance the section's lack of right padding.
+            This ensures the title remains visually centered on the screen. */}
+        <div className="w-full xl:flex xl:justify-center mb-8 xl:mb-16 xl:pr-[120px]">
           <div className="relative inline-block">
             <h2 className="font-ubuntu text-[30px] leading-tight xl:text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
               Our Fleet
@@ -194,7 +199,6 @@ export default function OurFleet() {
                 </div>
 
                 {/* Boat Details Column */}
-                {/* CHANGED: Removed xl:pt-22 so text starts flush at the top. Kept h-125 to fill height. */}
                 <div className="flex flex-col h-auto pt-0 xl:h-125">
                   <h3 className="font-ubuntu text-2xl xl:text-[32px] font-bold text-[#0D4168]">
                     {boat.name}
@@ -233,8 +237,7 @@ export default function OurFleet() {
                     {boat.description}
                   </p>
 
-                  {/* ADDED: "See More" Button */}
-                  {/* Size: 185x46px | Font: Ubuntu 24px Normal | Color: #144B51 */}
+                  {/* See More Button */}
                   <button
                     onClick={() => handleOpenModal(boat)}
                     className="mt-6 flex h-11.5 w-46.25 items-center justify-center gap-2 rounded-full bg-[#144B51] text-white transition-opacity hover:opacity-90 cursor-pointer"
@@ -261,7 +264,6 @@ export default function OurFleet() {
                   </button>
 
                   {/* Thumbnails */}
-                  {/* Preserved xl:mt-auto to ensure they sit flush at the bottom of the container */}
                   <div className="mt-8 xl:mt-auto flex gap-4">
                     {boat.thumbnails.map((thumbSrc, index) => (
                       <div
@@ -303,7 +305,7 @@ export default function OurFleet() {
         </Swiper>
 
         {/* --- EXPLORE ALL BUTTON --- */}
-        <div className="w-full flex justify-center mt-8">
+        <div className="w-full flex justify-center mt-8 xl:pr-[120px]">
           <Link
             href="/fleet"
             className="flex h-11.5 items-center justify-center rounded-full border border-[#0D4168] px-6 xl:px-8 font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168] transition-colors hover:bg-[#0D4168] hover:text-white cursor-pointer whitespace-nowrap"

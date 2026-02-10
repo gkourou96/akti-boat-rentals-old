@@ -75,8 +75,12 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center w-full pt-0 pointer-events-none">
-      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-white shadow-[0_4px_4px_rgba(0,0,0,0.1)] px-6 py-4 xl:max-w-300 xl:rounded-b-[60px] xl:rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
+    // UPDATED: Added xl:px-[120px] to creating the 120px "margin" on desktop
+    <nav className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center w-full pt-0 pointer-events-none xl:px-[120px]">
+      {/* UPDATED INNER CONTAINER: 
+         - Removed xl:max-w-300 (1200px restriction) so it fills the space defined by the parent's padding.
+      */}
+      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-white shadow-[0_4px_4px_rgba(0,0,0,0.1)] px-6 py-4 xl:rounded-b-[60px] xl:rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
         <Link href="/" className="shrink-0">
           <Image
             src="/images/logo.svg"
