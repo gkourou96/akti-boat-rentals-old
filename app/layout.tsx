@@ -3,6 +3,7 @@ import { Ubuntu, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 // 1. Configure Ubuntu (Static Font: Needs specific weights)
 const ubuntu = Ubuntu({
@@ -36,6 +37,7 @@ export default function RootLayout({
         <Navbar />
         {/* 4. Main Wrapper: Width restricted, centered, NO padding */}
         <main className="w-full mx-auto">{children}</main>
+        <WhatsAppButton /> {/* Add it here */}
         <Footer />
       </body>
     </html>
