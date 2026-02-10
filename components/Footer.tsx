@@ -25,8 +25,8 @@ export default function Footer() {
 
     if (elem) {
       // Determine offset based on screen width (assuming xl/1280px is the desktop breakpoint)
-      // Mobile height: 80px | Desktop height: 123.98px
-      const offset = window.innerWidth >= 1280 ? 123.98 : 80;
+      // Mobile height: 80px | Desktop height: 128.65px (CORRECTED)
+      const offset = window.innerWidth >= 1280 ? 128.65 : 80;
 
       const elementPosition = elem.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - offset;

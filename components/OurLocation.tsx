@@ -15,7 +15,7 @@ export default function OurLocation() {
     // CHANGED: h-auto on mobile, fixed h-201.5 on desktop
     <section
       id="our-location"
-      className="relative w-full h-auto xl:h-201.5 bg-[#E3891F1A] overflow-hidden"
+      className="relative w-full h-auto xl:h-201.5 bg-[#F2EAD6] overflow-hidden"
     >
       {/* Background Accent - Centered & Buried */}
       <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-0 select-none opacity-30 xl:opacity-100 w-full xl:w-auto">

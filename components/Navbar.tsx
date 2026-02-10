@@ -1,86 +1,93 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const navLinks = [
-    { name: "Our Fleet", href: "#our-fleet" },
-    { name: "No License Boats", href: "#no-license-boats" },
-    { name: "Destinations", href: "#destinations" },
-    { name: "Experiences", href: "#experiences" },
-    { name: "Our Location", href: "#our-location" },
-    { name: "Contact Us", href: "#contact-us" },
+    { name: "Our Fleet", href: "/#our-fleet" },
+    { name: "No License Boats", href: "/#no-license-boats" },
+    { name: "Destinations", href: "/#destinations" },
+    { name: "Experiences", href: "/#experiences" },
+    { name: "Our Location", href: "/#our-location" },
+    { name: "Contact Us", href: "/#contact-us" },
   ];
 
-  // NEW: Handle smooth scroll with dynamic offset
+  // Helper to handle the actual window scrolling
+  const scrollToElement = (elem: HTMLElement, isSmooth: boolean) => {
+    // Desktop: 128.65px | Mobile: 80px (Exactly matches h-12 logo + py-4 padding)
+    const isDesktop = window.innerWidth >= 1280;
+    const offset = isDesktop ? 128.65 : 80;
+
+    const elementPosition = elem.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      // "instant" forces a 0-delay jump for cross-page arrival
+      // "smooth" uses the browser's smooth scroller for same-page clicks
+      behavior: isSmooth ? "smooth" : "instant",
+    });
+  };
+
+  // 1. ARRIVAL LOGIC (Cross-Page Navigation)
+  // This runs when you land on the page with a #hash (e.g., coming from /fleet)
+  useEffect(() => {
+    if (pathname === "/" && window.location.hash) {
+      const targetId = window.location.hash.substring(1);
+      const elem = document.getElementById(targetId);
+
+      if (elem) {
+        // requestAnimationFrame fires before the next repaint, making the jump imperceptible.
+        requestAnimationFrame(() => {
+          scrollToElement(elem, false); // false = INSTANT jump
+        });
+      }
+    }
+  }, [pathname]);
+
+  // 2. SAME-PAGE CLICK LOGIC
   const handleScroll = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     href: string,
   ) => {
-    e.preventDefault();
+    // Only intercept if we are ALREADY on the home page
+    if (pathname === "/") {
+      e.preventDefault();
+      const targetId = href.replace(/.*\#/, "");
+      const elem = document.getElementById(targetId);
 
-    // Extract the ID from the href (e.g., "#our-fleet" -> "our-fleet")
-    const targetId = href.replace(/.*\#/, "");
-    const elem = document.getElementById(targetId);
-
-    if (elem) {
-      // Check if viewport is desktop (xl breakpoint is usually 1280px in Tailwind)
-      // If width >= 1280, use 123.98px offset, otherwise use 80px
-      const isDesktop = window.innerWidth >= 1280;
-      const offset = isDesktop ? 123.98 : 80;
-
-      const elementPosition = elem.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+      if (elem) {
+        // True = Smooth scroll for same-page navigation
+        scrollToElement(elem, true);
+      }
     }
+    // If not on home page, allow default navigation.
+    // The useEffect above will handle the landing (instantly).
 
-    // Always close mobile menu after clicking
     setIsMobileMenuOpen(false);
   };
 
   return (
-    // NAVBAR WRAPPER
-    // fixed top-0: Stays sticky on top.
-    // flex-col: Allows mobile menu to stack below.
     <nav className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center w-full pt-0 pointer-events-none">
-      {/* INNER CONTAINER
-          ------------------------------------------------------------
-          MOBILE (Default):
-          - w-full: Full width bar.
-          - px-6 py-4: Standard mobile header padding.
-          - rounded-none: Rectangular bar (no pill shape).
-          - bg-white: White background.
-          
-          DESKTOP (xl: prefix):
-          - xl:max-w-[1200px]: Restricts width to pill size.
-          - xl:rounded-b-[60px]: Adds the large rounded bottom corners.
-          - xl:px-4 xl:py-[22px] xl:pr-[55px] xl:pl-[22px]: Specific Figma padding restored strictly for desktop.
-          ------------------------------------------------------------
-      */}
       <div className="pointer-events-auto relative flex w-full items-center justify-between bg-white shadow-[0_4px_4px_rgba(0,0,0,0.1)] px-6 py-4 xl:max-w-300 xl:rounded-b-[60px] xl:rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
-        {/* Logo Section */}
         <Link href="/" className="shrink-0">
           <Image
             src="/images/logo.svg"
             alt="Akti Boat Rentals"
             width={180}
             height={60}
-            // CHANGED: h-10 -> h-12 to increase mobile size without affecting desktop (xl:h-auto)
-            className="h-12 w-auto xl:h-auto xl:w-auto xl:max-h-20"
+            className="h-12 w-auto xl:h-[84.65px] xl:w-auto"
             priority
           />
         </Link>
 
-        {/* Desktop Navigation - STRICTLY UNTOUCHED (Hidden on Mobile) */}
         <div className="hidden h-full items-center gap-5.5 xl:flex mt-3">
           {navLinks.map((link) => {
             const isContact = link.name === "Contact Us";
@@ -101,8 +108,6 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Mobile Menu Toggle Button (Visible only on Mobile) */}
-        {/* CHANGED: Added 'flex items-center' to ensure the icon sits perfectly in the middle vertically */}
         <div className="xl:hidden flex items-center">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -118,10 +123,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MOBILE MENU DROPDOWN
-          - Renders below the white bar.
-          - Full width or slightly inset depending on preference (Currently inset for style).
-      */}
       {isMobileMenuOpen && (
         <div className="pointer-events-auto mt-0 w-full bg-white px-6 py-6 shadow-xl xl:hidden animate-in fade-in slide-in-from-top-5 duration-200 border-t border-gray-100">
           <div className="flex flex-col gap-4">

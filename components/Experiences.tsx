@@ -74,7 +74,7 @@ const ExperienceCard = ({
 }) => (
   // Mobile: w-full, h-auto aspect-square or fixed height
   // Desktop: w-[282px], h-[285.5px]
-  <div className="flex h-70 w-full xl:h-[285.5px] xl:w-70.5 shrink-0 flex-col justify-center rounded-[20px] bg-[#FFFFFFE5] px-8 xl:px-8 items-center xl:items-start text-center xl:text-left">
+  <div className="flex h-70 w-full xl:h-[285.5px] xl:w-70.5 shrink-0 flex-col justify-center rounded-[20px] bg-[#FFF9ECE5] px-8 xl:px-8 items-center xl:items-start text-center xl:text-left">
     {/* Icon Container: 80x80px (Preserved your change) */}
     <div className="relative h-20 w-20 mb-4 xl:mb-0">
       <Image src={icon} alt="icon" fill className="object-contain" />
