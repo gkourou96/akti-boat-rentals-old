@@ -76,7 +76,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center w-full pt-0 pointer-events-none">
-      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-white shadow-[0_4px_4px_rgba(0,0,0,0.1)] px-6 py-4 xl:max-w-300 xl:rounded-b-[60px] xl:rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
+      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-[#F2EAD6] shadow-[0_4px_4px_rgba(0,0,0,0.1)] px-6 py-4 xl:max-w-300 xl:rounded-b-[60px] xl:rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
         <Link href="/" className="shrink-0">
           <Image
             src="/images/logo.svg"
@@ -100,7 +100,7 @@ export default function Navbar() {
                 onClick={(e) => handleScroll(e, link.href)}
                 className={`relative group text-lg transition-all duration-300 ${
                   isContact
-                    ? "rounded-full bg-[#EA9708] px-6 h-[35px] flex items-center text-white hover:bg-[#F2992F80] font-medium"
+                    ? "rounded-full bg-[#EA9708] px-6 h-8.75 flex items-center text-white hover:bg-[#F2992F80] font-medium"
                     : "text-[#0D4168] hover:text-[#1E6F73]" // Removed font-medium/bold from here, handled inside
                 }`}
               >
@@ -131,7 +131,7 @@ export default function Navbar() {
                     height={14}
                     // z-0 ensures it sits BEHIND the text
                     // opacity-0 by default, opacity-100 on group-hover
-                    className="absolute top-[18px] right-0 pointer-events-none select-none z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute top-4.5 right-0 pointer-events-none select-none z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   />
                 )}
               </Link>
