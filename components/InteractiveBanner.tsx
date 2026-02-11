@@ -431,7 +431,7 @@ export default function InteractiveBanner() {
 
       <div className="pointer-events-none relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
         <div className="pointer-events-auto mix-blend-overlay">
-          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] tracking-tighter text-transparent transition-all duration-500 md:text-[7vw]">
+          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] tracking-tighter text-transparent transition-all duration-500 md:text-[6vw]">
             <span
               className="relative block transition-all duration-500 ease-out"
               style={{ WebkitTextStroke: "2px rgba(255,255,255,0.8)" }}
@@ -442,7 +442,7 @@ export default function InteractiveBanner() {
               Rent a boat
             </span>
             <span className="bg-linear-to-r from-white via-white to-white bg-clip-text text-transparent transition-all duration-500 group-hover/text:from-[#00C6DB] group-hover/text:to-[#0099aa]">
-              <span className="italic">15min from athens</span>
+              <span className="italic">in the heart of athens</span>
             </span>
           </h1>
         </div>
