@@ -420,7 +420,7 @@ export default function InteractiveBanner() {
         ) : (
           // Mobile: Just show static background image
           <Image
-            src="/images/beach.jpg"
+            src="/images/akti.jpg"
             alt="Beach background"
             fill
             className="object-cover"
