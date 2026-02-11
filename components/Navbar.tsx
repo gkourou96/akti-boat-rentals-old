@@ -88,21 +88,52 @@ export default function Navbar() {
           />
         </Link>
 
+        {/* DESKTOP NAV */}
         <div className="hidden h-full items-center gap-5.5 xl:flex mt-3">
           {navLinks.map((link) => {
             const isContact = link.name === "Contact Us";
+
             return (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleScroll(e, link.href)}
-                className={`text-lg font-medium transition-opacity hover:opacity-75 ${
+                className={`relative group text-lg transition-all duration-300 ${
                   isContact
-                    ? "rounded-full bg-[#EA9708] px-6 py-2 text-white"
-                    : "text-[#0D4168]"
+                    ? "rounded-full bg-[#EA9708] px-6 h-[35px] flex items-center text-white hover:bg-[#F2992F80] font-medium"
+                    : "text-[#0D4168] hover:text-[#1E6F73]" // Removed font-medium/bold from here, handled inside
                 }`}
               >
-                {link.name}
+                {/* LAYOUT FIX: "inline-grid" stacks two spans on top of each other.
+                  Span 1 (Invisible): Always Bold. It pushes the width open.
+                  Span 2 (Visible): Medium -> Bold. It sits centered in that space.
+                */}
+                <span className="relative z-10 inline-grid justify-items-center overflow-hidden">
+                  {/* 1. The Invisible Spacer (Always Bold to reserve width) */}
+                  <span className="col-start-1 row-start-1 font-bold opacity-0 invisible pointer-events-none">
+                    {link.name}
+                  </span>
+
+                  {/* 2. The Visible Text (Changes weight on hover) */}
+                  <span
+                    className={`col-start-1 row-start-1 ${isContact ? "font-medium" : "font-medium group-hover:font-bold"}`}
+                  >
+                    {link.name}
+                  </span>
+                </span>
+
+                {/* Accent Image: Appears on hover for all non-contact links */}
+                {!isContact && (
+                  <Image
+                    src="/icons/accent.svg"
+                    alt=""
+                    width={63}
+                    height={14}
+                    // z-0 ensures it sits BEHIND the text
+                    // opacity-0 by default, opacity-100 on group-hover
+                    className="absolute top-[18px] right-0 pointer-events-none select-none z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  />
+                )}
               </Link>
             );
           })}

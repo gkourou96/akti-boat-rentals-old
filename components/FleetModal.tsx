@@ -45,7 +45,7 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
       {/* Mobile: w-[90%], h-auto, max-h-[90vh], scrollable */}
       {/* Desktop: w-[1047px], h-[669px], fixed, no scroll */}
       <div
-        className={`relative w-[90%] h-auto max-h-[90vh] overflow-y-auto xl:overflow-visible xl:h-167.25 xl:w-261.75 rounded-3xl xl:rounded-[52px] bg-white p-6 xl:p-8 shadow-2xl transition-all duration-500 ease-out ${
+        className={`relative w-[90%] h-auto max-h-[90vh] overflow-y-auto xl:overflow-visible xl:h-167.25 xl:w-261.75 rounded-3xl xl:rounded-[52px] bg-[#F2EAD6] p-6 xl:p-8 shadow-2xl transition-all duration-500 ease-out ${
           isOpen ? "translate-y-0 opacity-100" : "translate-y-[100vh] opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}

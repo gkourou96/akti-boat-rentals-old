@@ -184,6 +184,10 @@ export default function OurFleet() {
                   onClick={() => handleOpenModal(boat)}
                 >
                   <div className="relative h-64 xl:h-125 w-full overflow-hidden rounded-[20px] bg-gray-200">
+                    {/* --- FIXED FADE EFFECT --- */}
+                    {/* UPDATED: Removed '/50' opacity. Now uses solid '#F2EAD6' (100%) on the left. */}
+                    {/* This creates the "much lighter" look that blends perfectly into the background on the left side. */}
+                    <div className="absolute inset-0 z-10 hidden xl:block pointer-events-none transition-opacity duration-500 ease-out opacity-0 [.swiper-slide-next_&]:opacity-100 bg-[image:linear-gradient(to_right,#F2EAD680_0%,#F2EAD6_25%,#F2EAD680_70%,transparent_83%)]" />{" "}
                     <Image
                       src={boat.image}
                       alt={boat.name}
@@ -194,7 +198,6 @@ export default function OurFleet() {
                 </div>
 
                 {/* Boat Details Column */}
-                {/* CHANGED: Removed xl:pt-22 so text starts flush at the top. Kept h-125 to fill height. */}
                 <div className="flex flex-col h-auto pt-0 xl:h-125">
                   <h3 className="font-ubuntu text-2xl xl:text-[32px] font-bold text-[#0D4168]">
                     {boat.name}
@@ -233,11 +236,10 @@ export default function OurFleet() {
                     {boat.description}
                   </p>
 
-                  {/* ADDED: "See More" Button */}
-                  {/* Size: 185x46px | Font: Ubuntu 24px Normal | Color: #144B51 */}
+                  {/* "See More" Button */}
                   <button
                     onClick={() => handleOpenModal(boat)}
-                    className="mt-6 flex h-11.5 w-46.25 items-center justify-center gap-2 rounded-full bg-[#144B51] text-white transition-opacity hover:opacity-90 cursor-pointer"
+                    className="mt-6 flex h-11.5 w-46.25 items-center justify-center gap-2 rounded-full bg-[#144B51] text-white transition-opacity hover:bg-[#144B5180] cursor-pointer"
                   >
                     <span className="font-ubuntu text-[24px] font-normal leading-none pb-1">
                       See More
@@ -261,7 +263,6 @@ export default function OurFleet() {
                   </button>
 
                   {/* Thumbnails */}
-                  {/* Preserved xl:mt-auto to ensure they sit flush at the bottom of the container */}
                   <div className="mt-8 xl:mt-auto flex gap-4">
                     {boat.thumbnails.map((thumbSrc, index) => (
                       <div
@@ -292,7 +293,7 @@ export default function OurFleet() {
               </div>
 
               {/* Progress Bar */}
-              <div className="mt-8 h-1.25 w-full bg-[#FFFFFF]">
+              <div className="mt-8 h-1.25 w-full bg-[#F2EAD633]">
                 <div
                   className="slide-progress-bar h-full bg-[#D9D9D9]"
                   style={{ width: "0%" }}
@@ -306,7 +307,7 @@ export default function OurFleet() {
         <div className="w-full flex justify-center mt-8">
           <Link
             href="/fleet"
-            className="flex h-11.5 items-center justify-center rounded-full border border-[#0D4168] px-6 xl:px-8 font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168] transition-colors hover:bg-[#0D4168] hover:text-white cursor-pointer whitespace-nowrap"
+            className="flex h-11.5 items-center justify-center rounded-full border border-[#0D4168] px-6 xl:px-8 font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168] transition-colors transition-duration-300 hover:bg-[#144B5133] cursor-pointer whitespace-nowrap"
           >
             Explore our entire Fleet →
           </Link>

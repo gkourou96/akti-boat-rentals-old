@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 export default function ContactForm() {
   return (
@@ -82,33 +83,17 @@ export default function ContactForm() {
 
         {/* SUBMIT BUTTON */}
         <div className="mt-4 flex w-full justify-end">
-          <button className="flex h-8.75 w-35 items-center justify-center gap-2 rounded-full border border-[#E3891F] bg-[#E3891F] transition-opacity duration-300 hover:opacity-90 cursor-pointer">
-            <span className="font-ubuntu text-[16px] font-medium text-white leading-none pb-0.5">
+          <button className="flex h-8.75 w-35 items-center justify-center gap-2 rounded-full bg-[#E3891F] hover:bg-[#F2992F80] transition-colors duration-300 cursor-pointer px-[24px]">
+            <span className="font-ubuntu text-[18px] font-normal text-white leading-none">
               Submit
             </span>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="mb-0.5"
-            >
-              <path
-                d="M5 12H19"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M12 5L19 12L12 19"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <Image
+              src="/icons/contact-arrow.svg"
+              alt="Arrow icon"
+              width={18}
+              height={8}
+              className="block ml-2.5"
+            />
           </button>
         </div>
       </div>

@@ -349,7 +349,7 @@ const FleetPage = () => {
           Rows: 1 (3 items)
           Desktop Top Padding: 88px (Standard spacing, no navbar clear needed)
          ========================================= */}
-      <section className="w-full bg-white">
+      <section className="w-full bg-[#F2EAD680]">
         <div className="mx-auto max-w-360">
           {/* Sail Boats Mobile Padding: py-16 (64px) */}
           <div className="mx-auto w-full xl:w-360 px-6 py-16 xl:px-30 xl:py-22">

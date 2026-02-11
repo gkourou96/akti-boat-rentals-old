@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef, useMemo, useEffect } from "react";
+import React, { useRef, useMemo, useEffect, useState } from "react";
+import Image from "next/image"; // Ensure Image is imported
 import * as THREE from "three";
 import {
   Canvas,
@@ -119,8 +120,7 @@ const SimulationMaterial = shaderMaterial(
       vWake *= smoothstep(0.3, 0.0, distAlongPath);
       
       // Add breaking wave patterns - intermittent foam chunks
-      float breakingWaves = rand(vec2(distAlongPath * 8.0, distPerpendicular * 5.0)) * 
-                           rand(vec2(uTime * 0.5, distAlongPath * 3.0));
+      float breakingWaves = rand(vec2(distAlongPath * 8.0, distPerpendicular * 5.0)) * rand(vec2(uTime * 0.5, distAlongPath * 3.0));
       breakingWaves = smoothstep(0.7, 0.9, breakingWaves) * 0.3;
       vWake += breakingWaves * smoothstep(0.15, 0.0, distAlongPath);
       
@@ -198,7 +198,7 @@ extend({ SimulationMaterial, DisplayMaterial });
 // --- 3. THE FLUID LOGIC CORE ---
 const FluidSystem = () => {
   const { viewport, gl, size } = useThree();
-  const texture = useTexture("/images/hero-bg.png");
+  const texture = useTexture("/images/beach.jpg");
 
   // Ping-Pong Buffers
   const simTargetA = useFBO(size.width / 4, size.height / 4, {
@@ -373,26 +373,15 @@ const BoatCursor = () => {
         ref={boatRef}
         className="h-full w-full transition-transform duration-300 ease-out"
       >
-        <svg
-          viewBox="0 0 100 100"
-          fill="none"
-          className="drop-shadow-[0_0_20px_rgba(0,198,219,0.6)]"
-        >
-          <path
-            d="M50 5 C 65 25, 75 55, 70 90 L 50 95 L 30 90 C 25 55, 35 25, 50 5 Z"
-            fill="white"
-          />
-          <path
-            d="M50 35 C 58 40, 60 55, 50 60 C 40 55, 42 40, 50 35 Z"
-            fill="#00C6DB"
-          />
-          <path
-            d="M50 15 C 55 25, 60 40, 60 85 H 40 C 40 40, 45 25, 50 15 Z"
-            stroke="#E2E8F0"
-            strokeWidth="1.5"
-            strokeOpacity="0.5"
-          />
-        </svg>
+        {/* REPLACED SVG WITH IMAGE */}
+        <Image
+          src="/icons/cursor.svg"
+          alt="Boat Cursor"
+          width={64}
+          height={64}
+          className="h-full w-full object-contain drop-shadow-[0_0_20px_rgba(0,198,219,0.6)]"
+          priority
+        />
       </div>
     </div>
   );
@@ -400,19 +389,49 @@ const BoatCursor = () => {
 
 // --- 5. MAIN EXPORT ---
 export default function InteractiveBanner() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    // Detect if device is desktop (has mouse/pointer capability and screen width)
+    const checkIsDesktop = () => {
+      const hasPointer = window.matchMedia("(pointer: fine)").matches;
+      const isWideScreen = window.innerWidth >= 1024;
+      setIsDesktop(hasPointer && isWideScreen);
+    };
+
+    checkIsDesktop();
+    window.addEventListener("resize", checkIsDesktop);
+
+    return () => window.removeEventListener("resize", checkIsDesktop);
+  }, []);
+
   return (
-    <section className="relative h-[calc(100dvh)] w-full overflow-hidden bg-[#0D4168] cursor-none">
-      <BoatCursor />
+    <section
+      className={`relative h-[calc(100dvh)] w-full overflow-hidden bg-[#0D4168] ${isDesktop ? "cursor-none" : ""}`}
+    >
+      {/* Only show interactive elements on desktop */}
+      {isDesktop && <BoatCursor />}
 
       <div className="absolute inset-0 z-0">
-        <Canvas>
-          <FluidSystem />
-        </Canvas>
+        {isDesktop ? (
+          <Canvas>
+            <FluidSystem />
+          </Canvas>
+        ) : (
+          // Mobile: Just show static background image
+          <Image
+            src="/images/beach.jpg"
+            alt="Beach background"
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
       </div>
 
       <div className="pointer-events-none relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
         <div className="pointer-events-auto mix-blend-overlay">
-          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[12vw] font-bold uppercase leading-[0.85] tracking-tighter text-transparent transition-all duration-500 md:text-[9vw]">
+          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] tracking-tighter text-transparent transition-all duration-500 md:text-[7vw]">
             <span
               className="relative block transition-all duration-500 ease-out"
               style={{ WebkitTextStroke: "2px rgba(255,255,255,0.8)" }}
@@ -423,7 +442,7 @@ export default function InteractiveBanner() {
               Rent a boat
             </span>
             <span className="bg-linear-to-r from-white via-white to-white bg-clip-text text-transparent transition-all duration-500 group-hover/text:from-[#00C6DB] group-hover/text:to-[#0099aa]">
-              <span className="italic">demo text</span>
+              <span className="italic">15min from athens</span>
             </span>
           </h1>
         </div>

@@ -50,7 +50,7 @@ export default function Testimonials() {
             </h2>
             <div className="absolute -bottom-3.5 right-0.5 xl:-bottom-4.5 xl:-right-4 -z-10 h-6 w-24 xl:h-8 xl:w-37.25">
               <Image
-                src="/icons/no-license-accent.svg"
+                src="/icons/accent_orange.svg"
                 alt="accent"
                 fill
                 className="object-contain"
@@ -137,7 +137,7 @@ export default function Testimonials() {
               target="_blank"
               className="w-full xl:w-auto flex justify-center"
             >
-              <button className="flex h-12 xl:h-11.5 w-full max-w-sm xl:w-83.25 items-center justify-center rounded-full bg-[#00C6DB] px-6 transition-transform active:scale-95 hover:bg-[#00b2c4]">
+              <button className="flex h-12 xl:h-11.5 w-full max-w-sm xl:w-83.25 items-center justify-center rounded-full bg-[#00C6DB] px-6 hover:bg-[#00C6DB66] transition-colors duration-300 cursor-pointer">
                 <span className="font-ubuntu text-[20px] xl:text-[24px] font-medium leading-none text-white pb-0.5 text-center">
                   See all reviews on Google
                 </span>

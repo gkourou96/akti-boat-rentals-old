@@ -186,7 +186,7 @@ const DestinationCard = ({
       {/* 3. Content Container (Title & Underline) */}
       <div className="absolute bottom-0 left-0 w-full p-8 z-20">
         <div className="overflow-hidden">
-          <motion.h3 className="translate-y-full font-ubuntu text-[24px] font-bold uppercase text-white transition-transform duration-500 ease-out group-hover:translate-y-0">
+          <motion.h3 className="font-ubuntu text-[24px] font-bold capitalize text-white">
             {name}
           </motion.h3>
         </div>
@@ -224,7 +224,7 @@ export default function IdealDestinations() {
             </h2>
             <div className="absolute -right-1.25 -bottom-2.25 w-32 xl:w-37.25 h-auto">
               <Image
-                src="/icons/no-license-accent.svg"
+                src="/icons/accent_orange.svg"
                 alt="accent"
                 width={149}
                 height={32}
