@@ -309,7 +309,28 @@ const BoatCursor = () => {
 
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      targetPos.current = { x: e.clientX, y: e.clientY };
+      const section = document.querySelector("section");
+      if (section) {
+        const rect = section.getBoundingClientRect();
+
+        if (
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom
+        ) {
+          targetPos.current = { x: e.clientX, y: e.clientY };
+          // ADD THIS - Show the boat
+          if (cursorRef.current) {
+            cursorRef.current.style.opacity = "1";
+          }
+        } else {
+          // ADD THIS - Hide the boat when outside
+          if (cursorRef.current) {
+            cursorRef.current.style.opacity = "0";
+          }
+        }
+      }
     };
     window.addEventListener("mousemove", onMouseMove);
 
