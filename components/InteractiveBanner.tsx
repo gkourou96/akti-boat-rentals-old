@@ -198,7 +198,7 @@ extend({ SimulationMaterial, DisplayMaterial });
 // --- 3. THE FLUID LOGIC CORE ---
 const FluidSystem = () => {
   const { viewport, gl, size } = useThree();
-  const texture = useTexture("/images/beach.jpg");
+  const texture = useTexture("/images/akti.jpg");
 
   // Ping-Pong Buffers
   const simTargetA = useFBO(size.width / 4, size.height / 4, {
