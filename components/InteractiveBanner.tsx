@@ -434,18 +434,25 @@ export default function InteractiveBanner() {
           <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] tracking-tight text-transparent transition-all duration-500 md:text-[6vw] md:tracking-tighter">
             <span
               className="relative block transition-all duration-500 ease-out 
-        /* FIX 1: Solid HEX color (no rgba) prevents overlap lines */
-        /* FIX 2: Thinner 1px stroke for mobile legibility */
-        [-webkit-text-stroke:1px_#ffffff] 
+        
+        /* --- MOBILE STYLES (The Fix) --- */
+        /* 1px Solid White Stroke (prevents crashing artifacts) */
+        [-webkit-text-stroke:1px_#ffffff]
+        /* 80% Opacity on the whole element to simulate the see-through look */
+        opacity-80
+
+        /* --- DESKTOP STYLES (Original) --- */
+        /* Reverts to 2px stroke with alpha channel */
         md:[-webkit-text-stroke:2px_rgba(255,255,255,0.8)]
-        /* FIX 3: Apply opacity here instead of in the stroke color */
-        opacity-80 md:opacity-100"
+        /* Resets element opacity to 100% since the stroke handles transparency */
+        md:opacity-100"
             >
               <span className="absolute inset-0 text-white opacity-0 transition-opacity duration-500 group-hover/text:opacity-100">
                 Rent a boat
               </span>
               Rent a boat
             </span>
+
             <span className="bg-linear-to-r from-white via-white to-white bg-clip-text text-transparent transition-all duration-500 group-hover/text:from-[#00C6DB] group-hover/text:to-[#0099aa]">
               <span className="italic">in the heart of athens</span>
             </span>
