@@ -431,13 +431,10 @@ export default function InteractiveBanner() {
 
       <div className="pointer-events-none relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
         <div className="pointer-events-auto mix-blend-overlay">
-          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] tracking-tighter text-transparent transition-all duration-500 md:text-[6vw]">
+          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] tracking-tight text-transparent transition-all duration-500 md:text-[6vw] md:tracking-tighter">
             <span
               className="relative block transition-all duration-500 ease-out"
-              style={{
-                WebkitTextStroke: "0.35vw rgba(255,255,255,0.8)",
-                WebkitTextStrokeWidth: "clamp(3px, 0.35vw, 2px)",
-              }}
+              style={{ WebkitTextStroke: "2px rgba(255,255,255,0.8)" }}
             >
               <span className="absolute inset-0 text-white opacity-0 transition-opacity duration-500 group-hover/text:opacity-100">
                 Rent a boat
