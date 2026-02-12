@@ -431,28 +431,19 @@ export default function InteractiveBanner() {
 
       <div className="pointer-events-none relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
         <div className="pointer-events-auto mix-blend-overlay">
-          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] tracking-tight transition-all duration-500 md:text-[6vw] md:tracking-tighter">
+          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] tracking-tighter text-transparent transition-all duration-500 md:text-[6vw]">
             <span
               className="relative block transition-all duration-500 ease-out 
         
-        /* --- MOBILE MAGIC FIX --- */
-        /* 1. Fill with solid black. This 'masks' the lines behind it. */
-        text-black
-        /* 2. 'Screen' mode makes the black fill invisible, leaving only the white stroke. */
-        mix-blend-screen
-        /* 3. Solid white stroke (1px) */
-        [-webkit-text-stroke:1px_#ffffff]
-        /* 4. Global opacity for the ghost look */
-        opacity-80
-
-        /* --- DESKTOP REVERT (Original Style) --- */
-        /* Go back to transparent text */
-        md:text-transparent
-        /* Reset blend mode so it doesn't mess with desktop */
-        md:mix-blend-normal
-        /* Original stroke settings */
-        md:[-webkit-text-stroke:2px_rgba(255,255,255,0.8)]
-        md:opacity-100"
+        /* --- MOBILE ONLY: The Teal Gradient --- */
+        /* Applies the specific gradient colors from 'in the heart of athens' */
+        bg-linear-to-r from-[#00C6DB] to-[#0099aa] bg-clip-text text-transparent
+        
+        /* --- DESKTOP ONLY: Revert to Stroke --- */
+        /* Remove the background gradient on desktop */
+        md:bg-none 
+        /* Apply the stroke */
+        md:[-webkit-text-stroke:2px_rgba(255,255,255,0.8)]"
             >
               <span className="absolute inset-0 text-white opacity-0 transition-opacity duration-500 group-hover/text:opacity-100">
                 Rent a boat
