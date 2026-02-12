@@ -431,20 +431,27 @@ export default function InteractiveBanner() {
 
       <div className="pointer-events-none relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
         <div className="pointer-events-auto mix-blend-overlay">
-          {/* 1. Changed tracking-tight to tracking-normal for mobile, tighter for desktop */}
-          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] tracking-normal text-transparent transition-all duration-500 md:text-[6vw] md:tracking-tighter">
+          {/* Removed tracking from H1 to control it per-line */}
+          <h1 className="group/text flex cursor-default flex-col items-center font-ubuntu text-[14vw] font-bold uppercase leading-[0.85] text-transparent transition-all duration-500 md:text-[6vw]">
             <span
               className="relative block transition-all duration-500 ease-out 
-        /* 2. Responsive Text Stroke: 1px on mobile, 2px on desktop */
+        /* FIXED: 1px stroke mobile, 2px desktop */
         [-webkit-text-stroke:1px_rgba(255,255,255,0.8)] 
-        md:[-webkit-text-stroke:2px_rgba(255,255,255,0.8)]"
+        md:[-webkit-text-stroke:2px_rgba(255,255,255,0.8)]
+        /* FIXED: Extra wide tracking on mobile prevents crashing, tighter on desktop */
+        tracking-widest md:tracking-tighter"
             >
               <span className="absolute inset-0 text-white opacity-0 transition-opacity duration-500 group-hover/text:opacity-100">
                 Rent a boat
               </span>
               Rent a boat
             </span>
-            <span className="bg-linear-to-r from-white via-white to-white bg-clip-text text-transparent transition-all duration-500 group-hover/text:from-[#00C6DB] group-hover/text:to-[#0099aa]">
+
+            <span
+              className="bg-linear-to-r from-white via-white to-white bg-clip-text text-transparent transition-all duration-500 group-hover/text:from-[#00C6DB] group-hover/text:to-[#0099aa]
+      /* FIXED: Normal tracking for the subtitle so it doesn't look scattered */
+      tracking-normal md:tracking-tighter"
+            >
               <span className="italic">in the heart of athens</span>
             </span>
           </h1>
