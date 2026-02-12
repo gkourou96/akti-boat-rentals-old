@@ -165,14 +165,8 @@ export default function Footer() {
         <div className="mx-auto flex h-full max-w-360 flex-col items-center justify-between px-6 text-[12px] xl:text-[12px] font-normal text-white/80 xl:flex-row xl:px-30">
           {/* Left: Copyright */}
           <div className="mb-2 text-center xl:mb-0 xl:text-left">
-            <span>
-              All rights reserved © Designed by{" "}
-              <a href="#" className="text-[#47C2CF]">
-                Lookumation Studio
-              </a>
-            </span>
+            <span>All Rights Reserved © {new Date().getFullYear()} </span>
           </div>
-
           {/* Right: Legal Links */}
           <div className="flex items-center gap-4 xl:gap-6">
             <Link href="#" className="hover:text-white transition-colors">
