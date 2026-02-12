@@ -114,7 +114,7 @@ export default function OurFleet() {
   };
 
   return (
-    <div className="bg-[#F2EAD680]">
+    <div className="bg-[#f8f4ea]">
       <section
         id="our-fleet"
         // Preserved container styling
@@ -187,7 +187,17 @@ export default function OurFleet() {
                     {/* --- FIXED FADE EFFECT --- */}
                     {/* UPDATED: Removed '/50' opacity. Now uses solid '#F2EAD6' (100%) on the left. */}
                     {/* This creates the "much lighter" look that blends perfectly into the background on the left side. */}
-                    <div className="absolute inset-0 z-10 hidden xl:block pointer-events-none transition-opacity duration-500 ease-out opacity-0 [.swiper-slide-next_&]:opacity-100 bg-[image:linear-gradient(to_right,#F2EAD680_0%,#F2EAD6_25%,#F2EAD680_70%,transparent_83%)]" />{" "}
+                    {/* Fade Overlay */}
+                    {/* Fade Overlay */}
+                    <div
+                      className="absolute inset-0 z-10 hidden xl:block pointer-events-none transition-opacity duration-500 ease-out opacity-0 in-[.swiper-slide-next]:opacity-100"
+                      style={{
+                        // UPDATED: Changed #F2EAD680 (Transparent) -> #F2EAD6 (Solid).
+                        // This is required to fully hide the image beneath it.
+                        boxShadow: "inset -520px 0px 70px -20px #f8f4ea",
+                      }}
+                    />
+
                     <Image
                       src={boat.image}
                       alt={boat.name}

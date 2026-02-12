@@ -83,7 +83,7 @@ export default function ContactForm() {
 
         {/* SUBMIT BUTTON */}
         <div className="mt-4 flex w-full justify-end">
-          <button className="flex h-8.75 w-35 items-center justify-center gap-2 rounded-full bg-[#E3891F] hover:bg-[#F2992F80] transition-colors duration-300 cursor-pointer px-[24px]">
+          <button className="flex h-8.75 w-35 items-center justify-center gap-2 rounded-full bg-[#E3891F] hover:bg-[#F2992F80] transition-colors duration-300 cursor-pointer px-6">
             <span className="font-ubuntu text-[18px] font-normal text-white leading-none">
               Submit
             </span>
