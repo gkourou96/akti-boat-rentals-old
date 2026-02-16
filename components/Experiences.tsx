@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { motion } from "framer-motion"; // Import Framer Motion
 
 const experiencesData = [
   {
@@ -82,7 +83,13 @@ const ExperienceCard = ({
   icon: string;
   title: React.ReactNode;
 }) => (
-  <div className="flex h-70 w-full xl:h-[285.5px] xl:w-70.5 shrink-0 flex-col justify-center rounded-[20px] bg-[#FFF9ECE5] px-8 xl:px-8 items-center xl:items-start text-center xl:text-left">
+  // CHANGED: Converted div to motion.div to handle hover state
+  <motion.div
+    initial="rest"
+    whileHover="hover"
+    animate="rest"
+    className="flex h-70 w-full xl:h-[285.5px] xl:w-70.5 shrink-0 flex-col justify-center rounded-[20px] bg-[#FFF9ECE5] px-8 xl:px-8 items-center xl:items-start text-center xl:text-left cursor-pointer"
+  >
     {/* Icon Container: Fixed 80x80px */}
     <div className="relative h-20 w-20 mb-4 xl:mb-0">
       <Image src={icon} alt="icon" fill className="object-contain" />
@@ -91,7 +98,18 @@ const ExperienceCard = ({
     <h3 className="pt-2.5 font-ubuntu text-[28px] xl:text-[32px] font-bold leading-tight text-[#0D4168]">
       {title}
     </h3>
-  </div>
+
+    {/* ADDED: Framer Motion Orange Underline */}
+    <motion.div
+      variants={{
+        rest: { width: 0, opacity: 0 },
+        hover: { width: 64, opacity: 1 }, // 64px width
+      }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      // Styling: Orange color, 3px height, centered on mobile (mx-auto), left-aligned on desktop (xl:mx-0)
+      className="h-0.75 bg-[#F2992F] mt-3 rounded-full mx-auto xl:mx-0"
+    />
+  </motion.div>
 );
 
 export default function Experiences() {

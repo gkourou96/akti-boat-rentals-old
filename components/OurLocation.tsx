@@ -16,7 +16,7 @@ export default function OurLocation() {
     // This allows the section to expand to fit the new padding without cutting anything off.
     <section
       id="our-location"
-      className="relative w-full h-auto xl:h-auto xl:pb-24 bg-[#F2EAD6] overflow-hidden"
+      className="relative w-full h-auto xl:h-auto xl:pb-14 bg-[#F2EAD6] overflow-hidden"
     >
       {/* Background Accent - Centered & Buried */}
       <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-0 select-none opacity-30 xl:opacity-100 w-full xl:w-auto">
