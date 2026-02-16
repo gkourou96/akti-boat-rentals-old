@@ -18,7 +18,7 @@ export default function ContactUs() {
             </h2>
             <div className="absolute -bottom-1 -right-4 xl:-bottom-1.75 xl:-right-10.5 z-0 h-6 w-24 xl:h-8 xl:w-37.25">
               <Image
-                src="/icons/no-license-accent.svg"
+                src="/icons/accent_orange.svg"
                 alt="accent"
                 width={149}
                 height={32}
@@ -44,8 +44,21 @@ export default function ContactUs() {
                     className="mt-1 shrink-0"
                   />
                   <div className="flex flex-col font-open text-[16px] xl:text-[18px] text-[#0D4168]">
-                    <span>+30 695 782 3809</span>
-                    <span>+30 697 038 2346</span>
+                    <a
+                      href="tel:+306957823809"
+                      className="hover:opacity-75 transition-opacity"
+                    >
+                      +30 695 782 3809
+                    </a>
+
+                    <a
+                      href="https://wa.me/+306989234169"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:opacity-75 transition-opacity"
+                    >
+                      +30 698 923 4169
+                    </a>
                   </div>
                 </div>
 

@@ -28,7 +28,7 @@ interface BoatData {
 }
 
 const loremIpsum =
-  "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.";
+  "Our easy-to-drive boats that do not require a boat license are perfect for couples, families, or groups of friends. These self-drive boats let you explore three beautiful islands along the coast, swim in crystal-clear waters, relax under the sun, and discover hidden beaches at your own pace.";
 
 // Dummy Data (Premium Fleet - 6 Boats)
 const fleetData: BoatData[] = [
@@ -317,61 +317,33 @@ const FleetPage = () => {
           {/* CHANGED: Mobile top padding increased to pt-[144px] to match visual gap of "Sail Boats" + Navbar offset */}
           <div className="mx-auto w-full xl:w-360 px-6 pt-36 pb-16 xl:px-30 xl:pb-31 xl:pt-54.25">
             {/* Header */}
-            <div className="relative mx-auto flex h-auto xl:h-17.75 w-full xl:w-82 items-center justify-center">
-              <h1 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#0D4168] text-center">
-                Premium Fleet
-              </h1>
-              <div className="absolute -bottom-2 xl:-bottom-2.5 xl:left-5 left-1/2 -translate-x-1/2 xl:translate-x-0 z-0 h-6 xl:h-7.5 w-32 xl:w-full">
-                <Image
-                  src="/icons/accent.svg"
-                  alt="Decoration"
-                  fill
-                  className="object-contain"
-                />
+            <div className="relative mx-auto flex h-auto w-full flex-col items-center justify-center">
+              {/* Title Wrapper - Preserving original dimensions for the accent alignment */}
+              <div className="relative flex h-auto xl:h-17.75 w-full xl:w-82 items-center justify-center">
+                <h1 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#0D4168] text-center">
+                  Our Entire Fleet
+                </h1>
+                <div className="absolute -bottom-2 xl:-bottom-2.5 xl:left-5 left-1/2 -translate-x-1/2 xl:translate-x-0 z-0 h-6 xl:h-7.5 w-32 xl:w-full">
+                  <Image
+                    src="/icons/accent_orange.svg"
+                    alt="Decoration"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </div>
+
+              {/* New Subtitle */}
+              <p className="mt-6 max-w-3xl text-center font-open text-lg xl:text-xl text-[#144B51] leading-relaxed px-4">
+                Your day on the water starts in comfort and ends with
+                unforgettable memories.
+              </p>
             </div>
 
             {/* Grid */}
             <div className="mt-12 xl:mt-22 w-full xl:w-300">
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-12 xl:gap-y-16 justify-items-center">
                 {fleetData.map((boat) => (
-                  <BoatCard key={boat.id} boat={boat} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================
-          SECTION 2: SAIL BOATS
-          Background: bg-white
-          Rows: 1 (3 items)
-          Desktop Top Padding: 88px (Standard spacing, no navbar clear needed)
-         ========================================= */}
-      <section className="w-full bg-[#F2EAD680]">
-        <div className="mx-auto max-w-360">
-          {/* Sail Boats Mobile Padding: py-16 (64px) */}
-          <div className="mx-auto w-full xl:w-360 px-6 py-16 xl:px-30 xl:py-22">
-            {/* Header */}
-            <div className="relative mx-auto flex h-auto xl:h-17.75 w-full xl:w-82 items-center justify-center">
-              <h1 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#0D4168] text-center">
-                Sail Boats
-              </h1>
-              <div className="absolute -bottom-2 xl:-bottom-2.5 xl:left-5 left-1/2 -translate-x-1/2 xl:translate-x-0 z-0 h-6 xl:h-7.5 w-32 xl:w-full">
-                <Image
-                  src="/icons/accent.svg"
-                  alt="Decoration"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
-
-            {/* Grid */}
-            <div className="mt-12 xl:mt-22 w-full xl:w-300">
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-12 xl:gap-y-16 justify-items-center">
-                {sailBoatsData.map((boat) => (
                   <BoatCard key={boat.id} boat={boat} />
                 ))}
               </div>

@@ -12,10 +12,11 @@ export default function OurLocation() {
   const zoomLevel = 16;
 
   return (
-    // CHANGED: h-auto on mobile, fixed h-201.5 on desktop
+    // CHANGED: xl:h-201.5 -> xl:h-auto + xl:pb-24
+    // This allows the section to expand to fit the new padding without cutting anything off.
     <section
       id="our-location"
-      className="relative w-full h-auto xl:h-201.5 bg-[#F2EAD6] overflow-hidden"
+      className="relative w-full h-auto xl:h-auto xl:pb-24 bg-[#F2EAD6] overflow-hidden"
     >
       {/* Background Accent - Centered & Buried */}
       <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-0 select-none opacity-30 xl:opacity-100 w-full xl:w-auto">
@@ -29,16 +30,15 @@ export default function OurLocation() {
       </div>
 
       {/* Main Content Wrapper */}
-      {/* CHANGED: Flex direction column (mobile) -> row (desktop), Padding px-6 (mobile) -> px-30 (desktop) */}
       <div className="relative z-10 mx-auto h-full max-w-360 px-6 py-16 xl:py-0 xl:px-30 flex flex-col xl:flex-row justify-between xl:items-start">
         {/* Left Container */}
-        <div className="relative h-auto w-full xl:h-167.25 xl:w-172.5 xl:pt-[50.5px]">
-          {/* --- TITLE CONTAINER (STRICTLY PRESERVED FROM YOUR SNIPPET) --- */}
+        <div className="relative h-auto w-full xl:w-172.5 xl:pt-[50.5px]">
+          {/* --- TITLE CONTAINER --- */}
           <div className="relative flex h-auto mb-6 xl:mb-0 xl:h-17.75 w-auto xl:w-70.25 items-center justify-start">
             <h2 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#0D4168]">
               Our location
             </h2>
-            {/* Accent - Repositioned for mobile text size */}
+            {/* Accent */}
             <div className="absolute -bottom-3.5 left-24 xl:left-32 xl:-bottom-1.25 z-0 h-6 w-24 xl:h-8 xl:w-37.25">
               <Image
                 src="/icons/experiences-orange-accent.svg"
@@ -49,20 +49,25 @@ export default function OurLocation() {
               />
             </div>
           </div>
-          {/* ----------------------------------------------------------- */}
 
           {/* Text Container */}
-          <div className="w-full xl:w-2xl h-auto xl:h-18.75 mb-8 xl:pt-8 xl:mb-8!">
+          {/* CHANGED: xl:mb-8! -> xl:mb-14 (Adds space between text and iframe) */}
+          <div className="w-full xl:w-2xl h-auto xl:h-auto mb-8 xl:pt-8 xl:mb-8">
+            {/* CHANGED: Added mb-6 to first paragraph */}
+            <p className="text-[16px] xl:text-[18px] font-sans font-normal text-[#0D4168] mb-6">
+              From Sea Breeze to Sunset Spritz…
+            </p>
             <p className="text-[16px] xl:text-[18px] font-sans font-normal text-[#0D4168]">
-              AktiBoat operates at the impressive Akti tou iliou / Costa Del sol
-              an organized, private beach in Athens. Enjoy crystal clear waters,
-              beach bars, and a complete summer experience before or after your
-              boat ride.
+              Based at Akti tou Iliou in Alimos, we offer more than just boat
+              rentals — we create a complete sea experience from the moment you
+              arrive. Departing from a private beach resort with easy parking,
+              beach bars, and seaside restaurants, your day flows effortlessly
+              from shore to open water.
             </p>
           </div>
 
           {/* MAP CONTAINER */}
-          {/* Mobile: h-[300px] | Desktop: Fixed dimensions */}
+          {/* STRICTLY PRESERVED DIMENSIONS: w-172.5 / h-111.5 / pt-8 */}
           <div className="w-full h-75 xl:w-172.5 xl:h-111.5 xl:pt-8 rounded-[20px] xl:rounded-none overflow-hidden xl:overflow-visible">
             <iframe
               width="100%"
@@ -73,7 +78,10 @@ export default function OurLocation() {
               referrerPolicy="no-referrer-when-downgrade"
               title="AktiBoat Location"
               className="rounded-[20px] xl:rounded-none"
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(locationQuery)}&t=m&z=${zoomLevel}&ie=UTF8&iwloc=&output=embed`}
+              // Fixed the src syntax that was broken in the snippet
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                locationQuery,
+              )}&t=m&z=${zoomLevel}&ie=UTF8&iwloc=&output=embed`}
             ></iframe>
           </div>
 
@@ -94,8 +102,7 @@ export default function OurLocation() {
         </div>
 
         {/* --- RIGHT SIDE IMAGE GRID --- */}
-        {/* Hidden on Mobile (xl:flex) to prevent layout shift/scroll issues on small screens */}
-        <div className="hidden xl:flex gap-3.5">
+        <div className="hidden xl:flex gap-3.5 xl:pt-6.25">
           {/* Column 1 */}
           <div className="flex flex-col">
             {/* Image 1 */}

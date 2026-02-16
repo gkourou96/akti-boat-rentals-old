@@ -125,7 +125,7 @@ export default function NoLicenseBoats() {
 
             {/* DESCRIPTION */}
             <p className="mt-4 font-open text-[16px] xl:text-[18px] text-white leading-tight">
-              Flexible and economical, perfect for quick trips and fishing.
+              Flexible and economical, perfect for quick trips.
             </p>
 
             {/* PRICING */}
@@ -143,12 +143,18 @@ export default function NoLicenseBoats() {
               </div>
             </div>
 
-            {/* BUTTON */}
-            <button className="mt-4 flex h-12 w-full xl:w-47 items-center justify-center rounded-full border border-white bg-transparent transition-colors hover:bg-white/10 cursor-pointer">
+            {/* BUTTON - UPDATED TO <a> TAG */}
+            <a
+              href="https://wa.me/+306989234169"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()} // Prevent card click event from firing
+              className="mt-4 flex h-12 w-full xl:w-47 items-center justify-center rounded-full border border-white bg-transparent transition-colors hover:bg-white/10 cursor-pointer"
+            >
               <span className="font-ubuntu text-[18px] xl:text-[20px] text-white pb-0.5">
                 Book Now →
               </span>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -183,7 +189,8 @@ export default function NoLicenseBoats() {
 
       <div className="relative z-10 mx-auto w-full max-w-300 px-6 xl:px-0">
         {/* HEADER */}
-        <div className="w-full flex justify-start xl:justify-center mb-12 xl:mb-16">
+        {/* Added flex-col to stack title and new subtitle vertically */}
+        <div className="w-full flex flex-col items-start xl:items-center justify-start xl:justify-center mb-12 xl:mb-16">
           <div className="relative inline-block">
             <h2 className="font-ubuntu z-10 text-[32px] xl:text-[44px] font-bold leading-none tracking-normal text-[#0D4168] p-2.5 relative">
               No license boats
@@ -198,6 +205,13 @@ export default function NoLicenseBoats() {
               />
             </div>
           </div>
+
+          {/* NEW SUBTITLE */}
+          <p className="mt-6 max-w-3xl text-left xl:text-center font-open text-lg xl:text-xl text-[#0D4168] leading-relaxed px-2.5">
+            A unique way to experience the Athens Riviera coast and nearby
+            islands from the water at your own pace. Perfect for couples, family
+            or friends.
+          </p>
         </div>
 
         {/* 1. MOBILE VIEW: SWIPER */}

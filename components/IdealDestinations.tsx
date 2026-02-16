@@ -7,6 +7,12 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
+// 1. Define the DestinationDetail type locally or import it if you prefer
+interface DestinationDetail {
+  label: string;
+  value: string;
+}
+
 const destinations = [
   // --- ROW 1 ---
   {
@@ -15,6 +21,10 @@ const destinations = [
     width: 261,
     height: 305,
     image: "/images/destinations/aegina.png",
+    details: [
+      { label: "Distance", value: "18 Nautical Miles" },
+      { label: "Duration", value: "35 - 45 Minutes" },
+    ],
   },
   {
     id: 2,
@@ -22,6 +32,10 @@ const destinations = [
     width: 226,
     height: 305,
     image: "/images/destinations/patroklos.png",
+    details: [
+      { label: "Distance", value: "19 Nautical Miles" },
+      { label: "Duration", value: "40 - 50 Minutes" },
+    ],
   },
   {
     id: 3,
@@ -29,6 +43,10 @@ const destinations = [
     width: 379,
     height: 128,
     image: "/images/destinations/moni.png",
+    details: [
+      { label: "Distance", value: "22 Nautical Miles" },
+      { label: "Duration", value: "45 - 50 Minutes" },
+    ],
   },
   {
     id: 4,
@@ -36,22 +54,34 @@ const destinations = [
     width: 379,
     height: 165,
     image: "/images/destinations/sounio.png",
+    details: [
+      { label: "Distance", value: "23 Nautical Miles" },
+      { label: "Duration", value: "50 - 60 Minutes" },
+    ],
   },
 
   // --- ROW 2 ---
   {
     id: 5,
-    name: "Monemvasia - Kyparissi",
+    name: "Poros",
     width: 353,
     height: 361,
-    image: "/images/destinations/monemvasia.png",
+    image: "/images/destinations/poros.jpg",
+    details: [
+      { label: "Distance", value: "27 Nautical Miles" },
+      { label: "Duration", value: "60 - 70 Minutes" },
+    ],
   },
   {
     id: 6,
-    name: "Leonidio",
+    name: "Hydra",
     width: 265,
     height: 148,
-    image: "/images/destinations/leonidio.png",
+    image: "/images/destinations/hydra.jpg",
+    details: [
+      { label: "Distance", value: "33 Nautical Miles" },
+      { label: "Duration", value: "70 - 80 Minutes" },
+    ],
   },
   {
     id: 7,
@@ -59,6 +89,10 @@ const destinations = [
     width: 265,
     height: 201,
     image: "/images/destinations/athenian-riviera.png",
+    details: [
+      { label: "Distance", value: "5-10 Nautical Miles" },
+      { label: "Duration", value: "Half Day" },
+    ],
   },
   {
     id: 8,
@@ -66,6 +100,10 @@ const destinations = [
     width: 248,
     height: 361,
     image: "/images/destinations/ydroussa.png",
+    details: [
+      { label: "Distance", value: "5 Nautical Miles" },
+      { label: "Duration", value: "10 - 20 Minutes" },
+    ],
   },
 
   // --- RIGHT COLUMN ---
@@ -74,7 +112,11 @@ const destinations = [
     name: "Agistri",
     width: 298,
     height: 444,
-    image: "/images/destinations/agistri.png",
+    image: "/images/destinations/agistri.jpg",
+    details: [
+      { label: "Distance", value: "22 Nautical Miles" },
+      { label: "Duration", value: "50 - 60 Minutes" },
+    ],
   },
   {
     id: 10,
@@ -82,6 +124,10 @@ const destinations = [
     width: 298,
     height: 222,
     image: "/images/destinations/arsida.png",
+    details: [
+      { label: "Distance", value: "15 Nautical Miles" },
+      { label: "Duration", value: "30 - 40 Minutes" },
+    ],
   },
 ];
 

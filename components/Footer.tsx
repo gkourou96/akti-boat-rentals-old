@@ -6,11 +6,11 @@ import Image from "next/image";
 
 export default function Footer() {
   const navLinks = [
-    { name: "Our Fleet", href: "#our-fleet" },
+    { name: "Our Fleet", href: "/fleet" },
     { name: "No License Boats", href: "#no-license-boats" },
     { name: "Destinations", href: "#destinations" },
     { name: "Our Location", href: "#our-location" },
-    { name: "Experiences", href: "#experiences" },
+    { name: "Services", href: "#services" },
     { name: "Contact Us", href: "#contact-us" },
   ];
 
@@ -19,22 +19,26 @@ export default function Footer() {
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     href: string,
   ) => {
-    e.preventDefault();
-    const targetId = href.replace("#", "");
-    const elem = document.getElementById(targetId);
+    // FIX: Only intercept if it's a hash link (starts with #)
+    // This allows "/fleet" to navigate normally.
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetId = href.replace("#", "");
+      const elem = document.getElementById(targetId);
 
-    if (elem) {
-      // Determine offset based on screen width (assuming xl/1280px is the desktop breakpoint)
-      // Mobile height: 80px | Desktop height: 128.65px (CORRECTED)
-      const offset = window.innerWidth >= 1280 ? 128.65 : 80;
+      if (elem) {
+        // Determine offset based on screen width (assuming xl/1280px is the desktop breakpoint)
+        // Mobile height: 80px | Desktop height: 128.65px (CORRECTED)
+        const offset = window.innerWidth >= 1280 ? 128.65 : 80;
 
-      const elementPosition = elem.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - offset;
+        const elementPosition = elem.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - offset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
     }
   };
 
@@ -57,15 +61,17 @@ export default function Footer() {
         <div className="mx-auto h-full max-w-360 px-6 pt-16 relative z-10 flex flex-col items-start xl:flex-row xl:justify-between xl:px-30 xl:pt-0">
           {/* LEFT COLUMN */}
           <div className="flex h-auto w-full flex-col py-0 xl:h-84.75 xl:w-85.75 xl:py-[75.47px]">
-            {/* LOGO */}
+            {/* LOGO - NOW LINKED TO HOME */}
             <div className="pb-8 xl:pb-11">
-              <Image
-                src="/images/footer-logo.svg"
-                alt="Akti Boat Rentals"
-                width={226}
-                height={85}
-                className="h-auto w-56.5 object-contain xl:w-auto"
-              />
+              <Link href="/">
+                <Image
+                  src="/images/footer-logo.svg"
+                  alt="Akti Boat Rentals"
+                  width={226}
+                  height={85}
+                  className="h-auto w-56.5 object-contain xl:w-auto"
+                />
+              </Link>
             </div>
 
             {/* ADDRESS/INFO CONTAINER */}

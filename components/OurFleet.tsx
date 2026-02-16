@@ -120,7 +120,8 @@ export default function OurFleet() {
         // Preserved container styling
         className=" mx-auto max-w-360 px-4 pt-10 pb-10 xl:pl-30 xl:pr-0 xl:pt-22 xl:pb-20 relative"
       >
-        <div className="w-full xl:flex xl:justify-center mb-8 xl:mb-16">
+        {/* UPDATED HEADER SECTION */}
+        <div className="w-full flex flex-col items-start xl:items-center mb-8 xl:mb-16">
           <div className="relative inline-block">
             <h2 className="font-ubuntu text-[30px] leading-tight xl:text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
               Our Fleet
@@ -135,6 +136,12 @@ export default function OurFleet() {
               />
             </div>
           </div>
+
+          {/* NEW SUBTITLE */}
+          <p className="mt-6 max-w-3xl text-left xl:text-center font-open text-lg xl:text-xl text-[#144B51] leading-relaxed px-2.5">
+            Depart from the most easily accessible private beach resort in
+            Athens - Costa Del Sol and experience the ultimate sea adventure.
+          </p>
         </div>
 
         <Swiper
@@ -184,16 +191,9 @@ export default function OurFleet() {
                   onClick={() => handleOpenModal(boat)}
                 >
                   <div className="relative h-64 xl:h-125 w-full overflow-hidden rounded-[20px] bg-gray-200">
-                    {/* --- FIXED FADE EFFECT --- */}
-                    {/* UPDATED: Removed '/50' opacity. Now uses solid '#F2EAD6' (100%) on the left. */}
-                    {/* This creates the "much lighter" look that blends perfectly into the background on the left side. */}
-                    {/* Fade Overlay */}
-                    {/* Fade Overlay */}
                     <div
                       className="absolute inset-0 z-10 hidden xl:block pointer-events-none transition-opacity duration-500 ease-out opacity-0 in-[.swiper-slide-next]:opacity-100"
                       style={{
-                        // UPDATED: Changed #F2EAD680 (Transparent) -> #F2EAD6 (Solid).
-                        // This is required to fully hide the image beneath it.
                         boxShadow: "inset -520px 0px 70px -20px #f8f4ea",
                       }}
                     />

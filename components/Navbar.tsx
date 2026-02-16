@@ -8,20 +8,44 @@ import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const pathname = usePathname();
 
   const navLinks = [
-    { name: "Our Fleet", href: "/#our-fleet" },
+    // CHANGED: href points to the separate page "/fleet"
+    { name: "Our Fleet", href: "/fleet" },
     { name: "No License Boats", href: "/#no-license-boats" },
     { name: "Destinations", href: "/#destinations" },
-    { name: "Experiences", href: "/#experiences" },
+    { name: "Services", href: "/#services" },
     { name: "Our Location", href: "/#our-location" },
     { name: "Contact Us", href: "/#contact-us" },
   ];
 
+  // --- SCROLL DIRECTION DETECTION ---
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (typeof window !== "undefined") {
+        const currentScrollY = window.scrollY;
+
+        // Show if at top OR scrolling up
+        // Hide if scrolling down AND not at the very top
+        if (currentScrollY === 0 || currentScrollY < lastScrollY) {
+          setIsVisible(true);
+        } else if (currentScrollY > lastScrollY && currentScrollY > 50) {
+          setIsVisible(false);
+        }
+
+        setLastScrollY(currentScrollY);
+      }
+    };
+
+    window.addEventListener("scroll", controlNavbar);
+    return () => window.removeEventListener("scroll", controlNavbar);
+  }, [lastScrollY]);
+
   // Helper to handle the actual window scrolling
   const scrollToElement = (elem: HTMLElement, isSmooth: boolean) => {
-    // Desktop: 128.65px | Mobile: 80px (Exactly matches h-12 logo + py-4 padding)
     const isDesktop = window.innerWidth >= 1280;
     const offset = isDesktop ? 128.65 : 80;
 
@@ -30,23 +54,19 @@ export default function Navbar() {
 
     window.scrollTo({
       top: offsetPosition,
-      // "instant" forces a 0-delay jump for cross-page arrival
-      // "smooth" uses the browser's smooth scroller for same-page clicks
       behavior: isSmooth ? "smooth" : "instant",
     });
   };
 
-  // 1. ARRIVAL LOGIC (Cross-Page Navigation)
-  // This runs when you land on the page with a #hash (e.g., coming from /fleet)
+  // 1. ARRIVAL LOGIC
   useEffect(() => {
     if (pathname === "/" && window.location.hash) {
       const targetId = window.location.hash.substring(1);
       const elem = document.getElementById(targetId);
 
       if (elem) {
-        // requestAnimationFrame fires before the next repaint, making the jump imperceptible.
         requestAnimationFrame(() => {
-          scrollToElement(elem, false); // false = INSTANT jump
+          scrollToElement(elem, false);
         });
       }
     }
@@ -57,26 +77,27 @@ export default function Navbar() {
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     href: string,
   ) => {
-    // Only intercept if we are ALREADY on the home page
-    if (pathname === "/") {
+    // UPDATED CHECK: Only intercept if on homepage AND the link is a hash link (contains #)
+    // This allows "/fleet" to navigate normally.
+    if (pathname === "/" && href.includes("#")) {
       e.preventDefault();
       const targetId = href.replace(/.*\#/, "");
       const elem = document.getElementById(targetId);
 
       if (elem) {
-        // True = Smooth scroll for same-page navigation
         scrollToElement(elem, true);
       }
     }
-    // If not on home page, allow default navigation.
-    // The useEffect above will handle the landing (instantly).
-
     setIsMobileMenuOpen(false);
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center w-full pt-0 pointer-events-none">
-      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-[#F2EAD6] xl:shadow-[0_4px_4px_rgba(0,0,0,0.1)] px-6 py-4 xl:max-w-300 xl:rounded-b-[60px] xl:rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 flex flex-col items-center w-full pt-0 pointer-events-none transition-transform duration-300 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
+      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-white shadow-[inset_0_-2px_0_0_#F2992F] xl:shadow-[inset_0_0_0_2px_#F2992F,0_4px_4px_rgba(0,0,0,0.1)] px-6 py-4 xl:max-w-300 xl:rounded-b-[60px] xl:rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
         <Link href="/" className="shrink-0">
           <Image
             src="/images/logo.svg"
@@ -98,39 +119,33 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleScroll(e, link.href)}
-                className={`relative group text-lg transition-all duration-300 ${
+                className={`relative group text-xl transition-all duration-300 ${
                   isContact
                     ? "rounded-full bg-[#EA9708] px-6 h-8.75 flex items-center text-white hover:bg-[#F2992F80] font-medium"
-                    : "text-[#0D4168] hover:text-[#1E6F73]" // Removed font-medium/bold from here, handled inside
+                    : "text-[#0D4168] hover:text-[#1E6F73]"
                 }`}
               >
-                {/* LAYOUT FIX: "inline-grid" stacks two spans on top of each other.
-                  Span 1 (Invisible): Always Bold. It pushes the width open.
-                  Span 2 (Visible): Medium -> Bold. It sits centered in that space.
-                */}
                 <span className="relative z-10 inline-grid justify-items-center overflow-hidden">
-                  {/* 1. The Invisible Spacer (Always Bold to reserve width) */}
                   <span className="col-start-1 row-start-1 font-bold opacity-0 invisible pointer-events-none">
                     {link.name}
                   </span>
-
-                  {/* 2. The Visible Text (Changes weight on hover) */}
                   <span
-                    className={`col-start-1 row-start-1 ${isContact ? "font-medium" : "font-medium group-hover:font-bold"}`}
+                    className={`col-start-1 row-start-1 ${
+                      isContact
+                        ? "font-medium"
+                        : "font-medium group-hover:font-bold"
+                    }`}
                   >
                     {link.name}
                   </span>
                 </span>
 
-                {/* Accent Image: Appears on hover for all non-contact links */}
                 {!isContact && (
                   <Image
-                    src="/icons/accent.svg"
+                    src="/icons/accent_orange.svg"
                     alt=""
                     width={63}
                     height={14}
-                    // z-0 ensures it sits BEHIND the text
-                    // opacity-0 by default, opacity-100 on group-hover
                     className="absolute top-4.5 right-0 pointer-events-none select-none z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   />
                 )}
