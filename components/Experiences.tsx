@@ -169,7 +169,7 @@ export default function Experiences() {
 
                 {/* Text Body */}
                 <div className="mt-8 h-45.25 w-full">
-                  <h3 className="font-ubuntu text-[32px] font-bold italic text-[#F2992F] leading-tight">
+                  <h3 className="font-ubuntu text-[32px] font-bold italic text-[#E3891F] leading-tight">
                     The Most Comprehensive Offer
                   </h3>
                   <p className="font-open pt-3 text-[24px] font-semibold italic text-[#FFFFFF] leading-tight">

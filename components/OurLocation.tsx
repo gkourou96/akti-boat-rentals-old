@@ -2,6 +2,18 @@
 
 import React from "react";
 import Image from "next/image";
+// 1. Import Swiper components and styles
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
+
+// Define images here to use in the mobile swiper
+const locationImages = [
+  "/images/locations-frame-1.png",
+  "/images/locations-frame-2.png",
+  "/images/locations-frame-3.png",
+  "/images/locations-frame-4.png",
+];
 
 export default function OurLocation() {
   // SETTINGS:
@@ -35,7 +47,7 @@ export default function OurLocation() {
         <div className="relative h-auto w-full xl:w-172.5 xl:pt-[50.5px]">
           {/* --- TITLE CONTAINER --- */}
           <div className="relative flex h-auto mb-6 xl:mb-0 xl:h-17.75 w-auto xl:w-70.25 items-center justify-start">
-            <h2 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#0D4168]">
+            <h2 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#144B51]">
               Our location
             </h2>
             {/* Accent */}
@@ -54,10 +66,10 @@ export default function OurLocation() {
           {/* CHANGED: xl:mb-8! -> xl:mb-14 (Adds space between text and iframe) */}
           <div className="w-full xl:w-2xl h-auto xl:h-auto mb-8 xl:pt-8 xl:mb-8">
             {/* CHANGED: Added mb-6 to first paragraph */}
-            <p className="text-[16px] xl:text-[18px] font-sans font-normal text-[#0D4168] mb-6">
+            <p className="text-[16px] xl:text-[18px] font-sans font-normal text-[#144B51] mb-6">
               From Sea Breeze to Sunset Spritz…
             </p>
-            <p className="text-[16px] xl:text-[18px] font-sans font-normal text-[#0D4168]">
+            <p className="text-[16px] xl:text-[18px] font-sans font-normal text-[#144B51]">
               Based at Akti tou Iliou in Alimos, we offer more than just boat
               rentals — we create a complete sea experience from the moment you
               arrive. Departing from a private beach resort with easy parking,
@@ -99,6 +111,36 @@ export default function OurLocation() {
               Akti tou Iliou (Costa del Sol), Alimos
             </span>
           </div>
+        </div>
+
+        {/* --- MOBILE ONLY SWIPER --- */}
+        {/* Visible on Mobile, Hidden on Desktop (xl:hidden) */}
+        <div className="w-full mt-8 block xl:hidden">
+          <Swiper
+            modules={[Autoplay]}
+            spaceBetween={16}
+            slidesPerView={1.2}
+            centeredSlides={true}
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            className="w-full h-80 rounded-[20px] overflow-hidden"
+          >
+            {locationImages.map((src, index) => (
+              <SwiperSlide key={index} className="relative w-full h-full">
+                <div className="relative w-full h-full rounded-[20px] overflow-hidden shadow-lg">
+                  <Image
+                    src={src}
+                    alt={`Location View ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
         {/* --- RIGHT SIDE IMAGE GRID --- */}

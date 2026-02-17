@@ -119,10 +119,11 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleScroll(e, link.href)}
-                className={`relative group text-xl transition-all duration-300 ${
+                // UPDATED: Added 'font-ubuntu' and 'font-normal' (400)
+                className={`relative group text-xl font-ubuntu transition-all duration-300 ${
                   isContact
-                    ? "rounded-full bg-[#EA9708] px-6 h-8.75 flex items-center text-white hover:bg-[#F2992F80] font-medium"
-                    : "text-[#0D4168] hover:text-[#1E6F73]"
+                    ? "rounded-full bg-[#E3891F] px-6 h-8.75 flex items-center text-white hover:bg-[#F2992F80] font-normal"
+                    : "text-[#144B51] hover:text-[#144B51]"
                 }`}
               >
                 <span className="relative z-10 inline-grid justify-items-center overflow-hidden">
@@ -130,10 +131,11 @@ export default function Navbar() {
                     {link.name}
                   </span>
                   <span
+                    // UPDATED: Changed 'font-medium' to 'font-normal'
                     className={`col-start-1 row-start-1 ${
                       isContact
-                        ? "font-medium"
-                        : "font-medium group-hover:font-bold"
+                        ? "font-normal"
+                        : "font-normal group-hover:font-bold"
                     }`}
                   >
                     {link.name}
@@ -157,7 +159,7 @@ export default function Navbar() {
         <div className="xl:hidden flex items-center">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="text-[#0D4168] focus:outline-none"
+            className="text-[#1E6F73] focus:outline-none"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
@@ -179,7 +181,8 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleScroll(e, link.href)}
-                  className={`text-lg font-medium transition-opacity hover:opacity-75 ${
+                  // UPDATED: Added 'font-ubuntu' and 'font-normal' (400)
+                  className={`text-lg font-ubuntu font-normal transition-opacity hover:opacity-75 ${
                     isContact
                       ? "inline-block w-full text-center rounded-full bg-[#EA9708] px-6 py-3 text-white shadow-sm"
                       : "text-[#0D4168] py-2"

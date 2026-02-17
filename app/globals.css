@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+@theme {
+  /* Keep Ubuntu here since it works */
+  --font-ubuntu: var(--font-ubuntu);
+}
+
+/* NUCLEAR FIX: Manually define the class outside the theme block */
+.font-open {
+  font-family: var(--font-opensans), "Open Sans", sans-serif !important;
+}

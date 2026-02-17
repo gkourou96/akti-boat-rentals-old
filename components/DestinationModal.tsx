@@ -39,7 +39,7 @@ export default function DestinationModal({
       onClick={onClose}
     >
       <div
-        className={`relative w-[90%] max-w-md xl:max-w-none h-auto max-h-[85vh] xl:h-169.5 xl:w-300 overflow-hidden rounded-[20px] xl:rounded-[14.83px] bg-white shadow-2xl transition-all duration-500 ease-out ${
+        className={`relative w-[90%] max-w-md xl:max-w-none h-auto max-h-[85vh] xl:h-169.5 xl:w-300 overflow-hidden rounded-[20px] xl:rounded-[14.83px] bg-[#FFFFFF00] shadow-2xl transition-all duration-500 ease-out ${
           isOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -117,7 +117,7 @@ export default function DestinationModal({
                 />
               </div>
 
-              <h2 className="font-ubuntu text-[48px] font-bold leading-tight text-[#0D4168]">
+              <h2 className="font-ubuntu text-[48px] font-bold leading-tight text-[#144B51]">
                 {destination.name}
               </h2>
 
@@ -126,12 +126,12 @@ export default function DestinationModal({
                 {details.map((detail, index) => (
                   <div
                     key={index}
-                    className="flex flex-col border-l-[5px] border-[#F2992F] pl-5"
+                    className="flex flex-col border-l-[5px] border-[#E3891F] pl-5"
                   >
-                    <span className="font-ubuntu text-[20px] font-bold text-[#0D4168] mb-1.5 leading-none">
+                    <span className="font-ubuntu text-[20px] font-bold text-[#144B51] mb-1.5 leading-none">
                       {detail.label}
                     </span>
-                    <span className="font-open text-[18px] font-normal text-[#5A6C7C] leading-tight">
+                    <span className="font-open text-[18px] font-normal text-[#144B51] leading-tight">
                       {detail.value}
                     </span>
                   </div>

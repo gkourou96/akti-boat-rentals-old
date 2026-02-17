@@ -147,6 +147,7 @@ const DestinationCard = ({
   className?: string;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const isFirstEnter = useRef(true); // NEW: Track first enter
 
   // 1. Mouse Tracking Logic
   const x = useMotionValue(0);
@@ -167,19 +168,23 @@ const DestinationCard = ({
     };
   };
 
-  // THE FIX: "Snap" the spring immediately on entry
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     const pos = getMousePos(e);
 
-    // Update the target values
-    x.set(pos.x);
-    y.set(pos.y);
-
-    // CRITICAL: Manually set the spring values to the same position.
-    // This bypasses the spring physics for the initial "show" moment,
-    // causing it to appear instantly at the cursor.
-    mouseX.set(pos.x);
-    mouseY.set(pos.y);
+    if (isFirstEnter.current) {
+      // First time: bypass spring entirely
+      x.jump(pos.x); // NEW: jump instead of set
+      y.jump(pos.y);
+      mouseX.jump(pos.x);
+      mouseY.jump(pos.y);
+      isFirstEnter.current = false;
+    } else {
+      // Subsequent times: use normal spring
+      x.set(pos.x);
+      y.set(pos.y);
+      mouseX.set(pos.x);
+      mouseY.set(pos.y);
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -188,12 +193,17 @@ const DestinationCard = ({
     y.set(pos.y);
   };
 
+  const handleMouseLeave = () => {
+    isFirstEnter.current = true; // Reset for next hover
+  };
+
   return (
     <div
       ref={ref}
       onClick={onClick}
-      onMouseEnter={handleMouseEnter} // Triggers the snap
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className={`group relative shrink-0 overflow-hidden rounded-[15px] bg-gray-300 cursor-none ${className}`}
       style={{ width: `${width}px`, height: `${height}px` }}
     >

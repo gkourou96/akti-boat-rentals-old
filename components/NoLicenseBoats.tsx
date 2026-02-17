@@ -50,10 +50,16 @@ export default function NoLicenseBoats() {
       {/* --- IDLE ELEMENTS --- */}
 
       {/* Idle Gradient: Fades out when active */}
+      {/* Idle Gradient: Fades out when active */}
       <div
-        className={`absolute bottom-0 h-1/2 w-full bg-linear-to-t from-black/60 to-transparent transition-opacity duration-500 ease-in-out ${
+        className={`absolute bottom-0 h-1/2 w-full transition-opacity duration-500 ease-in-out ${
           isActive ? "opacity-0" : "opacity-100 xl:group-hover:opacity-0"
         }`}
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(20, 75, 81, 0) 49.04%, #1E6F73 100%), #00000033",
+          backgroundBlendMode: "multiply",
+        }}
       />
 
       {/* Idle Title: Fades out and moves up when active */}

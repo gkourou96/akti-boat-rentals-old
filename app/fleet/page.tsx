@@ -250,7 +250,7 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
       {/* Desktop: px-3 */}
       <div className="flex w-full flex-col px-0 xl:px-3 pb-3 pt-6 xl:pt-8">
         {/* Title */}
-        <h2 className="font-ubuntu text-[24px] xl:text-[28px] font-bold leading-tight text-[#0D4168]">
+        <h2 className="font-ubuntu text-[24px] xl:text-[28px] font-bold leading-tight text-[#144B51]">
           {boat.name}
         </h2>
         {/* Category */}
@@ -261,7 +261,7 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
         {/* Specs Row */}
         <div className="mt-4 flex items-center gap-6">
           {/* Capacity */}
-          <div className="flex items-center gap-2 text-[#0D4168]">
+          <div className="flex items-center gap-2 text-[#144B51]">
             {/* Icon Placeholder */}
             <div className="relative h-8 w-8 xl:h-10 xl:w-10">
               <Image
@@ -277,7 +277,7 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
           </div>
 
           {/* Length */}
-          <div className="flex items-center gap-2 text-[#0D4168]">
+          <div className="flex items-center gap-2 text-[#144B51]">
             {/* Icon Placeholder */}
             <div className="relative h-8 w-8 xl:h-10 xl:w-10">
               <Image
@@ -294,7 +294,7 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
         </div>
 
         {/* Description - Changes based on active index */}
-        <p className="mt-4 line-clamp-6 font-open text-[16px] xl:text-[18px] font-normal leading-[150%] text-[#0D4168]">
+        <p className="mt-4 line-clamp-6 font-open text-[16px] xl:text-[18px] font-normal leading-[150%] text-[#144B51]">
           {activeImageData.description}
         </p>
       </div>
@@ -320,7 +320,7 @@ const FleetPage = () => {
             <div className="relative mx-auto flex h-auto w-full flex-col items-center justify-center">
               {/* Title Wrapper - Preserving original dimensions for the accent alignment */}
               <div className="relative flex h-auto xl:h-17.75 w-full xl:w-82 items-center justify-center">
-                <h1 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#0D4168] text-center">
+                <h1 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#144B51] text-center">
                   Our Entire Fleet
                 </h1>
                 <div className="absolute -bottom-2 xl:-bottom-2.5 xl:left-5 left-1/2 -translate-x-1/2 xl:translate-x-0 z-0 h-6 xl:h-7.5 w-32 xl:w-full">

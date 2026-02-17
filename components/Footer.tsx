@@ -147,7 +147,7 @@ export default function Footer() {
           </div>
 
           {/* MIDDLE COLUMN: INDEX */}
-          <div className="flex flex-col h-auto w-full py-0 xl:h-59.5 xl:w-35.25 xl:py-31.5 xl:mr-58.25">
+          <div className=" flex-col h-auto w-full py-0 xl:h-59.5 xl:w-35.25 xl:py-31.5 xl:mr-58.25 hidden xl:flex">
             <h3 className="font-ubuntu text-[24px] font-bold text-[#F2994A] mb-6">
               Index
             </h3>
@@ -167,7 +167,7 @@ export default function Footer() {
         </div>
       </div>
       {/* 2. ADDITIONAL DECORATIVE STRIP */}
-      <div className="w-full h-auto py-4 bg-[#0B282C] xl:h-8.5 xl:py-0">
+      <div className="w-full h-auto py-4 bg-[#0B282C] xl:h-8.5 xl:py-0 ">
         <div className="mx-auto flex h-full max-w-360 flex-col items-center justify-between px-6 text-[12px] xl:text-[12px] font-normal text-white/80 xl:flex-row xl:px-30">
           {/* Left: Copyright */}
           <div className="mb-2 text-center xl:mb-0 xl:text-left">

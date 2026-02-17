@@ -11,15 +11,15 @@ export default function ContactForm() {
     <div className="flex w-full xl:w-197.75 flex-col items-start gap-8">
       {/* FORM CONTAINER */}
       {/* Background: #E3891F1A */}
-      {/* SIZE: Mobile h-auto | Desktop h-[353px] (EXACT SIZE ENFORCED) */}
-      <div className="flex w-full flex-col rounded-[14.83px] bg-[#E3891F1A] px-6 pb-6 pt-6 h-auto xl:h-88.25">
+      {/* UPDATED: Changed 'xl:h-88.25' to 'h-auto' so padding is never cut off */}
+      <div className="flex w-full flex-col rounded-[14.83px] bg-[#E3891F1A] p-6 h-auto">
         {/* ROW 1: Full Name & Preferred Date */}
         {/* Mobile: flex-col | Desktop: flex-row */}
         <div className="flex w-full flex-col xl:flex-row gap-5">
           {/* Full Name */}
-          <div className="flex w-full xl:w-1/2 flex-col gap-2">
+          <div className="flex w-full xl:w-1/2 flex-col gap-1">
             <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
-              Full Name <span className="text-[#F2994A]">*</span>
+              Full Name <span className="text-[#E3891F]">*</span>
             </label>
             <input
               type="text"
@@ -30,7 +30,7 @@ export default function ContactForm() {
           </div>
 
           {/* Preferred Date */}
-          <div className="flex w-full xl:w-1/2 flex-col gap-2">
+          <div className="flex w-full xl:w-1/2 flex-col gap-1">
             <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
               Preferred Date
             </label>
@@ -46,9 +46,9 @@ export default function ContactForm() {
         {/* Mobile: flex-col | Desktop: flex-row */}
         <div className="mt-4 flex w-full flex-col xl:flex-row gap-5">
           {/* Email */}
-          <div className="flex w-full xl:w-1/2 flex-col gap-2">
+          <div className="flex w-full xl:w-1/2 flex-col gap-1">
             <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
-              Email <span className="text-[#F2994A]">*</span>
+              Email <span className="text-[#E3891F]">*</span>
             </label>
             <input
               type="email"
@@ -58,9 +58,9 @@ export default function ContactForm() {
           </div>
 
           {/* Phone */}
-          <div className="flex w-full xl:w-1/2 flex-col gap-2">
+          <div className="flex w-full xl:w-1/2 flex-col gap-1">
             <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
-              Phone <span className="text-[#F2994A]">*</span>
+              Phone <span className="text-[#E3891F]">*</span>
             </label>
             <input
               type="tel"
@@ -73,11 +73,11 @@ export default function ContactForm() {
         {/* ROW 3: Messages */}
         <div className="mt-4 flex w-full flex-col gap-2">
           <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
-            Messages <span className="text-[#F2994A]">*</span>
+            Messages <span className="text-[#E3891F]">*</span>
           </label>
           <textarea
             placeholder="Tell us about your requirements, preferred boat type, number of guests, or any special requests..."
-            className="h-17.5 w-full resize-none rounded-md bg-white p-2 px-5 font-open text-[16px] text-[#0D4168] placeholder-[#B8C0CC] outline-none transition-all focus:ring-1 focus:ring-[#E3891F]"
+            className="h-35 xl:h-17.5 w-full resize-none rounded-md bg-white p-2 px-5 font-open text-[16px] text-[#0D4168] placeholder-[#B8C0CC] outline-none transition-all focus:ring-1 focus:ring-[#E3891F]"
           ></textarea>
         </div>
 

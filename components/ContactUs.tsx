@@ -13,7 +13,7 @@ export default function ContactUs() {
       >
         <div className="relative flex flex-col xl:flex-row h-auto mb-10 xl:mb-0 xl:h-17.75 w-full xl:w-62.25 items-start xl:items-center justify-start">
           <div className="relative inline-block">
-            <h2 className="relative z-10 py-2.5 pl-0 pr-2.5 xl:p-2.5 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#0D4168] text-left">
+            <h2 className="relative z-10 py-2.5 pl-0 pr-2.5 xl:p-2.5 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#144B51] text-left">
               Contact Us
             </h2>
             <div className="absolute -bottom-1 -right-4 xl:-bottom-1.75 xl:-right-10.5 z-0 h-6 w-24 xl:h-8 xl:w-37.25">
@@ -75,7 +75,7 @@ export default function ContactUs() {
                   </span>
                 </div>
               </div>
-              <div className="flex gap-6 mt-2">
+              <div className="flex gap-6 -mt-1">
                 <Image
                   src="/icons/facebook.svg"
                   alt="Facebook"

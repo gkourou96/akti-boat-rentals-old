@@ -114,7 +114,7 @@ export default function OurFleet() {
   };
 
   return (
-    <div className="bg-[#f8f4ea]">
+    <div className="bg-[#F2EAD680]">
       <section
         id="our-fleet"
         // Preserved container styling
@@ -123,7 +123,7 @@ export default function OurFleet() {
         {/* UPDATED HEADER SECTION */}
         <div className="w-full flex flex-col items-start xl:items-center mb-8 xl:mb-16">
           <div className="relative inline-block">
-            <h2 className="font-ubuntu text-[30px] leading-tight xl:text-[44px] font-bold text-[#0D4168] relative z-10 p-2.5">
+            <h2 className="font-ubuntu text-[30px] leading-tight xl:text-[44px] font-bold text-[#144B51] relative z-10 p-2.5">
               Our Fleet
             </h2>
             <div className="absolute left-2 top-8 w-25 xl:w-auto xl:left-21.25 xl:top-12.75 h-auto">
@@ -138,7 +138,7 @@ export default function OurFleet() {
           </div>
 
           {/* NEW SUBTITLE */}
-          <p className="mt-6 max-w-3xl text-left xl:text-center font-open text-lg xl:text-xl text-[#144B51] leading-relaxed px-2.5">
+          <p className="mt-6 max-w-3xl text-left xl:text-center text-lg xl:text-xl text-[#144B51] leading-relaxed px-2.5 font-ubuntu">
             Depart from the most easily accessible private beach resort in
             Athens - Costa Del Sol and experience the ultimate sea adventure.
           </p>
@@ -209,10 +209,10 @@ export default function OurFleet() {
 
                 {/* Boat Details Column */}
                 <div className="flex flex-col h-auto pt-0 xl:h-125">
-                  <h3 className="font-ubuntu text-2xl xl:text-[32px] font-bold text-[#0D4168]">
+                  <h3 className="font-ubuntu text-2xl xl:text-[32px] font-bold text-[#144B51]">
                     {boat.name}
                   </h3>
-                  <span className="font-ubuntu text-lg xl:text-[24px] mt-1 font-normal text-[#F2992F]">
+                  <span className="font-ubuntu text-lg xl:text-[24px] mt-1 font-normal text-[#E3891F]">
                     {boat.category}
                   </span>
 
@@ -225,7 +225,7 @@ export default function OurFleet() {
                         height={40}
                         className="w-8 h-8 xl:w-10 xl:h-10"
                       />
-                      <span className="font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168]">
+                      <span className="font-open text-lg xl:text-[24px] font-normal text-[#0D4168]">
                         {boat.capacity}
                       </span>
                     </div>
@@ -237,41 +237,32 @@ export default function OurFleet() {
                         height={40}
                         className="w-8 h-8 xl:w-10 xl:h-10"
                       />
-                      <span className="font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168]">
+                      <span className="font-open text-lg xl:text-[24px] font-normal text-[#0D4168]">
                         {boat.length}
                       </span>
                     </div>
                   </div>
-                  <p className="font-open mt-6 max-w-112.75 text-[18px] font-normal tracking-normal text-[#144B51]">
+                  <p className="font-open mt-6 max-w-112.75 h-37.5 text-[18px] font-normal tracking-normal text-[#144B51]">
                     {boat.description}
                   </p>
 
                   {/* "See More" Button */}
                   <button
                     onClick={() => handleOpenModal(boat)}
-                    className="mt-6 flex h-11.5 w-46.25 items-center justify-center gap-2 rounded-full bg-[#144B51] text-white transition-opacity hover:bg-[#144B5180] cursor-pointer"
+                    className="mt-6 flex h-11.5 w-46.25 shrink-0 items-center justify-center gap-2 rounded-full bg-[#144B51] text-white transition-opacity hover:bg-[#144B5180] cursor-pointer ps-6 py-2.25 pe-[11.4px]"
                   >
-                    <span className="font-ubuntu text-[24px] font-normal leading-none pb-1">
+                    {/* Removed pb-1 to let flexbox center the text box perfectly */}
+                    <span className="font-ubuntu text-[24px] font-normal leading-none">
                       See More
                     </span>
-                    <svg
-                      width="18"
-                      height="12"
-                      viewBox="0 0 18 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="mt-0.5"
-                    >
-                      <path
-                        d="M1 6H17M17 6L12 1M17 6L12 11"
-                        stroke="white"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    {/* Removed mt-0.5 so the icon sits exactly in the flex center */}
+                    <Image
+                      src="/icons/trending_flat.svg"
+                      alt="arrow"
+                      width={24}
+                      height={24}
+                    />
                   </button>
-
                   {/* Thumbnails */}
                   <div className="mt-8 xl:mt-auto flex gap-4">
                     {boat.thumbnails.map((thumbSrc, index) => (

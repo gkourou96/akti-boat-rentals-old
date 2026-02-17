@@ -451,7 +451,7 @@ export default function InteractiveBanner() {
               Rent a boat
             </span>
 
-            <span className="bg-linear-to-r from-white via-white to-white bg-clip-text text-transparent transition-all duration-500 group-hover/text:from-[#00C6DB] group-hover/text:to-[#0099aa]">
+            <span className="bg-linear-to-r from-white via-white to-white bg-clip-text text-transparent transition-all duration-500 group-hover/text:from-[#00C6DB] group-hover/text:to-[#0099aa] px-2 xl:px-6">
               <span className="italic">in the heart of athens</span>
             </span>
           </h1>
