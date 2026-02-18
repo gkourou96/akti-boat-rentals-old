@@ -39,7 +39,7 @@ export default function DestinationModal({
       onClick={onClose}
     >
       <div
-        className={`relative w-[90%] max-w-md xl:max-w-none h-auto max-h-[85vh] xl:h-169.5 xl:w-300 overflow-hidden rounded-[20px] xl:rounded-[14.83px] bg-[#FFFFFF00] shadow-2xl transition-all duration-500 ease-out ${
+        className={`relative w-[90%] max-w-md xl:max-w-none h-auto max-h-[85vh] xl:h-169.5 xl:w-300 overflow-hidden rounded-[20px] xl:rounded-[14.83px] bg-[#F9F5EB] shadow-2xl transition-all duration-500 ease-out ${
           isOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}

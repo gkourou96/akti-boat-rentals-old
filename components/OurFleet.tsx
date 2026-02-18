@@ -242,7 +242,8 @@ export default function OurFleet() {
                       </span>
                     </div>
                   </div>
-                  <p className="font-open mt-6 max-w-112.75 h-37.5 text-[18px] font-normal tracking-normal text-[#144B51]">
+                  {/* FIX IS HERE: changed 'h-37.5' to 'h-auto xl:h-37.5' */}
+                  <p className="font-open mt-6 max-w-112.75 h-auto xl:h-37.5 text-[18px] font-normal tracking-normal text-[#144B51]">
                     {boat.description}
                   </p>
 
@@ -308,7 +309,7 @@ export default function OurFleet() {
         <div className="w-full flex justify-center mt-8">
           <Link
             href="/fleet"
-            className="flex h-11.5 items-center justify-center rounded-full border border-[#0D4168] px-6 xl:px-8 font-ubuntu text-lg xl:text-[24px] font-normal text-[#0D4168] transition-colors transition-duration-300 hover:bg-[#144B5133] cursor-pointer whitespace-nowrap"
+            className="flex h-11.5 items-center justify-center rounded-full bg-[#E3891F] px-6 xl:px-8 font-ubuntu text-lg xl:text-[24px] font-normal text-white transition-colors transition-duration-300 hover:bg-[#F2992F80] cursor-pointer whitespace-nowrap"
           >
             Explore our entire Fleet →
           </Link>
