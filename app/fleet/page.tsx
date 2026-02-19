@@ -315,7 +315,8 @@ const FleetPage = () => {
       <section className="w-full bg-[#F2EAD6]">
         <div className="mx-auto max-w-360">
           {/* CHANGED: Mobile top padding increased to pt-[144px] to match visual gap of "Sail Boats" + Navbar offset */}
-          <div className="mx-auto w-full xl:w-360 px-6 pt-36 pb-16 xl:px-30 xl:pb-31 xl:pt-54.25">
+          {/* FIX: Removed xl:w-360 (forced 1440px) and xl:px-30 (rigid padding). Added flex flex-col items-center. */}
+          <div className="mx-auto w-full px-6 pt-36 pb-16 xl:px-0 xl:pb-31 xl:pt-54.25 flex flex-col items-center">
             {/* Header */}
             <div className="relative mx-auto flex h-auto w-full flex-col items-center justify-center">
               {/* Title Wrapper - Preserving original dimensions for the accent alignment */}

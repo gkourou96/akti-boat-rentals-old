@@ -42,7 +42,7 @@ export default function LocationModal({
     // CHANGED:
     // 1. bg-black/95 -> bg-black/80 (More transparency)
     // 2. backdrop-blur-md -> backdrop-blur-xl (Stronger blur effect)
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 backdrop-blur-xl transition-all duration-300 animate-in fade-in">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/20 backdrop-blur-xl transition-all duration-300 animate-in fade-in">
       {/* Close Button */}
       <button
         onClick={onClose}

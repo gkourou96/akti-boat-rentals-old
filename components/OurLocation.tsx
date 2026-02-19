@@ -50,7 +50,8 @@ export default function OurLocation() {
         </div>
 
         {/* Main Content Wrapper */}
-        <div className="relative z-10 mx-auto h-full max-w-360 px-6 py-16 xl:py-0 xl:px-30 flex flex-col xl:flex-row justify-between xl:items-start">
+        {/* CHANGED: Removed xl:px-30, changed xl:justify-between to xl:justify-center, added xl:gap-[26px] */}
+        <div className="relative z-10 mx-auto h-full max-w-360 px-6 py-16 xl:py-0 flex flex-col xl:flex-row justify-between xl:justify-center xl:items-start xl:gap-6.5">
           {/* Left Container */}
           <div className="relative h-auto w-full xl:w-172.5 xl:pt-[50.5px]">
             {/* --- TITLE CONTAINER --- */}
@@ -151,7 +152,8 @@ export default function OurLocation() {
           </div>
 
           {/* --- RIGHT SIDE IMAGE GRID --- */}
-          <div className="hidden xl:flex gap-3.5 xl:pt-6.25">
+          {/* CHANGED: Added shrink-0 so the images hold their exact width */}
+          <div className="hidden xl:flex gap-3.5 xl:pt-6.25 shrink-0">
             {/* Column 1 */}
             <div className="flex flex-col">
               {/* Image 1 */}

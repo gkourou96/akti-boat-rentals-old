@@ -283,7 +283,8 @@ export default function OurFleet() {
                 </div>
 
                 {/* Next Slide Arrow Button */}
-                <button className="custom-next-button absolute right-4 top-32 xl:right-18.25 xl:top-1/2 z-10 flex h-10 w-10 xl:h-12 xl:w-12 -translate-y-1/2 items-center justify-center rounded-full text-[#0D4168] cursor-pointer bg-white/80 xl:bg-transparent shadow-sm xl:shadow-none backdrop-blur-sm xl:backdrop-blur-none">
+                {/* FIX 1: Changed z-10 to z-50 so the arrow sits cleanly above the peeking slider at 1280px */}
+                <button className="custom-next-button absolute right-4 top-32 xl:right-18.25 xl:top-1/2 z-50 flex h-10 w-10 xl:h-12 xl:w-12 -translate-y-1/2 items-center justify-center rounded-full text-[#0D4168] cursor-pointer bg-white/80 xl:bg-transparent shadow-sm xl:shadow-none backdrop-blur-sm xl:backdrop-blur-none">
                   <Image
                     src="/icons/arrow_forward_ios.svg"
                     alt="Next slide"
@@ -306,7 +307,8 @@ export default function OurFleet() {
         </Swiper>
 
         {/* --- EXPLORE ALL BUTTON --- */}
-        <div className="w-full flex justify-center mt-8">
+        {/* FIX 2: Added xl:-translate-x-15 to perfectly balance the 120px left padding on desktop */}
+        <div className="w-full flex justify-center mt-8 xl:-translate-x-15">
           <Link
             href="/fleet"
             className="flex h-11.5 items-center justify-center rounded-full bg-[#E3891F] px-6 xl:px-8 font-ubuntu text-lg xl:text-[24px] font-normal text-white transition-colors transition-duration-300 hover:bg-[#F2992F80] cursor-pointer whitespace-nowrap"

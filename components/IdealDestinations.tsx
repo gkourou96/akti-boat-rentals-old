@@ -313,7 +313,10 @@ export default function IdealDestinations() {
         </div>
 
         {/* --- DESKTOP VIEW: ORIGINAL GRID (Visible >= xl) --- */}
-        <div className="hidden xl:block mt-16 pl-30">
+        {/* FIX: Replaced "xl:block pl-30" with "xl:flex justify-center w-full" 
+            This dynamically centers the 1200px grid on any desktop viewport rather than 
+            forcing a 120px hard left indent that overflows 1366px/1280px laptops. */}
+        <div className="hidden xl:flex mt-16 w-full justify-center">
           <div className="flex h-169.5 w-300 gap-3">
             {/* --- LEFT BLOCK --- */}
             <div className="flex flex-col gap-3">

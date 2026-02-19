@@ -5,7 +5,6 @@ import ContactForm from "./ContactForm";
 
 export default function ContactUs() {
   return (
-    // FIXED: Added id="contact-us" so the anchor link works
     <div className="bg-[#F2EAD680]">
       <section
         id="contact-us"
@@ -29,21 +28,27 @@ export default function ContactUs() {
         </div>
         <div className="mt-0 xl:mt-16 flex flex-col xl:flex-row w-full xl:w-300 items-start gap-12 xl:gap-6">
           <ContactForm />
-          <div className="flex h-auto xl:h-88.25 w-full xl:w-100 flex-col gap-10 xl:gap-0 xl:justify-between">
-            <div className="flex flex-col gap-6 items-start text-left">
-              <h3 className="font-ubuntu text-[28px] xl:text-[32px] font-bold text-[#0D4168]">
+
+          {/* CONTAINER RESTORED: Locked to exactly 400x353px */}
+          <div className="flex flex-col w-full xl:w-100 xl:h-88.25 shrink-0 xl:justify-between">
+            {/* --- TOP BLOCK: CONTACT INFORMATION --- */}
+            <div className="flex flex-col items-start text-left">
+              <h3 className="font-ubuntu text-[28px] xl:text-[32px] font-bold text-[#0D4168] leading-none">
                 Contact Information
               </h3>
-              <div className="flex flex-col gap-4 items-start">
-                <div className="flex items-start gap-4 xl:gap-6">
+
+              <div className="mt-6 flex flex-col gap-3.75 items-start">
+                {/* FIX: Changed items-start to items-center */}
+                <div className="flex items-center gap-4 xl:gap-6">
                   <Image
                     src="/icons/phone.svg"
                     alt="Phone"
                     width={24}
                     height={24}
-                    className="mt-1 shrink-0"
+                    // FIX: Removed mt-1 so flexbox centers it perfectly
+                    className="shrink-0"
                   />
-                  <div className="flex flex-col font-open text-[16px] xl:text-[18px] text-[#0D4168]">
+                  <div className="flex flex-col font-open text-[16px] xl:text-[18px] text-[#0D4168] leading-6">
                     <a
                       href="tel:+306957823809"
                       className="hover:opacity-75 transition-opacity"
@@ -70,48 +75,51 @@ export default function ContactUs() {
                     height={24}
                     className="shrink-0"
                   />
-                  <span className="font-open text-[16px] xl:text-[18px] text-[#0D4168]">
+                  <span className="font-open text-[16px] xl:text-[18px] text-[#0D4168] leading-6">
                     info@aktiboatrentals.com
                   </span>
                 </div>
               </div>
-              <div className="flex gap-6 -mt-1">
+
+              <div className="mt-6 flex gap-6">
                 <Image
                   src="/icons/facebook.svg"
                   alt="Facebook"
-                  width={29}
-                  height={29}
+                  width={28}
+                  height={28}
                   className="hover:opacity-80 transition-opacity cursor-pointer"
                 />
                 <Image
                   src="/icons/x.svg"
                   alt="X"
-                  width={29}
-                  height={29}
+                  width={28}
+                  height={28}
                   className="hover:opacity-80 transition-opacity cursor-pointer"
                 />
                 <Image
                   src="/icons/instagram.svg"
                   alt="Instagram"
-                  width={29}
-                  height={29}
+                  width={28}
+                  height={28}
                   className="hover:opacity-80 transition-opacity cursor-pointer"
                 />
                 <Image
                   src="/icons/linkedin.svg"
                   alt="LinkedIn"
-                  width={29}
-                  height={29}
+                  width={28}
+                  height={28}
                   className="hover:opacity-80 transition-opacity cursor-pointer"
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-4 items-start text-left">
-              <h3 className="font-ubuntu text-[28px] xl:text-[32px] font-bold text-[#0D4168]">
+
+            {/* --- BOTTOM BLOCK: OPENING HOURS --- */}
+            <div className="mt-10 xl:mt-0 flex flex-col items-start text-left">
+              <h3 className="font-ubuntu text-[28px] xl:text-[32px] font-bold text-[#0D4168] leading-none">
                 Opening Hours
               </h3>
 
-              <div className="flex flex-col font-open text-[16px] xl:text-[18px] text-[#0D4168]">
+              <div className="mt-6 flex flex-col font-open text-[16px] xl:text-[18px] text-[#0D4168] leading-6.25">
                 <p>
                   <span className="font-bold">Monday - Friday:</span> 8:00 AM -
                   8:00 PM

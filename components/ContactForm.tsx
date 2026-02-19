@@ -8,7 +8,7 @@ export default function ContactForm() {
     // CONTAINER:
     // Mobile: w-full (Responsive)
     // Desktop: w-[791px] (Fixed, preserved)
-    <div className="flex w-full xl:w-197.75 flex-col items-start gap-8">
+    <div className="flex w-full xl:w-197.75 shrink-0 flex-col items-start gap-8">
       {/* FORM CONTAINER */}
       {/* Background: #E3891F1A */}
       {/* UPDATED: Changed 'xl:h-88.25' to 'h-auto' so padding is never cut off */}
@@ -18,7 +18,8 @@ export default function ContactForm() {
         <div className="flex w-full flex-col xl:flex-row gap-5">
           {/* Full Name */}
           <div className="flex w-full xl:w-1/2 flex-col gap-1">
-            <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
+            {/* FIX: Added leading-[20px] to kill the 1px browser overflow */}
+            <label className="font-ubuntu text-[14px] leading-5 font-medium text-[#0D4168]">
               Full Name <span className="text-[#E3891F]">*</span>
             </label>
             <input
@@ -31,7 +32,8 @@ export default function ContactForm() {
 
           {/* Preferred Date */}
           <div className="flex w-full xl:w-1/2 flex-col gap-1">
-            <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
+            {/* FIX: Added leading-[20px] */}
+            <label className="font-ubuntu text-[14px] leading-5 font-medium text-[#0D4168]">
               Preferred Date
             </label>
             <input
@@ -47,7 +49,8 @@ export default function ContactForm() {
         <div className="mt-4 flex w-full flex-col xl:flex-row gap-5">
           {/* Email */}
           <div className="flex w-full xl:w-1/2 flex-col gap-1">
-            <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
+            {/* FIX: Added leading-[20px] */}
+            <label className="font-ubuntu text-[14px] leading-5 font-medium text-[#0D4168]">
               Email <span className="text-[#E3891F]">*</span>
             </label>
             <input
@@ -59,7 +62,8 @@ export default function ContactForm() {
 
           {/* Phone */}
           <div className="flex w-full xl:w-1/2 flex-col gap-1">
-            <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
+            {/* FIX: Added leading-[20px] */}
+            <label className="font-ubuntu text-[14px] leading-5 font-medium text-[#0D4168]">
               Phone <span className="text-[#E3891F]">*</span>
             </label>
             <input
@@ -72,7 +76,8 @@ export default function ContactForm() {
 
         {/* ROW 3: Messages */}
         <div className="mt-4 flex w-full flex-col gap-2">
-          <label className="font-ubuntu text-[14px] font-medium text-[#0D4168]">
+          {/* FIX: Added leading-[20px] */}
+          <label className="font-ubuntu text-[14px] leading-5 font-medium text-[#0D4168]">
             Messages <span className="text-[#E3891F]">*</span>
           </label>
           <textarea
