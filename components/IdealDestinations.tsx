@@ -66,7 +66,7 @@ const destinations = [
     name: "Poros",
     width: 353,
     height: 361,
-    image: "/images/destinations/poros.jpg",
+    image: "/images/destinations/poros.jpeg",
     details: [
       { label: "Distance", value: "27 Nautical Miles" },
       { label: "Duration", value: "60 - 70 Minutes" },
@@ -77,7 +77,7 @@ const destinations = [
     name: "Hydra",
     width: 265,
     height: 148,
-    image: "/images/destinations/hydra.jpg",
+    image: "/images/destinations/hydra.jpeg",
     details: [
       { label: "Distance", value: "33 Nautical Miles" },
       { label: "Duration", value: "70 - 80 Minutes" },
@@ -99,7 +99,7 @@ const destinations = [
     name: "Ydroussa - katramonisi",
     width: 248,
     height: 361,
-    image: "/images/destinations/ydroussa.png",
+    image: "/images/destinations/ydroussa.jpeg",
     details: [
       { label: "Distance", value: "5 Nautical Miles" },
       { label: "Duration", value: "10 - 20 Minutes" },
@@ -112,7 +112,7 @@ const destinations = [
     name: "Agistri",
     width: 298,
     height: 444,
-    image: "/images/destinations/agistri.jpg",
+    image: "/images/destinations/agistri.jpeg",
     details: [
       { label: "Distance", value: "22 Nautical Miles" },
       { label: "Duration", value: "50 - 60 Minutes" },
