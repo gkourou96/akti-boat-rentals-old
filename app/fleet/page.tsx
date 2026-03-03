@@ -320,11 +320,11 @@ const FleetPage = () => {
             {/* Header */}
             <div className="relative mx-auto flex h-auto w-full flex-col items-center justify-center">
               {/* Title Wrapper - Preserving original dimensions for the accent alignment */}
-              <div className="relative flex h-auto xl:h-17.75 w-full xl:w-82 items-center justify-center">
+              <div className="relative flex h-auto xl:h-17.75 w-full xl:w-full items-center justify-center">
                 <h1 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#144B51] text-center">
                   Our Entire Fleet
                 </h1>
-                <div className="absolute -bottom-2 xl:-bottom-2.5 xl:left-5 left-1/2 -translate-x-1/2 xl:translate-x-0 z-0 h-6 xl:h-7.5 w-32 xl:w-full">
+                <div className="absolute -bottom-2 xl:-bottom-1.5 xl:left-5 left-1/2 -translate-x-1/2 xl:translate-x-0 z-0 h-6 xl:h-7.5 w-32 xl:w-full">
                   <Image
                     src="/icons/accent_orange.svg"
                     alt="Decoration"
@@ -335,7 +335,7 @@ const FleetPage = () => {
               </div>
 
               {/* New Subtitle */}
-              <p className="mt-6 max-w-3xl text-center font-open text-lg xl:text-xl text-[#144B51] leading-relaxed px-4">
+              <p className="mt-6 w-full text-center font-open text-lg xl:text-xl text-[#144B51] leading-relaxed px-4">
                 Your day on the water starts in comfort and ends with
                 unforgettable memories.
               </p>

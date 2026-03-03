@@ -97,7 +97,8 @@ export default function Navbar() {
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-[#F9F5EB] shadow-[inset_0_-2px_0_0_#F2992F] xl:shadow-[inset_0_0_0_2px_#F2992F,0_4px_4px_rgba(0,0,0,0.1)] px-6 py-4 xl:max-w-300 rounded-b-[60px] rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
+      {/* UPDATED: Replaced the inset orange borders with shadow-[0px_4px_4px_0px_#0000001A] */}
+      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-[#F9F5EB] shadow-[0px_4px_4px_0px_#0000001A] px-6 py-4 xl:max-w-300 rounded-b-[60px] rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
         <Link href="/" className="shrink-0">
           <Image
             src="/images/logo.svg"

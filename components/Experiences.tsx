@@ -2,8 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 import { motion } from "framer-motion"; // Import Framer Motion
 
 const experiencesData = [
@@ -12,7 +10,8 @@ const experiencesData = [
     icon: "/icons/inflatable-boat-rental.svg",
     title: (
       <>
-        Inflatable <br /> Boat Rental
+        {/* ADDED: hidden xl:block to <br/> so the text flows naturally side-by-side on mobile */}
+        Inflatable <br className="hidden xl:block" /> Boat Rental
       </>
     ),
   },
@@ -21,7 +20,7 @@ const experiencesData = [
     icon: "/icons/anchor.svg",
     title: (
       <>
-        Skippered <br /> Charter
+        Skippered <br className="hidden xl:block" /> Charter
       </>
     ),
   },
@@ -30,7 +29,7 @@ const experiencesData = [
     icon: "/icons/support.svg",
     title: (
       <>
-        Snorkeling <br /> Exploration
+        Snorkeling <br className="hidden xl:block" /> Exploration
       </>
     ),
   },
@@ -39,7 +38,7 @@ const experiencesData = [
     icon: "/icons/celebration.svg",
     title: (
       <>
-        Special <br /> Occasions
+        Special <br className="hidden xl:block" /> Occasions
       </>
     ),
   },
@@ -48,7 +47,7 @@ const experiencesData = [
     icon: "/icons/roofing.svg",
     title: (
       <>
-        Villa <br /> Tenders
+        Villa <br className="hidden xl:block" /> Tenders
       </>
     ),
   },
@@ -57,20 +56,16 @@ const experiencesData = [
     icon: "/icons/explore.svg",
     title: (
       <>
-        Daily <br /> Excursions
+        Daily <br className="hidden xl:block" /> Excursions
       </>
     ),
   },
-  // --- NEW CARD (Resort Packages) ---
   {
     id: 7,
-    // Icon: Lucide 'Palmtree' (Resort vibe)
-    // Color: Orange (#F2992F) to match the theme
-    // Size: ViewBox adjusted for scaling
-    icon: "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 24 24' fill='none' stroke='%23F2992F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M13 8c0-2.76-2.46-5-5.5-5S2 5.24 2 8h2l1-1 1 1h4'/%3e%3cpath d='M13 7.14A5.82 5.82 0 0 1 16.5 6c3.04 0 5.5 2.24 5.5 5h-3l-1-1-1 1h-3'/%3e%3cpath d='M5.89 9.71c-2.15 2.15-2.3 5.47-.35 7.43l4.24-4.25.7-.7.71-.71 2.12-2.12c-1.95-1.96-5.27-1.81-7.42.35z'/%3e%3cpath d='M11 15.5c.5 2.5-.17 4.5-1 6.5h4c2-5.5-.5-12-1-14'/%3e%3c/svg%3e",
+    icon: "/icons/beach_access.svg",
     title: (
       <>
-        Resort <br /> Packages
+        Resort <br className="hidden xl:block" /> Packages
       </>
     ),
   },
@@ -83,48 +78,47 @@ const ExperienceCard = ({
   icon: string;
   title: React.ReactNode;
 }) => (
-  // CHANGED: Converted div to motion.div to handle hover state
   <motion.div
     initial="rest"
     whileHover="hover"
     animate="rest"
-    className="flex h-70 w-full xl:h-[285.5px] xl:w-70.5 shrink-0 flex-col justify-center rounded-[20px] bg-[#FFF9ECE5] px-8 xl:px-8 items-center xl:items-start text-center xl:text-left cursor-pointer"
+    // REVERTED: Changed w-[372px] back to w-full for full mobile responsiveness
+    className="flex h-[92px] w-full shrink-0 cursor-pointer flex-row items-center gap-[10px] rounded-[20px] bg-[#FFF9ECE5] p-[24px] xl:h-[261.33px] xl:w-[384px] xl:flex-col xl:items-start xl:justify-center xl:gap-0 xl:px-8 xl:py-8"
   >
-    {/* Icon Container: Fixed 80x80px */}
-    <div className="relative h-20 w-20 mb-4 xl:mb-0">
+    {/* Icon Container: Mobile 44x44px | Desktop 80x80px */}
+    <div className="relative h-[44px] w-[44px] shrink-0 xl:mb-4 xl:h-20 xl:w-20">
       <Image src={icon} alt="icon" fill className="object-contain" />
     </div>
 
-    <h3 className="pt-2.5 font-ubuntu text-[28px] xl:text-[32px] font-bold leading-tight text-[#0D4168]">
-      {title}
-    </h3>
+    <div className="flex flex-col items-start text-left">
+      <h3 className="font-ubuntu text-[24px] font-bold leading-tight text-[#0D4168] xl:pt-2.5 xl:text-[32px]">
+        {title}
+      </h3>
 
-    {/* ADDED: Framer Motion Orange Underline */}
-    <motion.div
-      variants={{
-        rest: { width: 0, opacity: 0 },
-        hover: { width: 64, opacity: 1 }, // 64px width
-      }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      // Styling: Orange color, 3px height, centered on mobile (mx-auto), left-aligned on desktop (xl:mx-0)
-      className="h-0.75 bg-[#F2992F] mt-3 rounded-full mx-auto xl:mx-0"
-    />
+      {/* Underline: Hidden on mobile to preserve the tight 92px height horizontal layout */}
+      <motion.div
+        variants={{
+          rest: { width: 0, opacity: 0 },
+          hover: { width: 64, opacity: 1 },
+        }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="hidden h-0.75 rounded-full bg-[#F2992F] mt-3 xl:block"
+      />
+    </div>
   </motion.div>
 );
 
 export default function Experiences() {
-  // 1. Top Row: Text + First 2 cards
-  const topCards = experiencesData.slice(0, 2);
-  // 2. Middle Row: Next 4 cards (Standard Grid)
-  const middleCards = experiencesData.slice(2, 6);
-  // 3. Bottom Row: The new "Resort Packages" card
-  const bottomCards = experiencesData.slice(6, 7);
+  // 1. Top Row: Text + 1 card (Right aligned)
+  const topCard = experiencesData.slice(0, 1);
+  // 2. Middle Row: Next 3 cards
+  const middleCards = experiencesData.slice(1, 4);
+  // 3. Bottom Row: Last 3 cards
+  const bottomCards = experiencesData.slice(4, 7);
 
   return (
-    // UPDATED: Removed fixed height 'xl:h-220.75' and replaced with 'xl:h-auto pb-16 xl:pb-32'
-    // This allows the section to grow naturally with the new row.
     <section
-      className="relative w-full h-auto overflow-hidden bg-[#0D4168]"
+      className="relative h-auto w-full overflow-hidden bg-[#0D4168]"
       id="services"
     >
       {/* Background Image Container */}
@@ -143,20 +137,20 @@ export default function Experiences() {
       </div>
 
       <div className="relative z-10 mx-auto h-full max-w-360">
-        {/* Added extra padding bottom (xl:pb-36) to accommodate the new row */}
-        <div className="pt-16 px-6 pb-16 xl:pt-36 xl:pl-30 xl:pr-0 xl:pb-36">
+        <div className="px-6 pb-[44px] pt-[44px] xl:pb-36 xl:pl-30 xl:pr-0 xl:pt-36">
           {/* --- DESKTOP LAYOUT --- */}
           <div className="hidden xl:block">
-            {/* ROW 1: Text + 2 Cards */}
-            <div className="flex items-start gap-6">
+            {/* ROW 1: Text block + 1 Card */}
+            {/* FIX: Added xl:w-300 (1200px) and justify-between to push the card to the far right edge of the grid */}
+            <div className="flex items-start gap-6 xl:w-300 xl:justify-between">
               <div className="w-147 shrink-0">
                 {/* Header */}
-                <div className="h-17.75 w-full flex items-center">
+                <div className="flex h-17.75 w-full items-center">
                   <div className="relative inline-block">
-                    <h2 className="relative z-10 font-ubuntu text-[44px] font-bold leading-none tracking-normal text-[#FFFFFF] p-2.5">
+                    <h2 className="relative z-10 p-2.5 font-ubuntu text-[44px] font-bold leading-none tracking-normal text-[#FFFFFF]">
                       Services
                     </h2>
-                    <div className="absolute -bottom-2.25 -right-4.75 w-37.25 h-8 -z-10">
+                    <div className="absolute -bottom-2.25 -right-4.75 -z-10 h-8 w-37.25">
                       <Image
                         src="/icons/experiences-orange-accent.svg"
                         alt="accent"
@@ -169,10 +163,10 @@ export default function Experiences() {
 
                 {/* Text Body */}
                 <div className="mt-8 h-45.25 w-full">
-                  <h3 className="font-ubuntu text-[32px] font-bold italic text-[#E3891F] leading-tight">
+                  <h3 className="font-ubuntu text-[32px] font-bold italic leading-tight text-[#E3891F]">
                     The Most Comprehensive Offer
                   </h3>
-                  <p className="font-open pt-3 text-[24px] font-semibold italic text-[#FFFFFF] leading-tight">
+                  <p className="pt-3 font-open text-[24px] font-semibold italic leading-tight text-[#FFFFFF]">
                     From island excursions and snorkeling to private charters
                     and special occasions, every experience is crafted to match
                     your perfect day at sea.
@@ -180,7 +174,7 @@ export default function Experiences() {
                 </div>
               </div>
 
-              {topCards.map((card) => (
+              {topCard.map((card) => (
                 <ExperienceCard
                   key={card.id}
                   icon={card.icon}
@@ -189,8 +183,8 @@ export default function Experiences() {
               ))}
             </div>
 
-            {/* ROW 2: 4 Cards */}
-            <div className="mt-11 flex gap-6">
+            {/* ROW 2: 3 Cards */}
+            <div className="mt-6 flex gap-6">
               {middleCards.map((card) => (
                 <ExperienceCard
                   key={card.id}
@@ -200,8 +194,7 @@ export default function Experiences() {
               ))}
             </div>
 
-            {/* ROW 3: New "Resort Packages" Card (Left Aligned) */}
-            {/* Added 'mt-6' or 'mt-11' for consistent spacing. Using mt-6 to keep it tighter, or mt-11 for uniform gap. Let's use mt-6. */}
+            {/* ROW 3: 3 Cards */}
             <div className="mt-6 flex gap-6">
               {bottomCards.map((card) => (
                 <ExperienceCard
@@ -214,48 +207,50 @@ export default function Experiences() {
           </div>
 
           {/* --- MOBILE LAYOUT --- */}
-          <div className="block xl:hidden w-full">
-            <div className="flex justify-start mb-8">
-              <div className="relative inline-block">
-                <h2 className="relative z-10 font-ubuntu text-[32px] font-bold leading-none tracking-normal text-[#FFFFFF] p-2.5 pl-0">
-                  Experiences
-                </h2>
-                <div className="absolute -bottom-1 -right-4 w-30 h-6.5 -z-10">
-                  <Image
-                    src="/icons/experiences-orange-accent.svg"
-                    alt="accent"
-                    width={149}
-                    height={32}
-                    className="w-full h-auto"
-                  />
+          <div className="block w-full xl:hidden">
+            {/* Mobile Header Box with #144B51 background and 24px padding */}
+            <div className="mb-6 rounded-[20px] bg-[#004C55E5] bg-blend-multiply p-[24px]">
+              <div className="mb-8 flex justify-start">
+                <div className="relative inline-block">
+                  <h2 className="relative z-10 p-2.5 pl-0 font-ubuntu text-[32px] font-bold leading-none tracking-normal text-[#FFFFFF]">
+                    Services
+                  </h2>
+                  {/* FIX: Changed -z-10 to z-0 so it no longer hides behind the bg-[#004C55E5] wrapper */}
+                  <div className="absolute -bottom-[6px] -right-[30px] z-0 h-6.5 w-30">
+                    <Image
+                      src="/icons/experiences-orange-accent.svg"
+                      alt="accent"
+                      width={149}
+                      height={32}
+                      className="h-auto w-full"
+                    />
+                  </div>
                 </div>
+              </div>
+
+              <div className="text-left">
+                <h3 className="mb-4 font-ubuntu text-[24px] font-bold italic leading-tight text-[#F2992F]">
+                  The Most <br></br>Comprehensive Offer
+                </h3>
+                <p className="font-open text-[18px] font-semibold italic leading-tight text-[#FFFFFF] opacity-90">
+                  From island excursions and snorkeling to private charters and
+                  special occasions, every experience is crafted to match your
+                  perfect day at sea.
+                </p>
               </div>
             </div>
 
-            <div className="mb-10 text-left">
-              <h3 className="font-ubuntu text-[24px] font-bold italic text-[#F2992F] leading-tight mb-4">
-                The Most Comprehensive Offer
-              </h3>
-              <p className="font-open text-[18px] font-semibold italic text-[#FFFFFF] leading-tight opacity-90">
-                From island excursions and snorkeling to private charters and
-                special occasions, every experience is crafted to match your
-                perfect day at sea.
-              </p>
-            </div>
-
-            <Swiper
-              spaceBetween={20}
-              slidesPerView={1.15}
-              centeredSlides={true}
-              loop={true}
-              className="w-full overflow-visible!"
-            >
+            {/* Mobile Cards Column */}
+            {/* REVERTED: Removed items-center */}
+            <div className="flex flex-col gap-6">
               {experiencesData.map((card) => (
-                <SwiperSlide key={card.id}>
-                  <ExperienceCard icon={card.icon} title={card.title} />
-                </SwiperSlide>
+                <ExperienceCard
+                  key={card.id}
+                  icon={card.icon}
+                  title={card.title}
+                />
               ))}
-            </Swiper>
+            </div>
           </div>
         </div>
       </div>
