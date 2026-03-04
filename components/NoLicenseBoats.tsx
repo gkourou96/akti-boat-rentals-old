@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 
 const boats = [
   { name: "Nireus 150", image: "/images/boat-1.png" },
@@ -27,7 +25,7 @@ export default function NoLicenseBoats() {
     }
   };
 
-  // EXTRACTED: Card Component
+  // EXTRACTED: Desktop Card Component (UNTOUCHED)
   const BoatCard = ({
     boat,
     index,
@@ -49,7 +47,6 @@ export default function NoLicenseBoats() {
 
       {/* --- IDLE ELEMENTS --- */}
 
-      {/* Idle Gradient: Fades out when active */}
       {/* Idle Gradient: Fades out when active */}
       <div
         className={`absolute bottom-0 h-1/2 w-full transition-opacity duration-500 ease-in-out ${
@@ -195,7 +192,6 @@ export default function NoLicenseBoats() {
 
       <div className="relative z-10 mx-auto w-full max-w-300 px-6 xl:px-0">
         {/* HEADER */}
-        {/* Added flex-col to stack title and new subtitle vertically */}
         <div className="w-full flex flex-col items-start xl:items-center justify-start xl:justify-center mb-12 xl:mb-16">
           <div className="relative inline-block">
             <h2 className="font-ubuntu z-10 text-[32px] xl:text-[44px] font-bold leading-none tracking-normal text-[#0D4168] p-2.5 relative">
@@ -212,7 +208,6 @@ export default function NoLicenseBoats() {
             </div>
           </div>
 
-          {/* NEW SUBTITLE */}
           <p className="mt-6 max-w-3xl text-left xl:text-center font-open text-lg xl:text-xl text-[#0D4168] leading-relaxed px-2.5">
             A unique way to experience the Athens Riviera coast and nearby
             islands from the water at your own pace. Perfect for couples, family
@@ -220,33 +215,84 @@ export default function NoLicenseBoats() {
           </p>
         </div>
 
-        {/* 1. MOBILE VIEW: SWIPER */}
-        <div className="block xl:hidden w-full">
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={"auto"}
-            centeredSlides={false}
-            loop={true}
-            // FIX: Negative margin to pull swiper to screen edges
-            // FIX: slidesOffsetBefore ensures first slide starts after 24px padding
-            slidesOffsetBefore={24}
-            slidesOffsetAfter={24}
-            className="w-[calc(100%+48px)] -ml-6 overflow-visible!"
-          >
-            {boats.map((boat, index) => (
-              <SwiperSlide key={index} className="w-auto! first:ml-0">
-                <BoatCard
-                  boat={boat}
-                  index={index}
-                  isActive={activeCard === index}
-                  onClick={() => handleCardClick(index)}
+        {/* 1. MOBILE VIEW: NEW STACKED LAYOUT (Swiper Removed) */}
+        {/* Gap set to strictly 32px */}
+        <div className="flex xl:hidden flex-col gap-8 w-full">
+          {boats.map((boat, index) => (
+            <div
+              key={index}
+              className="flex flex-col w-full rounded-[20px] overflow-hidden bg-[#F9F5EB] shadow-md shrink-0"
+            >
+              {/* Image Section - Exactly 233px height */}
+              <div className="relative w-full h-58.25 shrink-0">
+                <Image
+                  src={boat.image}
+                  alt={boat.name}
+                  fill
+                  className="object-cover"
                 />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                {/* Gradient for text readability matching screenshot */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
+                <h3 className="absolute bottom-4 left-6 font-ubuntu text-[32px] font-bold text-white leading-none tracking-normal">
+                  {boat.name}
+                </h3>
+              </div>
+
+              {/* Info Section - Exactly 212px height */}
+              <div className="w-full h-53 flex flex-col p-6 shrink-0">
+                {/* Icons */}
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src="/icons/group.svg"
+                      alt="people"
+                      width={32}
+                      height={32}
+                      className="w-8 h-8"
+                    />
+                    <span className="font-ubuntu text-[24px] font-normal text-[#144B51]">
+                      5
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src="/icons/straighten.svg"
+                      alt="length"
+                      width={32}
+                      height={32}
+                      className="w-8 h-8"
+                    />
+                    <span className="font-ubuntu text-[24px] font-normal text-[#144B51]">
+                      5m
+                    </span>
+                  </div>
+                </div>
+
+                {/* Description (Updated text to match screenshot) */}
+                <p className="mt-2.5 font-open text-[18px] text-[#144B51] leading-[1.3] pr-4">
+                  Flexible and economical, perfect for quick trips and fishing.
+                </p>
+
+                {/* Pricing & Guarantee pushed to bottom */}
+                <div className="mt-3">
+                  <div className="flex justify-between w-full">
+                    <span className="font-ubuntu text-[20px] text-[#144B51]">
+                      190€ – 5h
+                    </span>
+                    <span className="font-ubuntu text-[20px] text-[#144B51]">
+                      290€ – FULL
+                    </span>
+                  </div>
+                  <div className="mt-1 font-ubuntu text-[20px] font-light text-[#F2992F]">
+                    Guarantee needed
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* 2. DESKTOP VIEW: GRID */}
+        {/* 2. DESKTOP VIEW: ORIGINAL GRID (Untouched) */}
         <div className="hidden xl:flex w-full justify-between gap-6">
           {boats.map((boat, index) => (
             <BoatCard

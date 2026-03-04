@@ -83,10 +83,10 @@ const ExperienceCard = ({
     whileHover="hover"
     animate="rest"
     // REVERTED: Changed w-[372px] back to w-full for full mobile responsiveness
-    className="flex h-[92px] w-full shrink-0 cursor-pointer flex-row items-center gap-[10px] rounded-[20px] bg-[#FFF9ECE5] p-[24px] xl:h-[261.33px] xl:w-[384px] xl:flex-col xl:items-start xl:justify-center xl:gap-0 xl:px-8 xl:py-8"
+    className="flex h-23 w-full shrink-0 cursor-pointer flex-row items-center gap-2.5 rounded-[20px] bg-[#FFF9ECE5] p-6 xl:h-[261.33px] xl:w-[384px] xl:flex-col xl:items-start xl:justify-center xl:gap-0 xl:px-8 xl:py-8"
   >
     {/* Icon Container: Mobile 44x44px | Desktop 80x80px */}
-    <div className="relative h-[44px] w-[44px] shrink-0 xl:mb-4 xl:h-20 xl:w-20">
+    <div className="relative h-11 w-11 shrink-0 xl:mb-4 xl:h-20 xl:w-20">
       <Image src={icon} alt="icon" fill className="object-contain" />
     </div>
 
@@ -137,7 +137,7 @@ export default function Experiences() {
       </div>
 
       <div className="relative z-10 mx-auto h-full max-w-360">
-        <div className="px-6 pb-[44px] pt-[44px] xl:pb-36 xl:pl-30 xl:pr-0 xl:pt-36">
+        <div className="px-6 pb-11 pt-11 xl:pb-36 xl:pl-30 xl:pr-0 xl:pt-36">
           {/* --- DESKTOP LAYOUT --- */}
           <div className="hidden xl:block">
             {/* ROW 1: Text block + 1 Card */}
@@ -209,14 +209,14 @@ export default function Experiences() {
           {/* --- MOBILE LAYOUT --- */}
           <div className="block w-full xl:hidden">
             {/* Mobile Header Box with #144B51 background and 24px padding */}
-            <div className="mb-6 rounded-[20px] bg-[#004C55E5] bg-blend-multiply p-[24px]">
+            <div className="mb-6 rounded-[20px] bg-[#004C55E5] bg-blend-multiply p-6">
               <div className="mb-8 flex justify-start">
                 <div className="relative inline-block">
                   <h2 className="relative z-10 p-2.5 pl-0 font-ubuntu text-[32px] font-bold leading-none tracking-normal text-[#FFFFFF]">
                     Services
                   </h2>
                   {/* FIX: Changed -z-10 to z-0 so it no longer hides behind the bg-[#004C55E5] wrapper */}
-                  <div className="absolute -bottom-[6px] -right-[30px] z-0 h-6.5 w-30">
+                  <div className="absolute -bottom-1.5 -right-7.5 z-0 h-6.5 w-30">
                     <Image
                       src="/icons/experiences-orange-accent.svg"
                       alt="accent"
@@ -232,7 +232,7 @@ export default function Experiences() {
                 <h3 className="mb-4 font-ubuntu text-[24px] font-bold italic leading-tight text-[#F2992F]">
                   The Most <br></br>Comprehensive Offer
                 </h3>
-                <p className="font-open text-[18px] font-semibold italic leading-tight text-[#FFFFFF] opacity-90">
+                <p className="font-open text-[24px] font-semibold italic leading-tight text-[#FFFFFF]">
                   From island excursions and snorkeling to private charters and
                   special occasions, every experience is crafted to match your
                   perfect day at sea.
