@@ -208,14 +208,12 @@ export default function Experiences() {
 
           {/* --- MOBILE LAYOUT --- */}
           <div className="block w-full xl:hidden">
-            {/* Mobile Header Box with #144B51 background and 24px padding */}
-            <div className="mb-6 rounded-[20px] bg-[#004C55E5] bg-blend-multiply p-6">
+            <div className="mb-6 rounded-[20px] bg-[#004C55E5] p-6">
               <div className="mb-8 flex justify-start">
                 <div className="relative inline-block">
                   <h2 className="relative z-10 p-2.5 pl-0 font-ubuntu text-[32px] font-bold leading-none tracking-normal text-[#FFFFFF]">
                     Services
                   </h2>
-                  {/* FIX: Changed -z-10 to z-0 so it no longer hides behind the bg-[#004C55E5] wrapper */}
                   <div className="absolute -bottom-1.5 -right-7.5 z-0 h-6.5 w-30">
                     <Image
                       src="/icons/experiences-orange-accent.svg"
@@ -229,7 +227,7 @@ export default function Experiences() {
               </div>
 
               <div className="text-left">
-                <h3 className="mb-4 font-ubuntu text-[24px] font-bold italic leading-tight text-[#F2992F]">
+                <h3 className="mb-4 font-ubuntu text-[32px] font-bold italic leading-tight text-[#F2992F]">
                   The Most <br></br>Comprehensive Offer
                 </h3>
                 <p className="font-open text-[24px] font-semibold italic leading-tight text-[#FFFFFF]">
