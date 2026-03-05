@@ -262,10 +262,9 @@ const DestinationCard = ({
               alt="Schedule"
               width={24}
               height={24}
-              className="shrink-0"
+              className="shrink-0 w-5 h-5 xl:w-6 xl:h-6"
             />
-            {/* MOBILE: 16px font | DESKTOP: 24px font */}
-            <span className="font-ubuntu text-[16px] xl:text-[20px] font-normal text-white leading-none">
+            <span className="font-ubuntu text-[15px] xl:text-[20px] font-normal text-white leading-none">
               {durationText}
             </span>
           </div>
@@ -277,10 +276,9 @@ const DestinationCard = ({
               alt="Sailing"
               width={24}
               height={24}
-              className="shrink-0"
+              className="shrink-0 w-5 h-5 xl:w-6 xl:h-6"
             />
-            {/* MOBILE: 16px font | DESKTOP: 24px font */}
-            <span className="font-ubuntu text-[16px] xl:text-[20px] font-normal text-white leading-none">
+            <span className="font-ubuntu text-[15px] xl:text-[20px] font-normal text-white leading-none">
               {distanceText}
             </span>
           </div>
