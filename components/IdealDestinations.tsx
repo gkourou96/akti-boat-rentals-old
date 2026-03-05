@@ -4,8 +4,6 @@ import Image from "next/image";
 import React, { useRef, useState } from "react";
 import DestinationModal from "./DestinationModal";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 
 interface DestinationDetail {
   label: string;
@@ -246,7 +244,8 @@ const DestinationCard = ({
       </motion.div>
 
       {/* 3. Content Container (Title & Specs) */}
-      <div className="absolute bottom-0 left-0 w-full px-8 pt-8 pb-6 z-20">
+      {/* MOBILE: 10px padding | DESKTOP: px-8 pt-8 pb-24px */}
+      <div className="absolute bottom-0 left-0 w-full p-2.5 xl:px-8 xl:pt-8 xl:pb-6 z-20">
         <div className="overflow-hidden">
           <motion.h3 className="font-ubuntu text-[24px] font-bold capitalize text-white">
             {name}
@@ -254,7 +253,8 @@ const DestinationCard = ({
         </div>
 
         {/* --- NEW SPECS ROW --- */}
-        <div className="mt-2.5 flex items-center gap-4 font-ubuntu text-[20px] font-normal text-white">
+        {/* MOBILE: tighter gap, wrap if needed | DESKTOP: 16px gap, no wrap */}
+        <div className="mt-1 xl:mt-2.5 flex flex-wrap xl:flex-nowrap items-center gap-2 xl:gap-4">
           {/* Time */}
           <div className="flex items-center gap-1">
             <Image
@@ -262,8 +262,12 @@ const DestinationCard = ({
               alt="Schedule"
               width={24}
               height={24}
+              className="shrink-0"
             />
-            <span className="leading-7">{durationText}</span>
+            {/* MOBILE: 16px font | DESKTOP: 24px font */}
+            <span className="font-ubuntu text-[16px] xl:text-[20px] font-normal text-white leading-none">
+              {durationText}
+            </span>
           </div>
 
           {/* Distance */}
@@ -273,8 +277,12 @@ const DestinationCard = ({
               alt="Sailing"
               width={24}
               height={24}
+              className="shrink-0"
             />
-            <span className="leading-7">{distanceText}</span>
+            {/* MOBILE: 16px font | DESKTOP: 24px font */}
+            <span className="font-ubuntu text-[16px] xl:text-[20px] font-normal text-white leading-none">
+              {distanceText}
+            </span>
           </div>
         </div>
       </div>
@@ -320,26 +328,20 @@ export default function IdealDestinations() {
           </div>
         </div>
 
-        <div className="block xl:hidden w-full mt-10 px-0 overflow-hidden">
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={1.2}
-            centeredSlides={true}
-            loop={true}
-            className="w-full overflow-visible!"
-          >
-            {destinations.map((dest) => (
-              <SwiperSlide key={dest.id}>
-                <DestinationCard
-                  {...dest}
-                  className="w-full! h-100!"
-                  onClick={() => handleCardClick(dest)}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+        {/* --- MOBILE VIEW: 2-COLUMN GRID (Visible < xl) --- */}
+        <div className="grid xl:hidden grid-cols-2 gap-4 w-full mt-10 px-6">
+          {destinations.map((dest) => (
+            <DestinationCard
+              key={dest.id}
+              {...dest}
+              // !w-full and !h-[260px] forcefully override the inline style width/height for mobile only
+              className="w-full! h-65!"
+              onClick={() => handleCardClick(dest)}
+            />
+          ))}
         </div>
 
+        {/* --- DESKTOP VIEW: ORIGINAL GRID (Visible >= xl) --- */}
         <div className="hidden xl:flex mt-16 w-full justify-center">
           <div className="flex h-169.5 w-300 gap-3">
             <div className="flex flex-col gap-3">
