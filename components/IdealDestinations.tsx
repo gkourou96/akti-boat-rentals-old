@@ -230,13 +230,13 @@ const DestinationCard = ({
         }}
       />
 
-      {/* 2. Custom "VIEW" Cursor Follower */}
+      {/* 2. Custom "VIEW" Cursor Follower - HIDDEN ON MOBILE */}
       <motion.div
         style={{
           x: mouseX,
           y: mouseY,
         }}
-        className="pointer-events-none absolute left-0 top-0 z-30 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F2992F] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="hidden xl:block pointer-events-none absolute left-0 top-0 z-30 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F2992F] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       >
         <span className="flex h-full w-full items-center justify-center font-ubuntu text-sm font-bold uppercase leading-none tracking-widest text-white">
           View
@@ -254,7 +254,7 @@ const DestinationCard = ({
 
         {/* --- NEW SPECS ROW --- */}
         {/* MOBILE: tighter gap, wrap if needed | DESKTOP: 16px gap, no wrap */}
-        <div className="mt-1 xl:mt-2.5 flex flex-wrap xl:flex-nowrap items-center gap-2 xl:gap-4">
+        <div className="mt-1 xl:mt-2.5 flex flex-wrap xl:flex-nowrap items-center gap-1.5 xl:gap-4">
           {/* Time */}
           <div className="flex items-center gap-1">
             <Image
@@ -264,7 +264,7 @@ const DestinationCard = ({
               height={24}
               className="shrink-0 w-5 h-5 xl:w-6 xl:h-6"
             />
-            <span className="font-ubuntu text-[15px] xl:text-[20px] font-normal text-white leading-none">
+            <span className="font-ubuntu text-[14px] xl:text-[20px] font-normal text-white leading-none">
               {durationText}
             </span>
           </div>
@@ -278,7 +278,7 @@ const DestinationCard = ({
               height={24}
               className="shrink-0 w-5 h-5 xl:w-6 xl:h-6"
             />
-            <span className="font-ubuntu text-[15px] xl:text-[20px] font-normal text-white leading-none">
+            <span className="font-ubuntu text-[14px] xl:text-[20px] font-normal text-white leading-none">
               {distanceText}
             </span>
           </div>
