@@ -7,7 +7,6 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
-// 1. Define the DestinationDetail type locally or import it if you prefer
 interface DestinationDetail {
   label: string;
   value: string;
@@ -91,7 +90,7 @@ const destinations = [
     image: "/images/destinations/athenian-riviera.png",
     details: [
       { label: "Distance", value: "5-10 Nautical Miles" },
-      { label: "Duration", value: "Half Day" },
+      { label: "Duration", value: "0" },
     ],
   },
   {
@@ -136,6 +135,7 @@ const DestinationCard = ({
   height,
   name,
   image,
+  details,
   onClick,
   className = "",
 }: {
@@ -143,11 +143,22 @@ const DestinationCard = ({
   height: number;
   name: string;
   image: string;
+  details: DestinationDetail[];
   onClick: () => void;
   className?: string;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isFirstEnter = useRef(true); // NEW: Track first enter
+  const isFirstEnter = useRef(true);
+
+  // Parse and format data exactly for the design
+  const durationRaw = details?.find((d) => d.label === "Duration")?.value || "";
+  const distanceRaw = details?.find((d) => d.label === "Distance")?.value || "";
+
+  const durationText =
+    durationRaw === "Half Day"
+      ? durationRaw
+      : durationRaw.replace(" Minutes", "'").replace(/\s*-\s*/g, "'-");
+  const distanceText = distanceRaw.replace(" Nautical Miles", "NM");
 
   // 1. Mouse Tracking Logic
   const x = useMotionValue(0);
@@ -158,7 +169,6 @@ const DestinationCard = ({
   const mouseX = useSpring(x, springConfig);
   const mouseY = useSpring(y, springConfig);
 
-  // Helper to calculate coordinates
   const getMousePos = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return { x: 0, y: 0 };
     const rect = ref.current.getBoundingClientRect();
@@ -172,14 +182,12 @@ const DestinationCard = ({
     const pos = getMousePos(e);
 
     if (isFirstEnter.current) {
-      // First time: bypass spring entirely
-      x.jump(pos.x); // NEW: jump instead of set
+      x.jump(pos.x);
       y.jump(pos.y);
       mouseX.jump(pos.x);
       mouseY.jump(pos.y);
       isFirstEnter.current = false;
     } else {
-      // Subsequent times: use normal spring
       x.set(pos.x);
       y.set(pos.y);
       mouseX.set(pos.x);
@@ -194,7 +202,7 @@ const DestinationCard = ({
   };
 
   const handleMouseLeave = () => {
-    isFirstEnter.current = true; // Reset for next hover
+    isFirstEnter.current = true;
   };
 
   return (
@@ -219,7 +227,7 @@ const DestinationCard = ({
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(13, 65, 104, 0) 49.04%, #0D4168 100%)",
+            "linear-gradient(180deg, rgba(20, 75, 81, 0) 49.04%, #1E6F73 100%)",
           mixBlendMode: "multiply",
         }}
       />
@@ -229,24 +237,46 @@ const DestinationCard = ({
         style={{
           x: mouseX,
           y: mouseY,
-          translateX: "-50%",
-          translateY: "-50%",
         }}
-        className="pointer-events-none absolute left-0 top-0 z-30 h-20 w-20 rounded-full bg-[#F2992F] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute left-0 top-0 z-30 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F2992F] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       >
         <span className="flex h-full w-full items-center justify-center font-ubuntu text-sm font-bold uppercase leading-none tracking-widest text-white">
           View
         </span>
       </motion.div>
 
-      {/* 3. Content Container (Title & Underline) */}
-      <div className="absolute bottom-0 left-0 w-full p-8 z-20">
+      {/* 3. Content Container (Title & Specs) */}
+      <div className="absolute bottom-0 left-0 w-full px-8 pt-8 pb-6 z-20">
         <div className="overflow-hidden">
           <motion.h3 className="font-ubuntu text-[24px] font-bold capitalize text-white">
             {name}
           </motion.h3>
         </div>
-        <div className="mt-2 h-0.5 w-0 bg-[#F2992F] transition-all duration-700 ease-out group-hover:w-16" />
+
+        {/* --- NEW SPECS ROW --- */}
+        <div className="mt-2.5 flex items-center gap-4 font-ubuntu text-[20px] font-normal text-white">
+          {/* Time */}
+          <div className="flex items-center gap-1">
+            <Image
+              src="/icons/schedule.svg"
+              alt="Schedule"
+              width={24}
+              height={24}
+            />
+            <span className="leading-7">{durationText}</span>
+          </div>
+
+          {/* Distance */}
+          <div className="flex items-center gap-1">
+            <Image
+              src="/icons/sailing.svg"
+              alt="Sailing"
+              width={24}
+              height={24}
+            />
+            <span className="leading-7">{distanceText}</span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -290,8 +320,6 @@ export default function IdealDestinations() {
           </div>
         </div>
 
-        {/* --- MOBILE VIEW: SWIPER (Visible < xl) --- */}
-        {/* FIXED: Added 'overflow-hidden' here to prevent the Swiper from causing layout shifts/scrollbars */}
         <div className="block xl:hidden w-full mt-10 px-0 overflow-hidden">
           <Swiper
             spaceBetween={20}
@@ -312,15 +340,9 @@ export default function IdealDestinations() {
           </Swiper>
         </div>
 
-        {/* --- DESKTOP VIEW: ORIGINAL GRID (Visible >= xl) --- */}
-        {/* FIX: Replaced "xl:block pl-30" with "xl:flex justify-center w-full" 
-            This dynamically centers the 1200px grid on any desktop viewport rather than 
-            forcing a 120px hard left indent that overflows 1366px/1280px laptops. */}
         <div className="hidden xl:flex mt-16 w-full justify-center">
           <div className="flex h-169.5 w-300 gap-3">
-            {/* --- LEFT BLOCK --- */}
             <div className="flex flex-col gap-3">
-              {/* ROW 1 */}
               <div className="flex gap-3">
                 <DestinationCard
                   {...destinations[0]}
@@ -343,7 +365,6 @@ export default function IdealDestinations() {
                 </div>
               </div>
 
-              {/* ROW 2 */}
               <div className="flex gap-3">
                 <DestinationCard
                   {...destinations[4]}
@@ -368,7 +389,6 @@ export default function IdealDestinations() {
               </div>
             </div>
 
-            {/* --- RIGHT COLUMN --- */}
             <div className="flex flex-col gap-3">
               <DestinationCard
                 {...destinations[8]}

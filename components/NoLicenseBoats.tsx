@@ -238,8 +238,8 @@ export default function NoLicenseBoats() {
                 </h3>
               </div>
 
-              {/* Info Section - Exactly 212px height */}
-              <div className="w-full h-53 flex flex-col p-6 shrink-0">
+              {/* Info Section - Changed h-53 to h-auto to prevent clipping and respect 24px bottom padding */}
+              <div className="w-full h-auto flex flex-col p-6 shrink-0">
                 {/* Icons */}
                 <div className="flex items-center gap-6">
                   <div className="flex items-center gap-2">
