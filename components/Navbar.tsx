@@ -93,7 +93,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 flex flex-col items-center w-full pt-0 pointer-events-none transition-transform duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 flex flex-col items-center w-full pt-0 px-3 xl:px-0 pointer-events-none transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
