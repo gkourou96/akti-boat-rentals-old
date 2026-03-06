@@ -98,7 +98,7 @@ export default function Navbar() {
       }`}
     >
       {/* UPDATED: Replaced the inset orange borders with shadow-[0px_4px_4px_0px_#0000001A] */}
-      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-[#F9F5EB] shadow-[0px_4px_4px_0px_#0000001A] px-6 py-4 xl:max-w-300 rounded-b-[60px] rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
+      <div className="pointer-events-auto relative flex w-full items-center justify-between bg-[#F9F5EB] shadow-[0px_4px_4px_0px_#0000001A] px-6 py-4 xl:max-w-300 rounded-b-[30px] xl:rounded-b-[60px] rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
         <Link href="/" className="shrink-0">
           <Image
             src="/images/logo.svg"
