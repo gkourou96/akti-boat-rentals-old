@@ -12,11 +12,15 @@ import {
 } from "@react-three/fiber";
 import { useTexture, useFBO, shaderMaterial } from "@react-three/drei";
 
+// Global store for raw, normalized touch/mouse coordinates
+// We use this to bypass the occasionally unreliable state.pointer on mobile
+const globalPointer = { x: 0.5, y: 0.5 };
+
 // --- 1. SIMULATION SHADER (The "Physics Engine") ---
 const SimulationMaterial = shaderMaterial(
   {
     uTexture: new THREE.Texture(),
-    uMouse: new THREE.Vector2(0, 0), // This will now be the STERN position
+    uMouse: new THREE.Vector2(0, 0),
     uPrevMouse: new THREE.Vector2(0, 0),
     uVelocity: new THREE.Vector2(0, 0),
     uResolution: new THREE.Vector2(0, 0),
@@ -47,94 +51,64 @@ const SimulationMaterial = shaderMaterial(
       vec2 uv = vUv;
       vec2 aspect = vec2(uResolution.x / uResolution.y, 1.0);
       
-      // Decay the previous frame
       vec4 past = texture2D(uTexture, uv) * 0.96;
 
       vec2 mouseUV = uMouse;
       float speed = length(uVelocity) * 100.0;
       
-      // Only create wake if moving
       if (speed < 0.005) {
         gl_FragColor = past;
         return;
       }
 
-      // Direction of movement
       vec2 dir = normalize(uVelocity);
-      
-      // Vector from boat to current pixel
       vec2 toPixel = (uv - mouseUV) * aspect;
       
-      // Distance behind the boat (along movement direction)
       float distAlongPath = dot(toPixel, -dir);
       
-      // Distance perpendicular to movement
       vec2 perpDir = vec2(-dir.y, dir.x);
       float distPerpendicular = abs(dot(toPixel, perpDir));
       
-      // KELVIN WAKE ANGLE: 19.47 degrees (classic physics)
-      float kelvinAngle = 0.34; // radians (~19.47°)
+      float kelvinAngle = 0.34;
       
-      // V-shaped wake edges with CURLY/WAVY PATH
       float baseSpread = distAlongPath * tan(kelvinAngle);
       
-      // Add multiple sine waves to make the V-lines curly
-      // Large waves - main curl pattern
       float wave1 = sin(distAlongPath * 8.0 + uTime * 1.5) * 0.025;
-      // Medium waves - secondary ripples
       float wave2 = sin(distAlongPath * 15.0 - uTime * 2.0) * 0.015;
-      // Small waves - fine detail
       float wave3 = sin(distAlongPath * 25.0 + uTime * 3.0) * 0.008;
       
-      // Combine waves - makes the line itself wiggle
       float curlAmount = wave1 + wave2 + wave3;
-      
-      // Apply the curl to the spread (makes the V-lines wavy)
       float expectedSpread = baseSpread + curlAmount;
       
-      // Distance from the V-line
       float distFromVLine = abs(distPerpendicular - expectedSpread);
       
-      // TURBULENT WAKE EDGES - Multiple noise frequencies for realism
-      // High frequency chop
       float noise1 = rand(uv * 30.0 + uTime * 0.8) * 0.5;
-      // Medium frequency waves
       float noise2 = rand(uv * 12.0 - uTime * 0.3) * 0.8;
-      // Low frequency undulation
       float noise3 = sin(distAlongPath * 15.0 + uTime * 2.0) * 0.3;
       
-      // Combine noise layers - creates organic, wavy edges
       float edgeNoise = (noise1 * 0.4 + noise2 * 0.4 + noise3 * 0.2) * 0.015;
       
-      // Add noise to the distance check - makes edges wavy
       float turbulentDist = distFromVLine + edgeNoise;
       
-      // Sharp but irregular wake edge
       float edgeSharpness = 0.008 * (1.0 + speed * 2.0);
       float vWake = smoothstep(edgeSharpness, 0.0, turbulentDist);
       
-      // Only render wake behind the boat
       vWake *= smoothstep(-0.02, 0.0, distAlongPath);
-      
-      // Fade with distance
       vWake *= smoothstep(0.3, 0.0, distAlongPath);
       
-      // Add breaking wave patterns - intermittent foam chunks
       float breakingWaves = rand(vec2(distAlongPath * 8.0, distPerpendicular * 5.0)) * rand(vec2(uTime * 0.5, distAlongPath * 3.0));
       breakingWaves = smoothstep(0.7, 0.9, breakingWaves) * 0.3;
       vWake += breakingWaves * smoothstep(0.15, 0.0, distAlongPath);
       
-      // Center turbulence (darker disturbed water)
       float centerTurbulence = 0.0;
       if (distAlongPath > 0.0 && distPerpendicular < expectedSpread) {
         centerTurbulence = smoothstep(expectedSpread, 0.0, distPerpendicular) * 0.4;
         centerTurbulence *= smoothstep(0.15, 0.0, distAlongPath);
       }
       
-      // Combine: R = white foam edges, G = dark turbulent center
       vec4 currentWake = vec4(
-        vWake * (0.8 + speed * 0.2),  // Edge foam
-        centerTurbulence,              // Center turbulence
+        vWake * (0.8 + speed * 0.2),
+        centerTurbulence,
         0.0, 
         1.0
       );
@@ -167,27 +141,20 @@ const DisplayMaterial = shaderMaterial(
     void main() {
       vec2 uv = vUv;
       
-      // Sample the physics simulation
       vec4 wakeSim = texture2D(uMask, uv);
-      float edgeFoam = wakeSim.r;        // White foam on V-edges
-      float centerDark = wakeSim.g;      // Dark turbulent water
+      float edgeFoam = wakeSim.r;
+      float centerDark = wakeSim.g;
       
-      // Base distortion from wake edges
       vec2 displacement = vec2(edgeFoam * 0.02);
       vec2 distortedUV = uv - displacement;
       vec4 imageColor = texture2D(uTexture, distortedUV);
       
-      // White foam color (slight blue tint like in screenshot)
       vec4 foamColor = vec4(0.9, 0.95, 1.0, 1.0);
-      
-      // Dark turbulent water (slightly darker/greener than base)
       vec4 darkWater = imageColor * vec4(0.7, 0.75, 0.8, 1.0);
       
-      // Apply foam to edges (sharp, bright)
       float foamMask = smoothstep(0.3, 0.7, edgeFoam);
       vec4 withFoam = mix(imageColor, foamColor, foamMask * 0.9);
       
-      // Apply darker turbulence in center
       gl_FragColor = mix(withFoam, darkWater, centerDark);
     }
   `,
@@ -200,7 +167,6 @@ const FluidSystem = () => {
   const { viewport, gl, size } = useThree();
   const texture = useTexture("/images/akti.jpg");
 
-  // Ping-Pong Buffers
   const simTargetA = useFBO(size.width / 4, size.height / 4, {
     minFilter: THREE.LinearFilter,
     magFilter: THREE.LinearFilter,
@@ -222,48 +188,35 @@ const FluidSystem = () => {
 
   const frameRef = useRef(0);
 
-  // PHYSICS STATE
-  // We mirror the DOM boat logic here to keep them perfectly synced
-  const position = useRef(new THREE.Vector2(0.5, 0.5)); // Current Lagged Pos
-  const target = useRef(new THREE.Vector2(0.5, 0.5)); // Real Mouse Pos
+  const position = useRef(new THREE.Vector2(0.5, 0.5));
+  const target = useRef(new THREE.Vector2(0.5, 0.5));
   const velocity = useRef(new THREE.Vector2(0, 0));
 
   useFrame((state) => {
-    // 1. SYNC PHYSICS (Match the DOM Boat)
-    const mx = (state.pointer.x + 1) / 2;
-    const my = (state.pointer.y + 1) / 2;
-    target.current.set(mx, my);
+    // 1. SYNC PHYSICS: Force target to use our globally mapped coordinates
+    target.current.set(globalPointer.x, globalPointer.y);
 
-    // Calculate Lag (Lerp 0.1 matches the BoatCursor)
     const oldPos = position.current.clone();
     position.current.lerp(target.current, 0.1);
 
-    // Calculate Velocity vector
     velocity.current.subVectors(position.current, oldPos);
 
     if (!simMaterialRef.current || !displayMaterialRef.current) return;
 
-    // 2. STERN CALCULATION (The Fix)
-    // We need to emit the wake BEHIND the boat.
-    // Normalized negative velocity vector * offset distance
     const speed = velocity.current.length();
     let sternPos = position.current.clone();
 
     if (speed > 0.001) {
       const dir = velocity.current.clone().normalize();
-      // Offset: Pushes the wake generator back opposite to movement
-      // 0.04 is roughly half the boat size in UV space
       const offset = dir.multiplyScalar(0.04);
       sternPos.sub(offset);
     }
 
-    // 3. SIMULATION UPDATE
     simMaterialRef.current.uMouse = sternPos;
     simMaterialRef.current.uVelocity = velocity.current;
     simMaterialRef.current.uTime = state.clock.elapsedTime;
     simMaterialRef.current.uResolution.set(size.width, size.height);
 
-    // Swap Buffers
     const writeBuffer = frameRef.current % 2 === 0 ? simTargetA : simTargetB;
     const readBuffer = frameRef.current % 2 === 0 ? simTargetB : simTargetA;
 
@@ -273,7 +226,6 @@ const FluidSystem = () => {
     gl.render(sceneRef.current, cameraRef.current);
     gl.setRenderTarget(null);
 
-    // 4. DISPLAY UPDATE
     displayMaterialRef.current.uMask = writeBuffer.texture;
     frameRef.current++;
   });
@@ -298,7 +250,7 @@ const FluidSystem = () => {
   );
 };
 
-// --- 4. BOAT CURSOR (Updated for Touch Logic) ---
+// --- 4. BOAT CURSOR ---
 const BoatCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const boatRef = useRef<HTMLDivElement>(null);
@@ -308,7 +260,6 @@ const BoatCursor = () => {
   const targetPos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    // Helper to update the target position universally
     const updatePosition = (clientX: number, clientY: number) => {
       const section = document.querySelector("section");
       if (section) {
@@ -321,6 +272,12 @@ const BoatCursor = () => {
           clientY <= rect.bottom
         ) {
           targetPos.current = { x: clientX, y: clientY };
+
+          // Map to 0-1 range for the WebGL Shader
+          globalPointer.x = (clientX - rect.left) / rect.width;
+          // Invert Y for WebGL (which starts 0 at the bottom)
+          globalPointer.y = 1.0 - (clientY - rect.top) / rect.height;
+
           if (cursorRef.current) {
             cursorRef.current.style.opacity = "1";
           }
@@ -332,12 +289,10 @@ const BoatCursor = () => {
       }
     };
 
-    // Mouse handlers
     const onMouseMove = (e: MouseEvent) => {
       updatePosition(e.clientX, e.clientY);
     };
 
-    // Touch handlers
     const onTouchMove = (e: TouchEvent) => {
       if (e.touches && e.touches.length > 0) {
         updatePosition(e.touches[0].clientX, e.touches[0].clientY);
@@ -346,7 +301,7 @@ const BoatCursor = () => {
 
     const onTouchEnd = () => {
       if (cursorRef.current) {
-        cursorRef.current.style.opacity = "0"; // Hide boat when finger lifts
+        cursorRef.current.style.opacity = "0";
       }
     };
 
@@ -357,7 +312,6 @@ const BoatCursor = () => {
 
     let frameId: number;
     const animate = () => {
-      // Matches the shader lerp (0.1)
       currentPos.current.x +=
         (targetPos.current.x - currentPos.current.x) * 0.1;
       currentPos.current.y +=
@@ -414,13 +368,11 @@ const BoatCursor = () => {
 export default function InteractiveBanner() {
   return (
     <section
-      // RESTORED: Desktop uses xl:h-[calc(100dvh)] and xl:touch-auto. Mobile uses h-[50dvh] and touch-none.
-      className="relative h-[50dvh] xl:h-[calc(100dvh)] w-full overflow-hidden bg-[#0D4168] cursor-none touch-none xl:touch-auto"
+      // CHANGED: Mobile is now h-[75dvh]. Desktop remains xl:h-[calc(100dvh)]
+      className="relative h-[75dvh] xl:h-[calc(100dvh)] w-full overflow-hidden bg-[#0D4168] cursor-none touch-none xl:touch-auto"
     >
-      {/* Universally rendered cursor */}
       <BoatCursor />
 
-      {/* Universally rendered Canvas effect */}
       <div className="absolute inset-0 z-0">
         <Canvas>
           <FluidSystem />
@@ -428,7 +380,7 @@ export default function InteractiveBanner() {
       </div>
 
       <div className="pointer-events-none relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
-        {/* RESTORED: Desktop uses xl:h-[40vh] and removes the margin offset with xl:mt-0 */}
+        {/* CHANGED: Container maintains the 50% relative height to center within the new 75dvh space */}
         <div className="relative w-full max-w-[85vw] md:max-w-[70vw] lg:max-w-[50vw] h-[50%] xl:h-[40vh] mix-blend-overlay mt-16 xl:mt-0">
           <Image
             src="/icons/final.svg"
