@@ -149,10 +149,14 @@ const SimulationMaterial = shaderMaterial(
 );
 
 // --- 2. DISPLAY SHADER (The "Visuals") ---
+// --- 2. DISPLAY SHADER (The "Visuals") ---
 const DisplayMaterial = shaderMaterial(
   {
     uTexture: new THREE.Texture(),
     uMask: new THREE.Texture(),
+    // ADDED: Track screen and image sizes to prevent stretching
+    uResolution: new THREE.Vector2(1, 1),
+    uImageResolution: new THREE.Vector2(1920, 1080),
   },
   // Vertex
   `
@@ -162,32 +166,44 @@ const DisplayMaterial = shaderMaterial(
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
-  // Fragment - REALISTIC WAKE RENDERING
+  // Fragment - REALISTIC WAKE RENDERING WITH "OBJECT-FIT: COVER"
   `
     uniform sampler2D uTexture;
     uniform sampler2D uMask;
+    uniform vec2 uResolution;
+    uniform vec2 uImageResolution;
     varying vec2 vUv;
 
     void main() {
-      vec2 uv = vUv;
+      // --- NEW: Calculate object-fit: cover UVs ---
+      vec2 ratio = vec2(
+        min((uResolution.x / uResolution.y) / (uImageResolution.x / uImageResolution.y), 1.0),
+        min((uResolution.y / uResolution.x) / (uImageResolution.y / uImageResolution.x), 1.0)
+      );
       
-      // Sample the physics simulation
-      vec4 wakeSim = texture2D(uMask, uv);
+      vec2 coverUv = vec2(
+        vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
+        vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
+      );
+      // --------------------------------------------
+      
+      // Sample the physics simulation (keep using vUv so the wake matches the screen)
+      vec4 wakeSim = texture2D(uMask, vUv);
       float edgeFoam = wakeSim.r;        
       float centerDark = wakeSim.g;      
       
-      // Base distortion from wake edges
+      // Base distortion from wake edges (Applied to our new coverUv)
       vec2 displacement = vec2(edgeFoam * 0.02);
-      vec2 distortedUV = uv - displacement;
+      vec2 distortedUV = coverUv - displacement;
       vec4 imageColor = texture2D(uTexture, distortedUV);
       
-      // White foam color (slight blue tint like in screenshot)
+      // White foam color
       vec4 foamColor = vec4(0.9, 0.95, 1.0, 1.0);
       
-      // Dark turbulent water (slightly darker/greener than base)
+      // Dark turbulent water
       vec4 darkWater = imageColor * vec4(0.7, 0.75, 0.8, 1.0);
       
-      // Apply foam to edges (sharp, bright)
+      // Apply foam to edges
       float foamMask = smoothstep(0.3, 0.7, edgeFoam);
       vec4 withFoam = mix(imageColor, foamColor, foamMask * 0.9);
       
@@ -274,7 +290,19 @@ const FluidSystem = () => {
     gl.render(sceneRef.current, cameraRef.current);
     gl.setRenderTarget(null);
 
+    // 4. DISPLAY UPDATE
     displayMaterialRef.current.uMask = writeBuffer.texture;
+
+    // --- NEW: Pass dimensions to the display shader to fix mobile stretching ---
+    displayMaterialRef.current.uResolution.set(size.width, size.height);
+
+    // FIX: Tell TypeScript to ignore the strict typing on the texture image
+    if (texture && texture.image) {
+      const img = texture.image as any;
+      displayMaterialRef.current.uImageResolution.set(img.width, img.height);
+    }
+    // --------------------------------------------------------------------------
+
     frameRef.current++;
   });
 
