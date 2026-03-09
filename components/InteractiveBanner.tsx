@@ -13,7 +13,7 @@ import {
 import { useTexture, useFBO, shaderMaterial } from "@react-three/drei";
 
 // Global store for raw, normalized touch/mouse coordinates.
-// This safely bridges the React DOM events to the WebGL Canvas without relying on R3F's internal pointer which gets swallowed on mobile!
+// We use this to bypass React's synthetic events which get swallowed by mobile browsers!
 const pointerState = {
   x: -1000,
   y: -1000,
@@ -26,7 +26,7 @@ const pointerState = {
 const SimulationMaterial = shaderMaterial(
   {
     uTexture: new THREE.Texture(),
-    uMouse: new THREE.Vector2(0, 0),
+    uMouse: new THREE.Vector2(0, 0), // This will now be the STERN position
     uPrevMouse: new THREE.Vector2(0, 0),
     uVelocity: new THREE.Vector2(0, 0),
     uResolution: new THREE.Vector2(0, 0),
@@ -374,32 +374,63 @@ const BoatCursor = () => {
 // --- 5. MAIN EXPORT ---
 export default function InteractiveBanner() {
   const sectionRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Directly handle coordinate updates relative to the section's actual size
-  const updateCoordinates = (clientX: number, clientY: number) => {
-    if (!sectionRef.current) return;
-    const rect = sectionRef.current.getBoundingClientRect();
+  useEffect(() => {
+    const overlay = overlayRef.current;
+    const section = sectionRef.current;
+    if (!overlay || !section) return;
 
-    pointerState.x = clientX;
-    pointerState.y = clientY;
+    // NATIVE DOM LISTENER UPDATE: Bypassing React's synthetic events entirely for mobile
+    const updatePos = (clientX: number, clientY: number) => {
+      const rect = section.getBoundingClientRect();
+      pointerState.x = clientX;
+      pointerState.y = clientY;
+      pointerState.normX = (clientX - rect.left) / rect.width;
+      pointerState.normY = 1.0 - (clientY - rect.top) / rect.height;
+      pointerState.isActive = true;
+    };
 
-    // Map to 0-1 range for the WebGL Shader
-    pointerState.normX = (clientX - rect.left) / rect.width;
-    // Invert Y for WebGL (which starts 0 at the bottom)
-    pointerState.normY = 1.0 - (clientY - rect.top) / rect.height;
+    // Mobile Touch Events
+    const onTouchStart = (e: TouchEvent) => {
+      updatePos(e.touches[0].clientX, e.touches[0].clientY);
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        updatePos(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+    const onTouchEnd = () => {
+      pointerState.isActive = false;
+    };
 
-    pointerState.isActive = true;
-  };
+    // Desktop Mouse Events
+    const onMouseMove = (e: MouseEvent) => {
+      updatePos(e.clientX, e.clientY);
+    };
+    const onMouseLeave = () => {
+      pointerState.isActive = false;
+    };
 
-  const handleMouseMove = (e: React.MouseEvent) =>
-    updateCoordinates(e.clientX, e.clientY);
-  const handleTouchStart = (e: React.TouchEvent) =>
-    updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
-  const handleTouchMove = (e: React.TouchEvent) =>
-    updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
-  const handleEnd = () => {
-    pointerState.isActive = false;
-  };
+    // Bind events natively directly to the transparent shield
+    overlay.addEventListener("touchstart", onTouchStart, { passive: true });
+    overlay.addEventListener("touchmove", onTouchMove, { passive: true });
+    overlay.addEventListener("touchend", onTouchEnd);
+    overlay.addEventListener("touchcancel", onTouchEnd);
+
+    overlay.addEventListener("mousemove", onMouseMove);
+    overlay.addEventListener("mouseleave", onMouseLeave);
+
+    return () => {
+      overlay.removeEventListener("touchstart", onTouchStart);
+      overlay.removeEventListener("touchmove", onTouchMove);
+      overlay.removeEventListener("touchend", onTouchEnd);
+      overlay.removeEventListener("touchcancel", onTouchEnd);
+
+      overlay.removeEventListener("mousemove", onMouseMove);
+      overlay.removeEventListener("mouseleave", onMouseLeave);
+    };
+  }, []);
 
   return (
     <section
@@ -410,26 +441,20 @@ export default function InteractiveBanner() {
       <BoatCursor />
 
       <div className="absolute inset-0 z-0">
-        {/* ADDED: pointerEvents: 'none' ensures R3F doesn't steal touches on mobile */}
+        {/* pointerEvents none guarantees Canvas won't try (and fail) to steal touch inputs natively */}
         <Canvas style={{ pointerEvents: "none" }}>
           <FluidSystem />
         </Canvas>
       </div>
 
-      {/* DEDICATED HIT AREA: This invisible layer perfectly catches all touches and mouse movements */}
-      {/* touch-none prevents mobile from scrolling only when dragging inside this section */}
+      {/* DEDICATED HIT AREA: This invisible glass shield safely grabs touches & passes them into the R3F engine */}
+      {/* touch-none is what prevents the phone from scrolling downwards while you are swiping on the hero */}
       <div
+        ref={overlayRef}
         className="absolute inset-0 z-20 touch-none xl:touch-auto"
-        onMouseMove={handleMouseMove}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleEnd}
-        onTouchCancel={handleEnd}
-        onMouseLeave={handleEnd}
       />
 
       <div className="pointer-events-none relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
-        {/* Container maintains the 50% relative height to center within the new 75dvh space */}
         <div className="relative w-full max-w-[85vw] md:max-w-[70vw] lg:max-w-[50vw] h-[50%] xl:h-[40vh] mix-blend-overlay mt-16 xl:mt-0">
           <Image
             src="/icons/final.svg"
