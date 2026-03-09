@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useMemo, useEffect, useState } from "react";
-import Image from "next/image"; // Ensure Image is imported
+import Image from "next/image";
 import * as THREE from "three";
 import {
   Canvas,
@@ -298,7 +298,7 @@ const FluidSystem = () => {
   );
 };
 
-// --- 4. BOAT CURSOR (Standard Lag Logic) ---
+// --- 4. BOAT CURSOR (Updated for Touch Logic) ---
 const BoatCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const boatRef = useRef<HTMLDivElement>(null);
@@ -308,31 +308,52 @@ const BoatCursor = () => {
   const targetPos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    const onMouseMove = (e: MouseEvent) => {
+    // Helper to update the target position universally
+    const updatePosition = (clientX: number, clientY: number) => {
       const section = document.querySelector("section");
       if (section) {
         const rect = section.getBoundingClientRect();
 
         if (
-          e.clientX >= rect.left &&
-          e.clientX <= rect.right &&
-          e.clientY >= rect.top &&
-          e.clientY <= rect.bottom
+          clientX >= rect.left &&
+          clientX <= rect.right &&
+          clientY >= rect.top &&
+          clientY <= rect.bottom
         ) {
-          targetPos.current = { x: e.clientX, y: e.clientY };
-          // ADD THIS - Show the boat
+          targetPos.current = { x: clientX, y: clientY };
           if (cursorRef.current) {
             cursorRef.current.style.opacity = "1";
           }
         } else {
-          // ADD THIS - Hide the boat when outside
           if (cursorRef.current) {
             cursorRef.current.style.opacity = "0";
           }
         }
       }
     };
+
+    // Mouse handlers
+    const onMouseMove = (e: MouseEvent) => {
+      updatePosition(e.clientX, e.clientY);
+    };
+
+    // Touch handlers
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches && e.touches.length > 0) {
+        updatePosition(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
+    const onTouchEnd = () => {
+      if (cursorRef.current) {
+        cursorRef.current.style.opacity = "0"; // Hide boat when finger lifts
+      }
+    };
+
     window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("touchstart", onTouchMove, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd);
 
     let frameId: number;
     const animate = () => {
@@ -360,6 +381,9 @@ const BoatCursor = () => {
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("touchstart", onTouchMove);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
       cancelAnimationFrame(frameId);
     };
   }, []);
@@ -388,49 +412,24 @@ const BoatCursor = () => {
 
 // --- 5. MAIN EXPORT ---
 export default function InteractiveBanner() {
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    // Detect if device is desktop (has mouse/pointer capability and screen width)
-    const checkIsDesktop = () => {
-      const hasPointer = window.matchMedia("(pointer: fine)").matches;
-      const isWideScreen = window.innerWidth >= 1024;
-      setIsDesktop(hasPointer && isWideScreen);
-    };
-
-    checkIsDesktop();
-    window.addEventListener("resize", checkIsDesktop);
-
-    return () => window.removeEventListener("resize", checkIsDesktop);
-  }, []);
-
   return (
     <section
-      className={`relative h-[calc(100dvh)] w-full overflow-hidden bg-[#0D4168] ${isDesktop ? "cursor-none" : ""}`}
+      // RESTORED: Desktop uses xl:h-[calc(100dvh)] and xl:touch-auto. Mobile uses h-[50dvh] and touch-none.
+      className="relative h-[50dvh] xl:h-[calc(100dvh)] w-full overflow-hidden bg-[#0D4168] cursor-none touch-none xl:touch-auto"
     >
-      {/* Only show interactive elements on desktop */}
-      {isDesktop && <BoatCursor />}
+      {/* Universally rendered cursor */}
+      <BoatCursor />
 
+      {/* Universally rendered Canvas effect */}
       <div className="absolute inset-0 z-0">
-        {isDesktop ? (
-          <Canvas>
-            <FluidSystem />
-          </Canvas>
-        ) : (
-          // Mobile: Just show static background image
-          <Image
-            src="/images/akti.jpg"
-            alt="Beach background"
-            fill
-            className="object-cover"
-            priority
-          />
-        )}
+        <Canvas>
+          <FluidSystem />
+        </Canvas>
       </div>
 
       <div className="pointer-events-none relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
-        {/* REPLACED: Removed the complex HTML text and replaced with the scalable SVG */}
-        <div className="relative w-[90vw] md:w-[70vw] lg:w-[50vw] h-[20vh] md:h-[30vh] lg:h-[40vh] mix-blend-overlay">
+        {/* RESTORED: Desktop uses xl:h-[40vh] and removes the margin offset with xl:mt-0 */}
+        <div className="relative w-full max-w-[85vw] md:max-w-[70vw] lg:max-w-[50vw] h-[50%] xl:h-[40vh] mix-blend-overlay mt-16 xl:mt-0">
           <Image
             src="/icons/final.svg"
             alt="Rent a boat in the heart of Athens"
