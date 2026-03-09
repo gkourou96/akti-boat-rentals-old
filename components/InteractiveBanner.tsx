@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import * as THREE from "three";
 import {
@@ -13,10 +13,10 @@ import {
 import { useTexture, useFBO, shaderMaterial } from "@react-three/drei";
 
 // Global store for raw, normalized touch/mouse coordinates.
-// This safely bridges the React DOM events to the WebGL Canvas without relying on state.pointer!
+// This safely bridges the React DOM events to the WebGL Canvas without relying on R3F's internal pointer which gets swallowed on mobile!
 const pointerState = {
-  x: 0,
-  y: 0,
+  x: -1000,
+  y: -1000,
   normX: 0.5,
   normY: 0.5,
   isActive: false,
@@ -26,7 +26,7 @@ const pointerState = {
 const SimulationMaterial = shaderMaterial(
   {
     uTexture: new THREE.Texture(),
-    uMouse: new THREE.Vector2(0, 0), // This will now be the STERN position
+    uMouse: new THREE.Vector2(0, 0),
     uPrevMouse: new THREE.Vector2(0, 0),
     uVelocity: new THREE.Vector2(0, 0),
     uResolution: new THREE.Vector2(0, 0),
@@ -173,8 +173,8 @@ const DisplayMaterial = shaderMaterial(
       
       // Sample the physics simulation
       vec4 wakeSim = texture2D(uMask, uv);
-      float edgeFoam = wakeSim.r;        // White foam on V-edges
-      float centerDark = wakeSim.g;      // Dark turbulent water
+      float edgeFoam = wakeSim.r;        
+      float centerDark = wakeSim.g;      
       
       // Base distortion from wake edges
       vec2 displacement = vec2(edgeFoam * 0.02);
@@ -231,14 +231,14 @@ const FluidSystem = () => {
   let physicsInitialized = false;
 
   useFrame((state) => {
-    // Sync with our global pointer state instead of relying on state.pointer
+    // 1. SYNC PHYSICS: Force target to use our globally mapped coordinates instead of R3F's state.pointer
     target.current.set(pointerState.normX, pointerState.normY);
 
     if (!pointerState.isActive) {
       physicsInitialized = false;
     }
 
-    // Instantly snap physics on first touch so it doesn't draw a giant line across the screen
+    // Instantly snap physics on first touch so it doesn't draw a giant line across the screen from (0,0)
     if (pointerState.isActive && !physicsInitialized) {
       position.current.copy(target.current);
       physicsInitialized = true;
@@ -375,48 +375,61 @@ const BoatCursor = () => {
 export default function InteractiveBanner() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Unified Pointer logic - Automatically handles both Mouse and Touch reliably!
-  const updatePointer = (e: React.PointerEvent<HTMLElement>) => {
+  // Directly handle coordinate updates relative to the section's actual size
+  const updateCoordinates = (clientX: number, clientY: number) => {
     if (!sectionRef.current) return;
     const rect = sectionRef.current.getBoundingClientRect();
 
-    pointerState.x = e.clientX;
-    pointerState.y = e.clientY;
-    pointerState.normX = (e.clientX - rect.left) / rect.width;
-    pointerState.normY = 1.0 - (e.clientY - rect.top) / rect.height;
+    pointerState.x = clientX;
+    pointerState.y = clientY;
+
+    // Map to 0-1 range for the WebGL Shader
+    pointerState.normX = (clientX - rect.left) / rect.width;
+    // Invert Y for WebGL (which starts 0 at the bottom)
+    pointerState.normY = 1.0 - (clientY - rect.top) / rect.height;
+
     pointerState.isActive = true;
   };
 
-  const handlePointerDown = (e: React.PointerEvent<HTMLElement>) => {
-    e.currentTarget.setPointerCapture(e.pointerId); // Prevents fast swiping from losing the target
-    updatePointer(e);
-  };
-
-  const handlePointerUp = (e: React.PointerEvent<HTMLElement>) => {
-    e.currentTarget.releasePointerCapture(e.pointerId);
+  const handleMouseMove = (e: React.MouseEvent) =>
+    updateCoordinates(e.clientX, e.clientY);
+  const handleTouchStart = (e: React.TouchEvent) =>
+    updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+  const handleTouchMove = (e: React.TouchEvent) =>
+    updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+  const handleEnd = () => {
     pointerState.isActive = false;
   };
 
   return (
     <section
       ref={sectionRef}
-      onPointerDown={handlePointerDown}
-      onPointerMove={updatePointer}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={handlePointerUp}
-      // CHANGED: Mobile is now h-[75dvh]. Desktop strictly remains xl:h-[calc(100dvh)] and xl:touch-auto
-      className="relative h-[75dvh] xl:h-[calc(100dvh)] w-full overflow-hidden bg-[#0D4168] cursor-none touch-none xl:touch-auto"
+      // CHANGED: Mobile is now h-[75dvh]. Desktop strictly remains xl:h-[calc(100dvh)]
+      className="relative h-[75dvh] xl:h-[calc(100dvh)] w-full overflow-hidden bg-[#0D4168] cursor-none"
     >
       <BoatCursor />
 
       <div className="absolute inset-0 z-0">
-        <Canvas>
+        {/* ADDED: pointerEvents: 'none' ensures R3F doesn't steal touches on mobile */}
+        <Canvas style={{ pointerEvents: "none" }}>
           <FluidSystem />
         </Canvas>
       </div>
 
+      {/* DEDICATED HIT AREA: This invisible layer perfectly catches all touches and mouse movements */}
+      {/* touch-none prevents mobile from scrolling only when dragging inside this section */}
+      <div
+        className="absolute inset-0 z-20 touch-none xl:touch-auto"
+        onMouseMove={handleMouseMove}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleEnd}
+        onTouchCancel={handleEnd}
+        onMouseLeave={handleEnd}
+      />
+
       <div className="pointer-events-none relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
-        {/* Desktop styling strictly untouched */}
+        {/* Container maintains the 50% relative height to center within the new 75dvh space */}
         <div className="relative w-full max-w-[85vw] md:max-w-[70vw] lg:max-w-[50vw] h-[50%] xl:h-[40vh] mix-blend-overlay mt-16 xl:mt-0">
           <Image
             src="/icons/final.svg"
