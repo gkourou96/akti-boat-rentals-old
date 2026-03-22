@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 // Swiper imports
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,8 +14,6 @@ import "swiper/css/navigation";
 interface BoatImage {
   src: string;
   alt: string;
-  // Unique description for this specific image slide
-  description: string;
 }
 
 interface BoatData {
@@ -24,6 +22,8 @@ interface BoatData {
   category: string;
   capacity: number;
   length: string;
+  // Unique description for the entire boat
+  description: string;
   images: BoatImage[];
 }
 
@@ -34,122 +34,116 @@ const loremIpsum =
 const fleetData: BoatData[] = [
   {
     id: 1,
-    name: "Name of vehicle",
-    category: "Category etc here",
-    capacity: 10,
-    length: "9.8m",
+    name: "DEUS - Ribco 28",
+    category: "Day Cruise",
+    capacity: 8,
+    length: "8.5m",
+    description:
+      "The dynamic and stylish RIBCO 28 powered with a 300hp Mercury Verado, designed to deliver an exceptional boating experience across the Saronic Gulf and the surrounding Greek coastline. Combining performance, comfort, and elegant design, this premium vessel offers the perfect balance between speed, safety, and relaxation at sea. Perfect for Private boat tours, Saronic Gulf island hopping, VIP sea transfers, Private day cruises in Athens Riviera.",
     images: [
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/ribco1-nabeiproti.jpg",
         alt: "Boat 1 View A",
-        description: loremIpsum,
       },
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/ribco2.jpg",
         alt: "Boat 1 View B",
-        description:
-          "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
       },
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/ribco3.jpg",
         alt: "Boat 1 View C",
-        description:
-          "Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
       },
     ],
   },
   {
     id: 2,
-    name: "Speed Cruiser",
-    category: "Luxury Class",
+    name: "FILIPPOS – Blade 7 RIB",
+    category: "Day Cruise",
     capacity: 8,
-    length: "12.5m",
+    length: "7m",
+    description:
+      "Enjoy a private boat tour from Athens and discover hidden beaches, crystal clear waters and beautiful islands with FILIPPOS, a powerful and modern Blade 7 RIB boat powered with a Suzuki DF200 APX - 200 HP, designed for fast, comfortable, and stylish cruising in the Saronic Gulf. FILIPPOS comfortably accommodates up to 8 guests, making it ideal for couples, families, or small groups seeking a private boat rental experience in Greece ensures excellent stability, safety, and comfort even during high-speed navigation. Perfect for Private boat tours, Saronic Gulf island hopping, VIP sea transfers, Private day cruises in Athens Riviera.",
     images: [
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/filipos.jpg",
         alt: "Boat 2 View A",
-        description: loremIpsum,
-      },
-      {
-        src: "/images/boat-3.jpg",
-        alt: "Boat 2 View B",
-        description: "Variation of description for the second slide.",
       },
     ],
   },
   {
     id: 3,
-    name: "Family Pontoon",
-    category: "Leisure",
-    capacity: 12,
-    length: "10m",
+    name: "AXOPAR 28 CABIN",
+    category: "Day Cruise",
+    capacity: 10,
+    length: "9m",
+    description:
+      "Discover the perfect combination of comfort, performance, and modern Scandinavian design aboard our Axopar 28 Cabin ideal for private cruises, transfers and unforgettable sea experiences in the Saronic Gulf. The Axopar 28 Cabin is ideal for exploring nearby islands such as Aegina, Agistri, Poros, and Hydra, as well as discovering hidden beaches and crystal-clear swimming spots along the Greek coastline. Whether you are planning a luxury day cruise, a private boat tour from Athens, or a relaxing sea escape, this modern cabin boat offers the perfect balance of speed, comfort, and style.",
     images: [
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/apoxar1.jpg",
         alt: "Boat 3 View A",
-        description: loremIpsum,
       },
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/apoxar2.jpg",
         alt: "Boat 3 View B",
-        description: "Another description variation.",
+      },
+      {
+        src: "/images/boats/apoxar3.jpg",
+        alt: "Boat 3 View C",
       },
     ],
   },
   {
     id: 4,
-    name: "Ocean Runner",
-    category: "Sport",
-    capacity: 6,
-    length: "11m",
+    name: "Sea Wolf - Seafighter Shadow 40",
+    category: "Day Cruise",
+    capacity: 12,
+    length: "12m",
+    description:
+      "Experience the ultimate combination of performance, elegance and style. Board the Seafighter Shadow 40, powered with 2 400hp Mercury v10, a premium RIB designed for unforgettable sea adventures in the Aegean Sea. Features large sunbathing areas, spacious seating zones, and a modern deck layout designed for relaxation and socializing while enjoying the spectacular scenery with smooth cruising, and exceptional stability, allowing guests to travel quickly and comfortably between some of the most beautiful greek islands. Whether you are looking for a luxury private cruise, a VIP island transfer, or an exciting day exploring hidden beaches and crystal-clear waters, the Shadow 40 offers a premium boating experience that combines performance, comfort, and style.",
     images: [
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/sea-lion.png",
         alt: "Boat 4 View A",
-        description: loremIpsum,
       },
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/sea-lion2.png",
         alt: "Boat 4 View B",
-        description: "Short description here.",
+      },
+      {
+        src: "/images/boats/sea-lion3.png",
+        alt: "Boat 4 View C",
+      },
+      {
+        src: "/images/boats/sea-lion4.png",
+        alt: "Boat 4 View D",
+      },
+      {
+        src: "/images/boats/sea-lion5.png",
+        alt: "Boat 4 View E",
       },
     ],
   },
   {
     id: 5,
-    name: "Classic Yacht",
-    category: "Premium",
-    capacity: 14,
-    length: "15m",
+    name: "NIMBUS T11",
+    category: "Day Cruise",
+    capacity: 11,
+    length: "12m",
+    description:
+      "Experience the perfect blend of Scandinavian design, luxury, and performance aboard the Nimbus T11, a premium day cruiser designed for unforgettable sea experiences in the Saronic Gulf. Powered by high-performance outboard engines, 2x300HP V8 Verado, the Nimbus T11 delivers smooth cruising, impressive speed, and outstanding stability, allowing guests to explore the Saronic Gulf islands comfortably and efficiently. This luxury day cruiser is perfect for discovering beautiful destinations near Athens such as Aegina, Agistri, Poros, and Hydra, as well as hidden beaches and crystal-clear swimming spots along the coast. Whether you are looking for a luxury private cruise, a VIP boat experience, or an exclusive island hopping adventure, the Nimbus T11 offers an exceptional boating experience that combines comfort, performance, and style.",
     images: [
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/nimbus2nabeiproti.jpg",
         alt: "Boat 5 View A",
-        description: loremIpsum,
       },
       {
-        src: "/images/boat-3.jpg",
+        src: "/images/boats/nimbus3.jpg",
         alt: "Boat 5 View B",
-        description: "Interior view description.",
-      },
-    ],
-  },
-  {
-    id: 6,
-    name: "Fishing Pro",
-    category: "Utility",
-    capacity: 4,
-    length: "8m",
-    images: [
-      {
-        src: "/images/boat-3.jpg",
-        alt: "Boat 6 View A",
-        description: loremIpsum,
       },
       {
-        src: "/images/boat-3.jpg",
-        alt: "Boat 6 View B",
-        description: "Rear deck description.",
+        src: "/images/boats/nimbus1.jpg",
+        alt: "Boat 5 View C",
       },
     ],
   },
@@ -163,18 +157,13 @@ const sailBoatsData: BoatData[] = fleetData.slice(0, 3).map((boat) => ({
 
 // --- BoatCard Component ---
 const BoatCard = ({ boat }: { boat: BoatData }) => {
-  // State to track the currently active slide index
-  const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
-
-  // Get the data for the current slide to display below
-  const activeImageData = boat.images[activeIndex];
 
   return (
     // Column Container:
     // Mobile: w-full h-auto (Responsive)
-    // Desktop: w-96.5 h-186.25 (Fixed)
-    <div className="flex w-full h-auto xl:h-186.25 xl:w-96.5 flex-col items-center xl:items-start">
+    // Desktop: w-96.5 h-auto (Flexible height to fit content)
+    <div className="flex w-full h-auto xl:w-96.5 flex-col items-center xl:items-start">
       {/* Swiper Container */}
       {/* Mobile: w-full h-[300px] or aspect square */}
       {/* Desktop: h-96.25 w-96.5 */}
@@ -183,10 +172,10 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
           modules={[Navigation, A11y]}
           spaceBetween={0}
           slidesPerView={1}
+          loop={true} // <-- ADDED: This enables infinite swiping!
           onBeforeInit={(swiper) => {
             swiperRef.current = swiper;
           }}
-          onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
           className="h-full w-full"
         >
           {boat.images.map((img, index) => (
@@ -293,9 +282,9 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
           </div>
         </div>
 
-        {/* Description - Changes based on active index */}
-        <p className="mt-4 line-clamp-6 font-open text-[16px] xl:text-[18px] font-normal leading-[150%] text-[#144B51]">
-          {activeImageData.description}
+        {/* Description - Unified for the whole boat and height flexible */}
+        <p className="mt-4 font-open text-[16px] xl:text-[18px] font-normal leading-[150%] text-[#144B51]">
+          {boat.description}
         </p>
       </div>
     </div>
@@ -307,15 +296,13 @@ const FleetPage = () => {
   return (
     <main className="w-full">
       {/* =========================================
-          SECTION 1: PREMIUM FLEET
-          Background: #F2EAD6
-          Rows: 2
-          Desktop Top Padding: 217px (Clears Navbar)
+         SECTION 1: PREMIUM FLEET
+         Background: #F2EAD6
+         Rows: 2
+         Desktop Top Padding: 217px (Clears Navbar)
          ========================================= */}
       <section className="w-full bg-[#F2EAD6]">
         <div className="mx-auto max-w-360">
-          {/* CHANGED: Mobile top padding increased to pt-[144px] to match visual gap of "Sail Boats" + Navbar offset */}
-          {/* FIX: Removed xl:w-360 (forced 1440px) and xl:px-30 (rigid padding). Added flex flex-col items-center. */}
           <div className="mx-auto w-full px-6 pt-36 pb-16 xl:px-0 xl:pb-31 xl:pt-54.25 flex flex-col items-center">
             {/* Header */}
             <div className="relative mx-auto flex h-auto w-full flex-col items-center justify-center">

@@ -2,12 +2,37 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+// UPDATED: Swiper imports for the mobile image carousel and navigation arrows
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
 const boats = [
-  { name: "Nireus 150", image: "/images/boat-1.png" },
-  { name: "Skipper 160", image: "/images/boat-2.png" },
-  { name: "Nireus 150", image: "/images/boat-3.png" },
-  { name: "Skipper 160", image: "/images/boat-4.png" },
+  {
+    name: "ELEFTHERIA – STAR 160 SC motorboat",
+    image: "/images/boat-3.png",
+    // Array of images for the swiper to loop through
+    images: ["/images/boat-3.png", "/images/boat-1.png", "/images/boat-2.png"],
+    description:
+      "Flexible and economical, perfect for quick trips and fishing.",
+  },
+  {
+    name: "ALEXANDRA – NORDIC STAR 160SC",
+    image: "/images/boats/alexandra1.jpg",
+    // Array of images for the swiper to loop through
+    images: ["/images/boats/alexandra1.jpg", "/images/boats/alexandra2.jpg"],
+    description:
+      "Comfortable and spacious, ideal for family outings and exploring hidden coves.",
+  },
+  {
+    name: "SUNDAY – STAR 160 SC Motorboat",
+    image: "/images/boats/sunday1.jpg",
+    // Array of images for the swiper to loop through
+    images: ["/images/boats/sunday1.jpg", "/images/boats/sunday.jpg"],
+    description:
+      "Sporty and agile, the perfect choice for a thrilling day out on the water.",
+  },
 ];
 
 export default function NoLicenseBoats() {
@@ -49,7 +74,7 @@ export default function NoLicenseBoats() {
 
       {/* Idle Gradient: Fades out when active */}
       <div
-        className={`absolute bottom-0 h-1/2 w-full transition-opacity duration-500 ease-in-out ${
+        className={`absolute bottom-0 h-full w-full transition-opacity duration-500 ease-in-out ${
           isActive ? "opacity-0" : "opacity-100 xl:group-hover:opacity-0"
         }`}
         style={{
@@ -67,7 +92,7 @@ export default function NoLicenseBoats() {
             : "opacity-100 translate-y-0 xl:group-hover:opacity-0 xl:group-hover:-translate-y-10"
         }`}
       >
-        <h3 className="font-ubuntu text-[28px] xl:text-[32px] font-medium leading-none tracking-normal text-white">
+        <h3 className="font-ubuntu text-[28px] xl:text-[24px] font-medium px-2 leading-none tracking-normal text-white">
           {boat.name}
         </h3>
       </div>
@@ -93,7 +118,7 @@ export default function NoLicenseBoats() {
         {/* OVERLAY CONTENT */}
         <div className="flex flex-col">
           {/* TITLE (Inside Overlay) */}
-          <h3 className="font-ubuntu text-[28px] xl:text-[32px] font-medium leading-none tracking-normal text-white shrink-0 -translate-y-2">
+          <h3 className="font-ubuntu text-[28px] xl:text-[24px] font-medium leading-none tracking-normal text-white shrink-0 -translate-y-2">
             {boat.name}
           </h3>
 
@@ -126,9 +151,9 @@ export default function NoLicenseBoats() {
               </div>
             </div>
 
-            {/* DESCRIPTION */}
+            {/* DESCRIPTION - Now pulling dynamically from the boat object */}
             <p className="mt-4 font-open text-[16px] xl:text-[18px] text-white leading-tight">
-              Flexible and economical, perfect for quick trips.
+              {boat.description}
             </p>
 
             {/* PRICING */}
@@ -215,7 +240,7 @@ export default function NoLicenseBoats() {
           </p>
         </div>
 
-        {/* 1. MOBILE VIEW: NEW STACKED LAYOUT (Swiper Removed) */}
+        {/* 1. MOBILE VIEW: NEW STACKED LAYOUT */}
         {/* Gap set to strictly 32px */}
         <div className="flex xl:hidden flex-col gap-8 w-full">
           {boats.map((boat, index) => (
@@ -224,22 +249,70 @@ export default function NoLicenseBoats() {
               className="flex flex-col w-full rounded-[20px] overflow-hidden bg-[#F9F5EB] shadow-md shrink-0"
             >
               {/* Image Section - Exactly 233px height */}
-              <div className="relative w-full h-58.25 shrink-0">
-                <Image
-                  src={boat.image}
-                  alt={boat.name}
-                  fill
-                  className="object-cover"
-                />
-                {/* Gradient for text readability matching screenshot */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
-                <h3 className="absolute bottom-4 left-6 font-ubuntu text-[32px] font-bold text-white leading-none tracking-normal">
+              <div className="relative w-full h-58.25 shrink-0 group">
+                {/* THE FIX: Placed the custom arrows INSIDE the Swiper tags so the library can attach events to them properly */}
+                <Swiper
+                  modules={[Autoplay, Navigation]}
+                  loop={true}
+                  navigation={{
+                    nextEl: `.no-lic-next-${index}`,
+                    prevEl: `.no-lic-prev-${index}`,
+                  }}
+                  autoplay={{
+                    delay: 3500 + index * 500, // Slight offset so they don't all swipe at the exact same millisecond
+                    disableOnInteraction: false,
+                  }}
+                  className="absolute inset-0 z-0 w-full h-full"
+                >
+                  {(boat.images || [boat.image]).map((imgSrc, imgIdx) => (
+                    <SwiperSlide
+                      key={imgIdx}
+                      className="relative w-full h-full"
+                    >
+                      <Image
+                        src={imgSrc}
+                        alt={`${boat.name} - view ${imgIdx + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </SwiperSlide>
+                  ))}
+
+                  {/* ARROWS (Inside Swiper context) */}
+                  <div
+                    className={`no-lic-prev-${index} absolute left-3 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/70 shadow-md backdrop-blur-sm transition-opacity opacity-100 xl:opacity-0 xl:group-hover:opacity-100`}
+                  >
+                    <Image
+                      src="/icons/arrow_back_ios.svg"
+                      alt="prev"
+                      width={24}
+                      height={24}
+                      className="w-5 h-5 pointer-events-none"
+                    />
+                  </div>
+
+                  <div
+                    className={`no-lic-next-${index} absolute right-3 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/70 shadow-md backdrop-blur-sm transition-opacity opacity-100 xl:opacity-0 xl:group-hover:opacity-100`}
+                  >
+                    <Image
+                      src="/icons/arrow_forward_ios.svg"
+                      alt="next"
+                      width={24}
+                      height={24}
+                      className="w-5 h-5 pointer-events-none"
+                    />
+                  </div>
+                </Swiper>
+
+                {/* Gradient for text readability matching screenshot - Layered OVER the Swiper so it stays static */}
+                <div className="absolute inset-0 z-10 bg-linear-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                <h3 className="absolute bottom-4 left-6 z-20 font-ubuntu text-[24px] px-2 lg:text-[32px] font-bold text-white leading-none tracking-normal pointer-events-none pr-10">
                   {boat.name}
                 </h3>
               </div>
 
               {/* Info Section - Changed h-53 to h-auto to prevent clipping and respect 24px bottom padding */}
-              <div className="w-full h-auto flex flex-col p-6 shrink-0">
+              <div className="w-full h-auto flex flex-col p-6 shrink-0 grow">
                 {/* Icons */}
                 <div className="flex items-center gap-6">
                   <div className="flex items-center gap-2">
@@ -268,9 +341,9 @@ export default function NoLicenseBoats() {
                   </div>
                 </div>
 
-                {/* Description (Updated text to match screenshot) */}
+                {/* DESCRIPTION - Now pulling dynamically from the boat object */}
                 <p className="mt-2.5 font-open text-[18px] text-[#144B51] leading-[1.3] pr-4">
-                  Flexible and economical, perfect for quick trips and fishing.
+                  {boat.description}
                 </p>
 
                 {/* Pricing & Guarantee pushed to bottom */}
@@ -293,7 +366,7 @@ export default function NoLicenseBoats() {
         </div>
 
         {/* 2. DESKTOP VIEW: ORIGINAL GRID (Untouched) */}
-        <div className="hidden xl:flex w-full justify-between gap-6">
+        <div className="hidden xl:flex w-full justify-center gap-6">
           {boats.map((boat, index) => (
             <BoatCard
               key={index}

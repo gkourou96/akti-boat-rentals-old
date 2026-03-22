@@ -126,28 +126,35 @@ export default function OurLocation() {
               slidesPerView={1.2}
               centeredSlides={true}
               loop={true}
+              // THE FIX: Removed loopAdditionalSlides here!
               autoplay={{
                 delay: 3000,
                 disableOnInteraction: false,
               }}
               className="w-full h-80 rounded-[20px] overflow-hidden"
             >
-              {locationImages.map((src, index) => (
-                <SwiperSlide key={index} className="relative w-full h-full">
-                  {/* ADDED onClick to open modal */}
-                  <div
-                    className="relative w-full h-full rounded-[20px] overflow-hidden shadow-lg cursor-pointer"
-                    onClick={() => openModal(index)}
-                  >
-                    <Image
-                      src={src}
-                      alt={`Location View ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                </SwiperSlide>
-              ))}
+              {/* THE FIX: Doubling the array to 8 items gives Swiper exactly enough physical slides to loop cleanly */}
+              {[...locationImages, ...locationImages].map((src, index) => {
+                // Determine the correct index for the modal (0, 1, 2, or 3)
+                const realIndex = index % locationImages.length;
+
+                return (
+                  <SwiperSlide key={index} className="relative w-full h-full">
+                    {/* ADDED onClick to open modal */}
+                    <div
+                      className="relative w-full h-full rounded-[20px] overflow-hidden shadow-lg cursor-pointer"
+                      onClick={() => openModal(realIndex)}
+                    >
+                      <Image
+                        src={src}
+                        alt={`Location View ${realIndex + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
           </div>
 

@@ -91,6 +91,17 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   };
 
+  // 3. LOGO CLICK LOGIC
+  const handleLogoClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 flex flex-col items-center w-full pt-0 px-3 xl:px-0 pointer-events-none transition-transform duration-300 ${
@@ -99,7 +110,7 @@ export default function Navbar() {
     >
       {/* UPDATED: Replaced the inset orange borders with shadow-[0px_4px_4px_0px_#0000001A] */}
       <div className="pointer-events-auto relative flex w-full items-center justify-between bg-[#F9F5EB] shadow-[0px_4px_4px_0px_#0000001A] px-6 xl:max-w-300 rounded-b-[30px] xl:rounded-b-[60px] rounded-t-none xl:px-4 xl:py-5.5 xl:pr-13.75 xl:pl-5.5">
-        <Link href="/" className="shrink-0">
+        <Link href="/" className="shrink-0" onClick={handleLogoClick}>
           <Image
             src="/images/logo.gif"
             alt="Akti Boat Rentals"

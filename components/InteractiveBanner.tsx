@@ -149,7 +149,6 @@ const SimulationMaterial = shaderMaterial(
 );
 
 // --- 2. DISPLAY SHADER (The "Visuals") ---
-// --- 2. DISPLAY SHADER (The "Visuals") ---
 const DisplayMaterial = shaderMaterial(
   {
     uTexture: new THREE.Texture(),
@@ -337,10 +336,25 @@ const BoatCursor = () => {
   useEffect(() => {
     let frameId: number;
     let hasInitialized = false;
+    let interacted = false; // Tracks if the user has touched the screen yet
+
+    // Center the boat globally before the first frame runs so it isn't hidden off-screen
+    if (typeof window !== "undefined") {
+      pointerState.x = window.innerWidth / 2;
+      pointerState.y = window.innerHeight / 2;
+      currentPos.current.x = pointerState.x;
+      currentPos.current.y = pointerState.y;
+      prevPos.current.x = pointerState.x;
+      prevPos.current.y = pointerState.y;
+    }
 
     const animate = () => {
       if (pointerState.isActive) {
-        if (cursorRef.current) cursorRef.current.style.opacity = "1";
+        interacted = true; // Mark as interacted permanently
+        if (cursorRef.current) {
+          cursorRef.current.style.opacity = "1";
+          cursorRef.current.classList.remove("animate-pulse"); // Stop blinking
+        }
 
         // Instantly snap visual boat on first touch
         if (!hasInitialized) {
@@ -349,7 +363,20 @@ const BoatCursor = () => {
           hasInitialized = true;
         }
       } else {
-        if (cursorRef.current) cursorRef.current.style.opacity = "0";
+        if (cursorRef.current) {
+          // Mobile Check
+          if (window.innerWidth < 1024) {
+            cursorRef.current.style.opacity = "1"; // Keep it visible on mobile
+            if (!interacted) {
+              cursorRef.current.classList.add("animate-pulse"); // Blink if untouched
+            } else {
+              cursorRef.current.classList.remove("animate-pulse"); // Solid if touched
+            }
+          } else {
+            // Desktop: Hide when mouse leaves bounds
+            cursorRef.current.style.opacity = "0";
+          }
+        }
         hasInitialized = false;
       }
 
@@ -380,7 +407,8 @@ const BoatCursor = () => {
   return (
     <div
       ref={cursorRef}
-      className="pointer-events-none fixed left-0 top-0 z-50 -ml-8 -mt-8 h-16 w-16 will-change-transform"
+      // THE FIX: Changed fixed to absolute so it's trapped inside the component
+      className="pointer-events-none absolute left-0 top-0 z-50 -ml-8 -mt-8 h-16 w-16 will-change-transform"
     >
       <div
         ref={boatRef}
@@ -412,8 +440,9 @@ export default function InteractiveBanner() {
     // NATIVE DOM LISTENER UPDATE: Bypassing React's synthetic events entirely for mobile
     const updatePos = (clientX: number, clientY: number) => {
       const rect = section.getBoundingClientRect();
-      pointerState.x = clientX;
-      pointerState.y = clientY;
+      // THE FIX: Subtracted rect bounds so coordinates map locally to the component instead of the whole screen
+      pointerState.x = clientX - rect.left;
+      pointerState.y = clientY - rect.top;
       pointerState.normX = (clientX - rect.left) / rect.width;
       pointerState.normY = 1.0 - (clientY - rect.top) / rect.height;
       pointerState.isActive = true;

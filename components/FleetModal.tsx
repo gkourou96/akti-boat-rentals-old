@@ -3,6 +3,12 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
+// NEW: Define the thumbnail object shape to fix the Vercel error
+export interface Thumbnail {
+  src: string;
+  alt: string;
+}
+
 // Define the shape of the boat object
 export interface Boat {
   id: number;
@@ -13,7 +19,7 @@ export interface Boat {
   description: string;
   description2?: string;
   image: string;
-  thumbnails: string[];
+  thumbnails: Thumbnail[]; // CHANGED: Updated from string[] to Thumbnail[]
 }
 
 interface FleetModalProps {
@@ -43,9 +49,9 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
     >
       {/* MODAL CONTENT */}
       {/* Mobile: w-[90%], h-auto, max-h-[90vh], scrollable */}
-      {/* Desktop: w-[1047px], h-[669px], fixed, no scroll */}
+      {/* THE FIX: Changed desktop xl:h-167.25 to xl:h-auto so the modal can stretch */}
       <div
-        className={`relative w-[90%] h-auto max-h-[90vh] overflow-y-auto xl:overflow-visible xl:h-167.25 xl:w-261.75 rounded-3xl xl:rounded-[52px] bg-[#F2EAD6] p-6 xl:p-8 shadow-2xl transition-all duration-500 ease-out ${
+        className={`relative w-[90%] h-auto max-h-[90vh] overflow-y-auto xl:overflow-visible xl:h-auto xl:w-261.75 rounded-3xl xl:rounded-[52px] bg-[#F2EAD6] p-6 xl:p-8 shadow-2xl transition-all duration-500 ease-out ${
           isOpen ? "translate-y-0 opacity-100" : "translate-y-[100vh] opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -88,13 +94,13 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
                 {boat.thumbnails.map((thumb, idx) => (
                   <div
                     key={idx}
-                    onClick={() => setCurrentImage(thumb)}
+                    onClick={() => setCurrentImage(thumb.src)} // FIX 2: Target thumb.src so the image actually changes
                     // CHANGED: Removed ring and hover:opacity logic. Kept cursor-pointer.
                     className="relative h-15 w-15 xl:h-20.25 xl:w-20.25 shrink-0 overflow-hidden rounded-xl xl:rounded-2xl bg-gray-100 cursor-pointer"
                   >
                     <Image
-                      src={thumb}
-                      alt={`thumb-${idx}`}
+                      src={thumb.src} // FIX 1: Target thumb.src to prevent Next.js crash
+                      alt={thumb.alt || `thumb-${idx}`} // FIX 1: Add alt tag mapping
                       fill
                       className="object-cover"
                     />
@@ -104,7 +110,8 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
             </div>
 
             {/* RIGHT COLUMN CONTAINER */}
-            <div className="relative h-auto w-full xl:h-151.25 xl:w-112.75">
+            {/* THE FIX: Changed desktop xl:h-151.25 to xl:h-auto so the column can stretch */}
+            <div className="relative h-auto w-full xl:h-auto xl:w-112.75">
               {/* DESKTOP CLOSE BUTTON */}
               <button
                 onClick={onClose}
@@ -127,13 +134,20 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
                   <h3 className="font-ubuntu text-[24px] xl:text-[32px] font-bold leading-none text-[#0D4168]">
                     {boat.name}
                   </h3>
-                  <div className="mt-2 font-ubuntu text-[18px] xl:text-[24px] font-normal leading-none text-[#F2992F]">
-                    {boat.category}
+                  {/* THE FIX: Added "With skipper / Bareboat" here */}
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="font-ubuntu text-[18px] xl:text-[24px] font-normal leading-none text-[#F2992F]">
+                      {boat.category}
+                    </span>
+                    <span className="font-ubuntu text-sm xl:text-[18px] font-normal text-[#8A9A9C]">
+                      | With skipper / Bareboat
+                    </span>
                   </div>
                 </div>
 
                 {/* 2. DESCRIPTION 1 */}
-                <p className="mt-4 xl:mt-6 w-full xl:w-103 h-auto xl:h-37.5 font-open font-normal text-[16px] xl:text-[18px] tracking-normal text-[#0D4168]">
+                {/* THE FIX: Removed rigid xl:h-37.5 so the text isn't vertically crushed */}
+                <p className="mt-4 xl:mt-6 w-full xl:w-103 h-auto font-open font-normal text-[16px] xl:text-[18px] tracking-normal text-[#0D4168]">
                   {boat.description}
                 </p>
 
@@ -169,13 +183,6 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
                 <p className="mt-4 xl:mt-6 w-full xl:w-103 font-open text-[16px] xl:text-[18px] font-normal leading-[100%] text-[#0D4168]">
                   {boat.description2}
                 </p>
-
-                {/* 5. USEFUL INFO */}
-                <div className="mt-4 xl:mt-6 pb-6 xl:pb-0">
-                  <span className="font-ubuntu text-[20px] xl:text-[24px] font-normal text-[#F2992F]">
-                    Useful Info here
-                  </span>
-                </div>
               </div>
             </div>
           </div>

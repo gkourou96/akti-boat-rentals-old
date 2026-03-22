@@ -11,69 +11,72 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-creative";
 
-// Import the new Modal Component
-import FleetModal, { Boat } from "./FleetModal";
+// Import the Modal Component, but alias the Boat interface
+import FleetModal, { Boat as ModalBoat } from "./FleetModal";
+
+// Locally override the Boat interface and make thumbnails OPTIONAL (?)
+export interface Boat extends Omit<ModalBoat, "thumbnails"> {
+  thumbnails?: { src: string; alt: string }[];
+}
 
 const boats: Boat[] = [
   {
     id: 1,
-    name: "Name of vehicle",
-    category: "Category etc here",
-    capacity: 10,
-    length: "9.8m",
+    name: "DEUS - Ribco 28",
+    category: "Day Cruise",
+    capacity: 8,
+    length: "8.5m",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
-    description2:
-      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
-    image: "/images/boat-1.png",
+      "The dynamic and stylish RIBCO 28 powered with a 300hp Mercury Verado, designed to deliver an exceptional boating experience across the Saronic Gulf and the surrounding Greek coastline. Combining performance, comfort, and elegant design, this premium vessel offers the perfect balance between speed, safety, and relaxation at sea. Perfect for Private boat tours, Saronic Gulf island hopping, VIP sea transfers, Private day cruises in Athens Riviera.",
+    image: "/images/boats/ribco1-nabeiproti.jpg",
     thumbnails: [
-      "/images/boat-3.png",
-      "/images/boat-1.png",
-      "/images/boat-3.png",
+      {
+        src: "/images/boats/ribco1-nabeiproti.jpg",
+        alt: "Boat 1 View A",
+      },
+      {
+        src: "/images/boats/ribco2.jpg",
+        alt: "Boat 1 View B",
+      },
+      {
+        src: "/images/boats/ribco3.jpg",
+        alt: "Boat 1 View C",
+      },
     ],
   },
   {
     id: 2,
-    name: "Speed Cruiser XL",
-    category: "Luxury Line",
+    name: "FILIPPOS – Blade 7 RIB",
+    category: "Day Cruise",
     capacity: 8,
-    length: "12.5m",
+    length: "7m",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
-    description2:
-      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
-    image: "/images/boat-2.png",
-    thumbnails: ["/images/boat-4.png"],
+      "Enjoy a private boat tour from Athens and discover hidden beaches, crystal clear waters and beautiful islands with FILIPPOS, a powerful and modern Blade 7 RIB boat powered with a Suzuki DF200 APX - 200 HP, designed for fast, comfortable, and stylish cruising in the Saronic Gulf. FILIPPOS comfortably accommodates up to 8 guests, making it ideal for couples, families, or small groups seeking a private boat rental experience in Greece ensures excellent stability, safety, and comfort even during high-speed navigation. Perfect for Private boat tours, Saronic Gulf island hopping, VIP sea transfers, Private day cruises in Athens Riviera.",
+    image: "/images/boats/filipos.jpg",
   },
   {
     id: 3,
-    name: "Aegean Phantom",
-    category: "Sport Series",
-    capacity: 6,
-    length: "8.5m",
+    name: "AXOPAR 28 CABIN",
+    category: "Day Cruise",
+    capacity: 10,
+    length: "9m",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
-    description2:
-      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
-    image: "/images/boat-3.png",
+      "Discover the perfect combination of comfort, performance, and modern Scandinavian design aboard our Axopar 28 Cabin ideal for private cruises, transfers and unforgettable sea experiences in the Saronic Gulf. The Axopar 28 Cabin is ideal for exploring nearby islands such as Aegina, Agistri, Poros, and Hydra, as well as discovering hidden beaches and crystal-clear swimming spots along the Greek coastline. Whether you are planning a luxury day cruise, a private boat tour from Athens, or a relaxing sea escape, this modern cabin boat offers the perfect balance of speed, comfort, and style.",
+    image: "/images/boats/apoxar1.jpg",
     thumbnails: [
-      "/images/boat-3.png",
-      "/images/boat-1.png",
-      "/images/boat-3.png",
+      {
+        src: "/images/boats/apoxar1.jpg",
+        alt: "Boat 3 View A",
+      },
+      {
+        src: "/images/boats/apoxar2.jpg",
+        alt: "Boat 3 View B",
+      },
+      {
+        src: "/images/boats/apoxar3.jpg",
+        alt: "Boat 3 View C",
+      },
     ],
-  },
-  {
-    id: 4,
-    name: "Poseidon’s Choice",
-    category: "Family Comfort",
-    capacity: 12,
-    length: "14.2m",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Nunc lectus tristique nullam mattis sollicitudin diam. At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper. Sed ipsum faucibus at felis enim malesuada. Lectus at ultricies pulvinar quis aliquet.",
-    description2:
-      "At bibendum tortor gravida eget feugiat. Velit morbi leo ac nunc feugiat mollis ac ullamcorper.",
-    image: "/images/boat-4.png",
-    thumbnails: ["/images/boat-4.png"],
   },
 ];
 
@@ -81,13 +84,20 @@ export default function OurFleet() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBoat, setSelectedBoat] = useState<Boat | null>(null);
 
+  const [activeImages, setActiveImages] = useState<Record<number, string>>({});
+
   const handleOpenModal = (boat: Boat) => {
-    setSelectedBoat(boat);
+    // We pass an empty array fallback so the modal doesn't crash if it looks for thumbnails
+    setSelectedBoat({ ...boat, thumbnails: boat.thumbnails || [] });
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleThumbnailClick = (boatId: number, src: string) => {
+    setActiveImages((prev) => ({ ...prev, [boatId]: src }));
   };
 
   const onAutoplayTimeLeft = (
@@ -184,6 +194,8 @@ export default function OurFleet() {
         >
           {boats.map((boat) => (
             <SwiperSlide key={boat.id} className="bg-transparent">
+              {" "}
+              {/* THE FIX: Replaced rigid xl:h-125 with h-full so the wrapper grows with content */}
               <div className="relative grid h-full w-full grid-cols-1 gap-8 xl:grid-cols-[500px_1fr] xl:gap-16">
                 {/* Boat Image */}
                 <div
@@ -199,7 +211,7 @@ export default function OurFleet() {
                     />
 
                     <Image
-                      src={boat.image}
+                      src={activeImages[boat.id] || boat.image}
                       alt={boat.name}
                       fill
                       className="object-cover opacity-0 transition-opacity duration-500 ease-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
@@ -208,13 +220,19 @@ export default function OurFleet() {
                 </div>
 
                 {/* Boat Details Column */}
-                <div className="flex flex-col h-auto pt-0 xl:h-125">
+                <div className="flex flex-col h-full pt-0">
                   <h3 className="font-ubuntu text-2xl xl:text-[32px] font-bold text-[#144B51]">
                     {boat.name}
                   </h3>
-                  <span className="font-ubuntu text-lg xl:text-[24px] mt-1 font-normal text-[#E3891F]">
-                    {boat.category}
-                  </span>
+                  {/* THE FIX: Added "With skipper / Bareboat" here */}
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="font-ubuntu text-lg xl:text-[24px] font-normal text-[#E3891F]">
+                      {boat.category}
+                    </span>
+                    <span className="font-ubuntu text-sm xl:text-[18px] font-normal text-[#8A9A9C]">
+                      | With skipper / Bareboat
+                    </span>
+                  </div>
 
                   <div className="mt-4 xl:mt-6 flex items-center gap-6">
                     <div className="flex items-center gap-1">
@@ -242,8 +260,8 @@ export default function OurFleet() {
                       </span>
                     </div>
                   </div>
-                  {/* FIX IS HERE: changed 'h-37.5' to 'h-auto xl:h-37.5' */}
-                  <p className="font-open mt-6 max-w-112.75 h-auto xl:h-37.5 text-[18px] font-normal tracking-normal text-[#144B51]">
+
+                  <p className="font-open mt-6 max-w-112.75 h-auto text-[18px] font-normal tracking-normal text-[#144B51]">
                     {boat.description}
                   </p>
 
@@ -252,11 +270,9 @@ export default function OurFleet() {
                     onClick={() => handleOpenModal(boat)}
                     className="mt-6 flex h-11.5 w-46.25 shrink-0 items-center justify-center gap-2 rounded-full bg-[#144B51] text-white transition-opacity hover:bg-[#144B5180] cursor-pointer ps-6 py-2.25 pe-[11.4px]"
                   >
-                    {/* Removed pb-1 to let flexbox center the text box perfectly */}
                     <span className="font-ubuntu text-[24px] font-normal leading-none">
                       See More
                     </span>
-                    {/* Removed mt-0.5 so the icon sits exactly in the flex center */}
                     <Image
                       src="/icons/trending_flat.svg"
                       alt="arrow"
@@ -264,16 +280,18 @@ export default function OurFleet() {
                       height={24}
                     />
                   </button>
+
                   {/* Thumbnails */}
                   <div className="mt-8 xl:mt-auto flex gap-4">
-                    {boat.thumbnails.map((thumbSrc, index) => (
+                    {boat.thumbnails?.map((thumb, index) => (
                       <div
                         key={index}
-                        className="relative h-16 w-16 xl:h-20.25 xl:w-20.25 mt-0 xl:mt-6 rounded-2xl xl:rounded-[20px] bg-gray-200 overflow-hidden"
+                        onClick={() => handleThumbnailClick(boat.id, thumb.src)}
+                        className="relative h-16 w-16 xl:h-20.25 xl:w-20.25 mt-0 xl:mt-6 rounded-2xl xl:rounded-[20px] bg-gray-200 overflow-hidden cursor-pointer"
                       >
                         <Image
-                          src={thumbSrc}
-                          alt={`Thumbnail ${index + 1}`}
+                          src={thumb.src}
+                          alt={thumb.alt}
                           fill
                           className="object-cover opacity-0 transition-opacity duration-1200 ease-in-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
                         />
@@ -283,7 +301,6 @@ export default function OurFleet() {
                 </div>
 
                 {/* Next Slide Arrow Button */}
-                {/* FIX 1: Changed z-10 to z-50 so the arrow sits cleanly above the peeking slider at 1280px */}
                 <button className="custom-next-button absolute right-4 top-32 xl:right-18.25 xl:top-1/2 z-50 flex h-10 w-10 xl:h-12 xl:w-12 -translate-y-1/2 items-center justify-center rounded-full text-[#0D4168] cursor-pointer bg-white/80 xl:bg-transparent shadow-sm xl:shadow-none backdrop-blur-sm xl:backdrop-blur-none">
                   <Image
                     src="/icons/arrow_forward_ios.svg"
@@ -294,7 +311,6 @@ export default function OurFleet() {
                   />
                 </button>
               </div>
-
               {/* Progress Bar */}
               <div className="mt-8 h-1.25 w-full bg-[#F2EAD633]">
                 <div
@@ -307,7 +323,6 @@ export default function OurFleet() {
         </Swiper>
 
         {/* --- EXPLORE ALL BUTTON --- */}
-        {/* FIX 2: Added xl:-translate-x-15 to perfectly balance the 120px left padding on desktop */}
         <div className="w-full flex justify-center mt-8 xl:-translate-x-15">
           <Link
             href="/fleet"
@@ -320,7 +335,7 @@ export default function OurFleet() {
         <FleetModal
           isOpen={isModalOpen}
           onClose={handleCloseModal}
-          boat={selectedBoat}
+          boat={selectedBoat as any}
         />
       </section>
     </div>
