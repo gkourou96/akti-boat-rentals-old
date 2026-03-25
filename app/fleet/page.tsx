@@ -243,9 +243,14 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
           {boat.name}
         </h2>
         {/* Category */}
-        <span className="mt-1 font-ubuntu text-[20px] xl:text-[24px] text-[#E3891F]">
-          {boat.category}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="font-ubuntu text-lg xl:text-[24px] font-normal text-[#E3891F]">
+            {boat.category}
+          </span>
+          <span className="font-ubuntu text-lg xl:text-[18px] font-normal text-[#8A9A9C]">
+            | With skipper / Bareboat
+          </span>
+        </div>
 
         {/* Specs Row */}
         <div className="mt-4 flex items-center gap-6">

@@ -10,10 +10,10 @@ import "swiper/css/navigation";
 
 const boats = [
   {
-    name: "ELEFTHERIA – STAR 160 SC motorboat",
+    name: "ELEFTHERIA – STAR 160 SC",
     image: "/images/boat-3.png",
     // Array of images for the swiper to loop through
-    images: ["/images/boat-3.png", "/images/boat-1.png", "/images/boat-2.png"],
+    images: ["/images/boat-3.png", "/images/boat-1.png"],
     description:
       "Flexible and economical, perfect for quick trips and fishing.",
   },

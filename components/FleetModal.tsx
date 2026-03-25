@@ -39,6 +39,33 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
     }
   }, [boat]);
 
+  // THE FIX: Helper functions for the new image arrows
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!boat || !boat.thumbnails || boat.thumbnails.length === 0) return;
+
+    const currentIndex = boat.thumbnails.findIndex(
+      (t) => t.src === currentImage,
+    );
+    const isFirst = currentIndex <= 0;
+    const newIndex = isFirst ? boat.thumbnails.length - 1 : currentIndex - 1;
+
+    setCurrentImage(boat.thumbnails[newIndex].src);
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!boat || !boat.thumbnails || boat.thumbnails.length === 0) return;
+
+    const currentIndex = boat.thumbnails.findIndex(
+      (t) => t.src === currentImage,
+    );
+    const isLast = currentIndex === boat.thumbnails.length - 1;
+    const newIndex = isLast ? 0 : currentIndex + 1;
+
+    setCurrentImage(boat.thumbnails[newIndex].src);
+  };
+
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ${
@@ -79,7 +106,7 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
             <div className="flex w-full xl:w-125 flex-col gap-4 xl:gap-6 shrink-0">
               {/* Main Image */}
               {/* Mobile: h-[250px] | Desktop: h-[500px] */}
-              <div className="relative h-62.5 xl:h-125 w-full shrink-0 overflow-hidden rounded-[20px] bg-gray-100">
+              <div className="relative h-62.5 xl:h-125 w-full shrink-0 overflow-hidden rounded-[20px] bg-gray-100 group">
                 <Image
                   // CHANGED: Use currentImage state instead of boat.image directly
                   src={currentImage || boat.image}
@@ -87,6 +114,38 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
                   fill
                   className="object-cover transition-opacity duration-300"
                 />
+
+                {/* THE FIX: Added Left Arrow */}
+                {boat.thumbnails && boat.thumbnails.length > 1 && (
+                  <button
+                    onClick={handlePrev}
+                    className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/70 shadow-md backdrop-blur-sm transition-opacity opacity-100 xl:opacity-0 xl:group-hover:opacity-100"
+                  >
+                    <Image
+                      src="/icons/arrow_back_ios.svg"
+                      alt="Previous"
+                      width={24}
+                      height={24}
+                      className="w-5 h-5 pointer-events-none"
+                    />
+                  </button>
+                )}
+
+                {/* THE FIX: Added Right Arrow */}
+                {boat.thumbnails && boat.thumbnails.length > 1 && (
+                  <button
+                    onClick={handleNext}
+                    className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/70 shadow-md backdrop-blur-sm transition-opacity opacity-100 xl:opacity-0 xl:group-hover:opacity-100"
+                  >
+                    <Image
+                      src="/icons/arrow_forward_ios.svg"
+                      alt="Next"
+                      width={24}
+                      height={24}
+                      className="w-5 h-5 pointer-events-none"
+                    />
+                  </button>
+                )}
               </div>
 
               {/* Thumbnails Row */}

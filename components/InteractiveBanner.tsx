@@ -329,6 +329,8 @@ const FluidSystem = () => {
 const BoatCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const boatRef = useRef<HTMLDivElement>(null);
+  // NEW: Dedicated ref just for the intense pulse animation to prevent JS transform conflicts
+  const pulseRef = useRef<HTMLDivElement>(null);
 
   const currentPos = useRef({ x: pointerState.x, y: pointerState.y });
   const prevPos = useRef({ x: pointerState.x, y: pointerState.y });
@@ -340,8 +342,13 @@ const BoatCursor = () => {
 
     // Center the boat globally before the first frame runs so it isn't hidden off-screen
     if (typeof window !== "undefined") {
+      const isMobile = window.innerWidth < 1024;
       pointerState.x = window.innerWidth / 2;
-      pointerState.y = window.innerHeight / 2;
+      // THE FIX: Set exactly to 0.25 as requested
+      pointerState.y = isMobile
+        ? window.innerHeight * 0.25
+        : window.innerHeight / 2;
+
       currentPos.current.x = pointerState.x;
       currentPos.current.y = pointerState.y;
       prevPos.current.x = pointerState.x;
@@ -351,9 +358,9 @@ const BoatCursor = () => {
     const animate = () => {
       if (pointerState.isActive) {
         interacted = true; // Mark as interacted permanently
-        if (cursorRef.current) {
+        if (cursorRef.current && pulseRef.current) {
           cursorRef.current.style.opacity = "1";
-          cursorRef.current.classList.remove("animate-pulse"); // Stop blinking
+          pulseRef.current.classList.remove("animate-intense-blip"); // Stop custom blinking
         }
 
         // Instantly snap visual boat on first touch
@@ -363,14 +370,14 @@ const BoatCursor = () => {
           hasInitialized = true;
         }
       } else {
-        if (cursorRef.current) {
+        if (cursorRef.current && pulseRef.current) {
           // Mobile Check
           if (window.innerWidth < 1024) {
             cursorRef.current.style.opacity = "1"; // Keep it visible on mobile
             if (!interacted) {
-              cursorRef.current.classList.add("animate-pulse"); // Blink if untouched
+              pulseRef.current.classList.add("animate-intense-blip"); // Start intense blink if untouched
             } else {
-              cursorRef.current.classList.remove("animate-pulse"); // Solid if touched
+              pulseRef.current.classList.remove("animate-intense-blip"); // Solid if touched
             }
           } else {
             // Desktop: Hide when mouse leaves bounds
@@ -407,22 +414,39 @@ const BoatCursor = () => {
   return (
     <div
       ref={cursorRef}
-      // THE FIX: Changed fixed to absolute so it's trapped inside the component
-      className="pointer-events-none absolute left-0 top-0 z-50 -ml-8 -mt-8 h-16 w-16 will-change-transform"
+      className="pointer-events-none absolute left-0 top-0 z-30 -ml-8 -mt-8 h-16 w-16 will-change-transform"
     >
       <div
         ref={boatRef}
         className="h-full w-full transition-transform duration-300 ease-out"
       >
-        <Image
-          src="/icons/cursor.svg"
-          alt="Boat Cursor"
-          width={64}
-          height={64}
-          className="h-full w-full object-contain drop-shadow-[0_0_20px_rgba(0,198,219,0.6)]"
-          priority
-        />
+        {/* NEW: Dedicated wrapper just for the intense pulse so it doesn't fight the JS transforms */}
+        <div ref={pulseRef} className="h-full w-full">
+          <Image
+            src="/icons/cursor.svg"
+            alt="Boat Cursor"
+            width={64}
+            height={64}
+            className="h-full w-full object-contain drop-shadow-[0_0_20px_rgba(0,198,219,0.6)]"
+            priority
+          />
+        </div>
       </div>
+
+      {/* NEW: Custom animation injected locally */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        @keyframes intenseBlip {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.2; transform: scale(1.2); }
+        }
+        .animate-intense-blip {
+          animation: intenseBlip 0.8s ease-in-out infinite;
+        }
+      `,
+        }}
+      />
     </div>
   );
 };
@@ -440,7 +464,7 @@ export default function InteractiveBanner() {
     // NATIVE DOM LISTENER UPDATE: Bypassing React's synthetic events entirely for mobile
     const updatePos = (clientX: number, clientY: number) => {
       const rect = section.getBoundingClientRect();
-      // THE FIX: Subtracted rect bounds so coordinates map locally to the component instead of the whole screen
+      // Subtracted rect bounds so coordinates map locally to the component instead of the whole screen
       pointerState.x = clientX - rect.left;
       pointerState.y = clientY - rect.top;
       pointerState.normX = (clientX - rect.left) / rect.width;

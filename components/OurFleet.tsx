@@ -80,6 +80,40 @@ const boats: Boat[] = [
   },
 ];
 
+// THE FIX: A dedicated sub-component for the expandable description text with a CSS blur mask
+const ExpandableDescription = ({ description }: { description: string }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="mt-6 max-w-112.75 flex flex-col items-start w-full">
+      <div
+        className={`font-open text-[18px] font-normal tracking-normal text-[#144B51] overflow-hidden transition-[max-height] duration-500 ease-in-out w-full ${
+          isExpanded ? "max-h-200" : "max-h-20"
+        }`}
+        style={{
+          WebkitMaskImage: isExpanded
+            ? "none"
+            : "linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)",
+          maskImage: isExpanded
+            ? "none"
+            : "linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)",
+        }}
+      >
+        {description}
+      </div>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsExpanded(!isExpanded);
+        }}
+        className="mt-1 font-open text-[16px] font-bold text-[#E3891F] hover:text-[#F2992F] transition-colors cursor-pointer z-20 relative"
+      >
+        {isExpanded ? "See less" : "See more"}
+      </button>
+    </div>
+  );
+};
+
 export default function OurFleet() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBoat, setSelectedBoat] = useState<Boat | null>(null);
@@ -195,7 +229,6 @@ export default function OurFleet() {
           {boats.map((boat) => (
             <SwiperSlide key={boat.id} className="bg-transparent">
               {" "}
-              {/* THE FIX: Replaced rigid xl:h-125 with h-full so the wrapper grows with content */}
               <div className="relative grid h-full w-full grid-cols-1 gap-8 xl:grid-cols-[500px_1fr] xl:gap-16">
                 {/* Boat Image */}
                 <div
@@ -224,7 +257,7 @@ export default function OurFleet() {
                   <h3 className="font-ubuntu text-2xl xl:text-[32px] font-bold text-[#144B51]">
                     {boat.name}
                   </h3>
-                  {/* THE FIX: Added "With skipper / Bareboat" here */}
+
                   <div className="flex items-center gap-2 mt-1">
                     <span className="font-ubuntu text-lg xl:text-[24px] font-normal text-[#E3891F]">
                       {boat.category}
@@ -261,9 +294,8 @@ export default function OurFleet() {
                     </div>
                   </div>
 
-                  <p className="font-open mt-6 max-w-112.75 h-auto text-[18px] font-normal tracking-normal text-[#144B51]">
-                    {boat.description}
-                  </p>
+                  {/* THE FIX: Injecting the new expandable description sub-component here */}
+                  <ExpandableDescription description={boat.description} />
 
                   {/* "See More" Button */}
                   <button
