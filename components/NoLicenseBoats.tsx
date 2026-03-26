@@ -26,7 +26,7 @@ const boats = [
       "Comfortable and spacious, ideal for family outings and exploring hidden coves.",
   },
   {
-    name: "SUNDAY – STAR 160 SC Motorboat",
+    name: "SUNDAY – STAR 160 SC",
     image: "/images/boats/sunday1.jpg",
     // Array of images for the swiper to loop through
     images: ["/images/boats/sunday1.jpg", "/images/boats/sunday.jpg"],
