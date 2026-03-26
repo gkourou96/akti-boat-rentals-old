@@ -17,6 +17,7 @@ import FleetModal, { Boat as ModalBoat } from "./FleetModal";
 // Locally override the Boat interface and make thumbnails OPTIONAL (?)
 export interface Boat extends Omit<ModalBoat, "thumbnails"> {
   thumbnails?: { src: string; alt: string }[];
+  shortDescription?: string; // THE FIX: Added a dedicated property for the short slider text
 }
 
 const boats: Boat[] = [
@@ -26,8 +27,12 @@ const boats: Boat[] = [
     category: "Day Cruise",
     capacity: 8,
     length: "8.5m",
-    description:
+    // THE FIX: Define your short text here for the slider
+    shortDescription:
       "The dynamic and stylish RIBCO 28 powered with a 300hp Mercury Verado, designed to deliver an exceptional boating experience across the Saronic Gulf and the surrounding Greek coastline.",
+    // The full description remains untouched for the Modal
+    description:
+      "The dynamic and stylish RIBCO 28 powered with a 300hp Mercury Verado, designed to deliver an exceptional boating experience across the Saronic Gulf and the surrounding Greek coastline. Combining performance, comfort, and elegant design, this premium vessel offers the perfect balance between speed, safety, and relaxation at sea. Perfect for Private boat tours, Saronic Gulf island hopping, VIP sea transfers, Private day cruises in Athens Riviera.",
     image: "/images/boats/ribco1-nabeiproti.jpg",
     thumbnails: [
       {
@@ -50,8 +55,11 @@ const boats: Boat[] = [
     category: "Day Cruise",
     capacity: 8,
     length: "7m",
-    description:
+    // THE FIX: Define your short text here for the slider
+    shortDescription:
       "Enjoy a private boat tour from Athens and discover hidden beaches, crystal clear waters and beautiful islands with FILIPPOS, a powerful and modern Blade 7 RIB boat powered with a Suzuki DF200 APX - 200 HP, designed for fast, comfortable, and stylish cruising in the Saronic Gulf.",
+    description:
+      "Enjoy a private boat tour from Athens and discover hidden beaches, crystal clear waters and beautiful islands with FILIPPOS, a powerful and modern Blade 7 RIB boat powered with a Suzuki DF200 APX - 200 HP, designed for fast, comfortable, and stylish cruising in the Saronic Gulf. FILIPPOS comfortably accommodates up to 8 guests, making it ideal for couples, families, or small groups seeking a private boat rental experience in Greece ensures excellent stability, safety, and comfort even during high-speed navigation. Perfect for Private boat tours, Saronic Gulf island hopping, VIP sea transfers, Private day cruises in Athens Riviera.",
     image: "/images/boats/filipos.jpg",
   },
   {
@@ -60,8 +68,11 @@ const boats: Boat[] = [
     category: "Day Cruise",
     capacity: 10,
     length: "9m",
-    description:
+    // THE FIX: Define your short text here for the slider
+    shortDescription:
       "Discover the perfect combination of comfort, performance, and modern Scandinavian design aboard our Axopar 28 Cabin ideal for private cruises, transfers and unforgettable sea experiences in the Saronic Gulf.",
+    description:
+      "Discover the perfect combination of comfort, performance, and modern Scandinavian design aboard our Axopar 28 Cabin ideal for private cruises, transfers and unforgettable sea experiences in the Saronic Gulf. The Axopar 28 Cabin is ideal for exploring nearby islands such as Aegina, Agistri, Poros, and Hydra, as well as discovering hidden beaches and crystal-clear swimming spots along the Greek coastline. Whether you are planning a luxury day cruise, a private boat tour from Athens, or a relaxing sea escape, this modern cabin boat offers the perfect balance of speed, comfort, and style.",
     image: "/images/boats/apoxar1.jpg",
     thumbnails: [
       {
@@ -260,9 +271,9 @@ export default function OurFleet() {
                     </div>
                   </div>
 
-                  {/* THE FIX: Restored original description paragraph tag */}
+                  {/* THE FIX: Now using shortDescription (with a fallback just in case) */}
                   <p className="font-open mt-6 max-w-112.75 h-auto text-[18px] font-normal tracking-normal text-[#144B51]">
-                    {boat.description}
+                    {boat.shortDescription || boat.description}
                   </p>
 
                   {/* "See More" Button */}
