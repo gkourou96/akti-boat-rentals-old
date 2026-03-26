@@ -27,7 +27,7 @@ const boats: Boat[] = [
     capacity: 8,
     length: "8.5m",
     description:
-      "The dynamic and stylish RIBCO 28 powered with a 300hp Mercury Verado, designed to deliver an exceptional boating experience across the Saronic Gulf and the surrounding Greek coastline. Combining performance, comfort, and elegant design, this premium vessel offers the perfect balance between speed, safety, and relaxation at sea. Perfect for Private boat tours, Saronic Gulf island hopping, VIP sea transfers, Private day cruises in Athens Riviera.",
+      "The dynamic and stylish RIBCO 28 powered with a 300hp Mercury Verado, designed to deliver an exceptional boating experience across the Saronic Gulf and the surrounding Greek coastline.",
     image: "/images/boats/ribco1-nabeiproti.jpg",
     thumbnails: [
       {
@@ -51,7 +51,7 @@ const boats: Boat[] = [
     capacity: 8,
     length: "7m",
     description:
-      "Enjoy a private boat tour from Athens and discover hidden beaches, crystal clear waters and beautiful islands with FILIPPOS, a powerful and modern Blade 7 RIB boat powered with a Suzuki DF200 APX - 200 HP, designed for fast, comfortable, and stylish cruising in the Saronic Gulf. FILIPPOS comfortably accommodates up to 8 guests, making it ideal for couples, families, or small groups seeking a private boat rental experience in Greece ensures excellent stability, safety, and comfort even during high-speed navigation. Perfect for Private boat tours, Saronic Gulf island hopping, VIP sea transfers, Private day cruises in Athens Riviera.",
+      "Enjoy a private boat tour from Athens and discover hidden beaches, crystal clear waters and beautiful islands with FILIPPOS, a powerful and modern Blade 7 RIB boat powered with a Suzuki DF200 APX - 200 HP, designed for fast, comfortable, and stylish cruising in the Saronic Gulf.",
     image: "/images/boats/filipos.jpg",
   },
   {
@@ -61,7 +61,7 @@ const boats: Boat[] = [
     capacity: 10,
     length: "9m",
     description:
-      "Discover the perfect combination of comfort, performance, and modern Scandinavian design aboard our Axopar 28 Cabin ideal for private cruises, transfers and unforgettable sea experiences in the Saronic Gulf. The Axopar 28 Cabin is ideal for exploring nearby islands such as Aegina, Agistri, Poros, and Hydra, as well as discovering hidden beaches and crystal-clear swimming spots along the Greek coastline. Whether you are planning a luxury day cruise, a private boat tour from Athens, or a relaxing sea escape, this modern cabin boat offers the perfect balance of speed, comfort, and style.",
+      "Discover the perfect combination of comfort, performance, and modern Scandinavian design aboard our Axopar 28 Cabin ideal for private cruises, transfers and unforgettable sea experiences in the Saronic Gulf.",
     image: "/images/boats/apoxar1.jpg",
     thumbnails: [
       {
@@ -79,40 +79,6 @@ const boats: Boat[] = [
     ],
   },
 ];
-
-// THE FIX: A dedicated sub-component for the expandable description text with a CSS blur mask
-const ExpandableDescription = ({ description }: { description: string }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  return (
-    <div className="mt-6 max-w-112.75 flex flex-col items-start w-full">
-      <div
-        className={`font-open text-[18px] font-normal tracking-normal text-[#144B51] overflow-hidden transition-[max-height] duration-500 ease-in-out w-full ${
-          isExpanded ? "max-h-200" : "max-h-20"
-        }`}
-        style={{
-          WebkitMaskImage: isExpanded
-            ? "none"
-            : "linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)",
-          maskImage: isExpanded
-            ? "none"
-            : "linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)",
-        }}
-      >
-        {description}
-      </div>
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsExpanded(!isExpanded);
-        }}
-        className="mt-1 font-open text-[16px] font-bold text-[#E3891F] hover:text-[#F2992F] transition-colors cursor-pointer z-20 relative"
-      >
-        {isExpanded ? "See less" : "See more"}
-      </button>
-    </div>
-  );
-};
 
 export default function OurFleet() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -294,8 +260,10 @@ export default function OurFleet() {
                     </div>
                   </div>
 
-                  {/* THE FIX: Injecting the new expandable description sub-component here */}
-                  <ExpandableDescription description={boat.description} />
+                  {/* THE FIX: Restored original description paragraph tag */}
+                  <p className="font-open mt-6 max-w-112.75 h-auto text-[18px] font-normal tracking-normal text-[#144B51]">
+                    {boat.description}
+                  </p>
 
                   {/* "See More" Button */}
                   <button
