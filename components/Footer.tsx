@@ -69,6 +69,7 @@ export default function Footer() {
                   alt="Akti Boat Rentals"
                   width={226}
                   height={85}
+                  style={{ height: 'auto' }}
                   className="h-auto w-56.5 object-contain xl:w-auto"
                 />
               </Link>

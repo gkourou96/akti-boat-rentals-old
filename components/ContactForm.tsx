@@ -191,6 +191,7 @@ export default function ContactForm() {
                 alt="Arrow icon"
                 width={18}
                 height={8}
+                style={{ height: 'auto' }}
                 className="block ml-2.5"
               />
             )}

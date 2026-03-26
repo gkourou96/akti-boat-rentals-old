@@ -79,6 +79,7 @@ export default function LocationModal({
                   src={src}
                   alt={`Location view ${index + 1}`}
                   fill
+                  sizes="100vw"
                   className="object-contain"
                   quality={100}
                   priority={index === initialIndex}

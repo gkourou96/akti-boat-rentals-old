@@ -68,7 +68,7 @@ export default function NoLicenseBoats() {
       className="group relative w-70.5 h-98.5 overflow-hidden rounded-[20px] bg-gray-200 cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300 shrink-0 transform-gpu"
     >
       {/* Boat Image */}
-      <Image src={boat.image} alt={boat.name} fill className="object-cover" />
+      <Image src={boat.image} alt={boat.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover" />
 
       {/* --- IDLE ELEMENTS --- */}
 
@@ -273,6 +273,7 @@ export default function NoLicenseBoats() {
                         src={imgSrc}
                         alt={`${boat.name} - view ${imgIdx + 1}`}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover"
                       />
                     </SwiperSlide>

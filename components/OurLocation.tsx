@@ -149,6 +149,7 @@ export default function OurLocation() {
                         src={src}
                         alt={`Location View ${realIndex + 1}`}
                         fill
+                        sizes="100vw"
                         className="object-cover"
                       />
                     </div>
@@ -172,6 +173,7 @@ export default function OurLocation() {
                   src="/images/locations-frame-1.png"
                   alt="Location View 1"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
@@ -184,6 +186,7 @@ export default function OurLocation() {
                   src="/images/locations-frame-2.png"
                   alt="Location View 2"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
@@ -200,6 +203,7 @@ export default function OurLocation() {
                   src="/images/locations-frame-3.png"
                   alt="Location View 3"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
@@ -212,6 +216,7 @@ export default function OurLocation() {
                   src="/images/locations-frame-4.png"
                   alt="Location View 4"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>

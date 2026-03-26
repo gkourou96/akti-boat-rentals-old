@@ -87,7 +87,7 @@ const ExperienceCard = ({
   >
     {/* Icon Container: Mobile 44x44px | Desktop 80x80px */}
     <div className="relative h-11 w-11 shrink-0 xl:mb-4 xl:h-20 xl:w-20">
-      <Image src={icon} alt="icon" fill className="object-contain" />
+      <Image src={icon} alt="icon" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-contain" />
     </div>
 
     <div className="flex flex-col items-start text-left">
@@ -127,6 +127,7 @@ export default function Experiences() {
           src="/images/experiences/experiences-bg.jpg"
           alt="Experiences Background"
           fill
+          sizes="100vw"
           className="object-cover"
           priority
         />

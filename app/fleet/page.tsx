@@ -187,6 +187,7 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
                   src={img.src}
                   alt={img.alt}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
@@ -262,6 +263,7 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
                 src="/icons/group.svg" // REPLACE WITH YOUR ICON
                 alt="Capacity"
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-contain"
               />
             </div>
@@ -278,6 +280,7 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
                 src="/icons/straighten.svg" // REPLACE WITH YOUR ICON
                 alt="Length"
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-contain"
               />
             </div>
@@ -321,6 +324,7 @@ const FleetPage = () => {
                     src="/icons/accent_orange.svg"
                     alt="Decoration"
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-contain"
                   />
                 </div>

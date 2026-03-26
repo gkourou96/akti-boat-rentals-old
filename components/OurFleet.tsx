@@ -224,6 +224,8 @@ export default function OurFleet() {
                       src={activeImages[boat.id] || boat.image}
                       alt={boat.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={boat.image === "/images/boats/ribco1-nabeiproti.jpg"}
                       className="object-cover opacity-0 transition-opacity duration-500 ease-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
                     />
                   </div>
@@ -304,6 +306,7 @@ export default function OurFleet() {
                           src={thumb.src}
                           alt={thumb.alt}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           className="object-cover opacity-0 transition-opacity duration-1200 ease-in-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
                         />
                       </div>

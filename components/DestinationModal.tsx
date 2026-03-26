@@ -51,6 +51,7 @@ export default function DestinationModal({
               src={destination.image}
               alt={destination.name}
               fill
+              sizes="100vw"
               className={`object-cover transition-transform duration-2000 ease-out ${
                 isOpen ? "scale-110" : "scale-100"
               }`}
@@ -94,6 +95,7 @@ export default function DestinationModal({
               src={destination.image}
               alt={destination.name}
               fill
+              sizes="100vw"
               className={`object-cover transition-transform duration-2000 ease-out ${
                 isOpen ? "scale-110" : "scale-100"
               }`}

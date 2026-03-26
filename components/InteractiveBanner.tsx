@@ -541,6 +541,7 @@ export default function InteractiveBanner() {
             src="/icons/final.svg"
             alt="Rent a boat in the heart of Athens"
             fill
+            sizes="100vw"
             className="object-contain"
             priority
           />

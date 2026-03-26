@@ -96,6 +96,7 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
                   src="/icons/close-x.svg"
                   alt="Close"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-contain"
                 />
               </div>
@@ -112,6 +113,7 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
                   src={currentImage || boat.image}
                   alt={boat.name}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-opacity duration-300"
                 />
 
@@ -161,6 +163,7 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
                       src={thumb.src} // FIX 1: Target thumb.src to prevent Next.js crash
                       alt={thumb.alt || `thumb-${idx}`} // FIX 1: Add alt tag mapping
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover"
                     />
                   </div>
@@ -181,6 +184,7 @@ export default function FleetModal({ isOpen, onClose, boat }: FleetModalProps) {
                     src="/icons/close-x.svg"
                     alt="Close"
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-contain"
                   />
                 </div>
