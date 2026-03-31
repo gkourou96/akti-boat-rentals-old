@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 // Swiper imports
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -18,6 +18,7 @@ interface BoatImage {
 
 interface BoatData {
   id: number;
+  slug: string;
   name: string;
   category: string;
   capacity: number;
@@ -34,6 +35,7 @@ const loremIpsum =
 const fleetData: BoatData[] = [
   {
     id: 1,
+    slug: "deus-ribco-28",
     name: "DEUS - Ribco 28",
     category: "Day Cruise",
     capacity: 8,
@@ -57,6 +59,7 @@ const fleetData: BoatData[] = [
   },
   {
     id: 2,
+    slug: "filippos-blade-7-rib",
     name: "FILIPPOS – Blade 7 RIB",
     category: "Day Cruise",
     capacity: 8,
@@ -72,6 +75,7 @@ const fleetData: BoatData[] = [
   },
   {
     id: 3,
+    slug: "axopar-28-cabin",
     name: "AXOPAR 28 CABIN",
     category: "Day Cruise",
     capacity: 10,
@@ -95,6 +99,7 @@ const fleetData: BoatData[] = [
   },
   {
     id: 4,
+    slug: "sea-wolf-seafighter-shadow-40",
     name: "Sea Wolf - Seafighter Shadow 40",
     category: "Day Cruise",
     capacity: 12,
@@ -126,6 +131,7 @@ const fleetData: BoatData[] = [
   },
   {
     id: 5,
+    slug: "nimbus-t11",
     name: "NIMBUS T11",
     category: "Day Cruise",
     capacity: 11,
@@ -153,6 +159,7 @@ const fleetData: BoatData[] = [
 const sailBoatsData: BoatData[] = fleetData.slice(0, 3).map((boat) => ({
   ...boat,
   id: boat.id + 10, // Unique IDs
+  slug: `${boat.slug}-sail`, // Ensure unique slug if duplicating
 }));
 
 // --- BoatCard Component ---
@@ -160,19 +167,19 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
   const swiperRef = useRef<SwiperType | null>(null);
 
   return (
-    // Column Container:
-    // Mobile: w-full h-auto (Responsive)
-    // Desktop: w-96.5 h-auto (Flexible height to fit content)
-    <div className="flex w-full h-auto xl:w-96.5 flex-col items-center xl:items-start">
+    // THE FIX: Replaced pt-24 -mt-24 with scroll-mt-36 xl:scroll-mt-48
+    // This creates a dedicated scroll offset margin so the fixed header never overlaps it
+    <div
+      id={boat.slug}
+      className="flex w-full h-auto xl:w-96.5 flex-col items-center xl:items-start scroll-mt-22.5"
+    >
       {/* Swiper Container */}
-      {/* Mobile: w-full h-[300px] or aspect square */}
-      {/* Desktop: h-96.25 w-96.5 */}
       <div className="group relative w-full h-87.5 xl:h-96.25 xl:w-96.5 overflow-hidden rounded-[20px]">
         <Swiper
           modules={[Navigation, A11y]}
           spaceBetween={0}
           slidesPerView={1}
-          loop={true} // <-- ADDED: This enables infinite swiping!
+          loop={true}
           onBeforeInit={(swiper) => {
             swiperRef.current = swiper;
           }}
@@ -180,9 +187,7 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
         >
           {boat.images.map((img, index) => (
             <SwiperSlide key={index} className="relative h-full w-full">
-              {/* Main Boat Image Placeholder */}
               <div className="relative h-full w-full bg-gray-300">
-                {/* Replace src with your actual image paths */}
                 <Image
                   src={img.src}
                   alt={img.alt}
@@ -236,8 +241,6 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
       </div>
 
       {/* Info Block */}
-      {/* Mobile: w-full px-0 */}
-      {/* Desktop: px-3 */}
       <div className="flex w-full flex-col px-0 xl:px-3 pb-3 pt-6 xl:pt-8">
         {/* Title */}
         <h2 className="font-ubuntu text-[24px] xl:text-[28px] font-bold leading-tight text-[#144B51]">
@@ -257,7 +260,6 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
         <div className="mt-4 flex items-center gap-6">
           {/* Capacity */}
           <div className="flex items-center gap-2 text-[#144B51]">
-            {/* Icon Placeholder */}
             <div className="relative h-8 w-8 xl:h-10 xl:w-10">
               <Image
                 src="/icons/group.svg" // REPLACE WITH YOUR ICON
@@ -274,7 +276,6 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
 
           {/* Length */}
           <div className="flex items-center gap-2 text-[#144B51]">
-            {/* Icon Placeholder */}
             <div className="relative h-8 w-8 xl:h-10 xl:w-10">
               <Image
                 src="/icons/straighten.svg" // REPLACE WITH YOUR ICON
@@ -290,7 +291,7 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
           </div>
         </div>
 
-        {/* Description - Unified for the whole boat and height flexible */}
+        {/* Description */}
         <p className="mt-4 font-open text-[16px] xl:text-[18px] font-normal leading-[150%] text-[#144B51]">
           {boat.description}
         </p>
@@ -301,20 +302,21 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
 
 // --- Main Page Component ---
 const FleetPage = () => {
+  // THE FIX: Enforce smooth scrolling on the HTML document as soon as this page mounts
+  useEffect(() => {
+    document.documentElement.classList.add("scroll-smooth");
+    return () => {
+      document.documentElement.classList.remove("scroll-smooth");
+    };
+  }, []);
+
   return (
     <main className="w-full">
-      {/* =========================================
-         SECTION 1: PREMIUM FLEET
-         Background: #F2EAD6
-         Rows: 2
-         Desktop Top Padding: 217px (Clears Navbar)
-         ========================================= */}
       <section className="w-full bg-[#F2EAD6]">
         <div className="mx-auto max-w-360">
           <div className="mx-auto w-full px-6 pt-36 pb-16 xl:px-0 xl:pb-31 xl:pt-54.25 flex flex-col items-center">
             {/* Header */}
             <div className="relative mx-auto flex h-auto w-full flex-col items-center justify-center">
-              {/* Title Wrapper - Preserving original dimensions for the accent alignment */}
               <div className="relative flex h-auto xl:h-17.75 w-full xl:w-full items-center justify-center">
                 <h1 className="relative z-10 font-ubuntu text-[32px] xl:text-[44px] font-bold leading-none text-[#144B51] text-center">
                   Our Entire Fleet
@@ -330,7 +332,6 @@ const FleetPage = () => {
                 </div>
               </div>
 
-              {/* New Subtitle */}
               <p className="mt-6 w-full text-center font-open text-lg xl:text-xl text-[#144B51] leading-relaxed px-4">
                 Your day on the water starts in comfort and ends with
                 unforgettable memories.
