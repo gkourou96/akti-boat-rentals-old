@@ -82,6 +82,7 @@ const fleetData: BoatData[] = [
     slug: "axopar-28-cabin",
     name: "AXOPAR 28 CABIN",
     category: "Day Cruise",
+    charterOptions: "| With skipper",
     capacity: 10,
     length: "9m",
     // THE FIX: Omitted here
@@ -107,6 +108,7 @@ const fleetData: BoatData[] = [
     slug: "sea-wolf-seafighter-shadow-40",
     name: "Sea Wolf - Seafighter Shadow 40",
     category: "Day Cruise",
+    charterOptions: "| With skipper",
     capacity: 12,
     length: "12m",
     // THE FIX: Omitted here
@@ -140,6 +142,7 @@ const fleetData: BoatData[] = [
     slug: "nimbus-t11",
     name: "NIMBUS T11",
     category: "Day Cruise",
+    charterOptions: "| With skipper",
     capacity: 11,
     length: "12m",
     // THE FIX: Omitted here
