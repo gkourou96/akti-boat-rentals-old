@@ -8,11 +8,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, FreeMode, Pagination } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/free-mode";
-import "swiper/css/pagination";
-
 export interface Boat {
   id: number;
   slug: string;
@@ -23,6 +18,7 @@ export interface Boat {
   description: string;
   shortDescription?: string;
   image: string;
+  thumbnails?: { src: string; alt: string }[];
 }
 
 const boats: Boat[] = [
@@ -100,7 +96,7 @@ export default function OurFleet() {
     <div className="bg-[#F2EAD680] overflow-hidden">
       <section
         id="our-fleet"
-        className="mx-auto max-w-[1600px] px-4 pt-10 pb-10 xl:px-12 xl:pt-22 xl:pb-20 relative"
+        className="mx-auto max-w-400 px-4 pt-10 pb-10 xl:px-12 xl:pt-22 xl:pb-20 relative"
       >
         {/* HEADER SECTION */}
         <div className="w-full flex flex-col items-start xl:items-center mb-10 xl:mb-16">
@@ -125,7 +121,7 @@ export default function OurFleet() {
           </p>
         </div>
 
-        {/* THE NEW SWIPER LAYOUT: Unified for both Mobile & Desktop */}
+        {/* THE SWIPER LAYOUT */}
         <div className="relative w-full">
           <Swiper
             modules={[Navigation, FreeMode, Pagination, Autoplay]}
@@ -145,146 +141,147 @@ export default function OurFleet() {
             className="pb-12 xl:pb-16 overflow-visible! flex items-stretch"
           >
             {boats.map((boat, idx) => {
-              // Create a striking alternating "Featured" style pattern
               const isDarkCard = idx % 2 === 0;
 
               return (
                 <SwiperSlide key={boat.id} className="h-auto">
-                  <motion.div
-                    whileHover={{ y: -10 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                    className={`
-                      group relative h-full flex flex-col rounded-[2.5rem] border transition-all duration-500 overflow-hidden
-                      ${
-                        isDarkCard
-                          ? "bg-[#144B51] border-[#1E6F73] text-white shadow-2xl shadow-[#144B51]/20"
-                          : "bg-[#F9F5EB] border-[#F9F5EB] text-[#144B51] shadow-xl hover:shadow-2xl hover:shadow-[#144B51]/10"
-                      }
-                    `}
-                  >
-                    {/* Decorative Background Gradient (Visible on hover) */}
-                    <div
+                  {/* THE FIX: Entire card is wrapped in a Link, just like the saved services component */}
+                  <Link href={`/fleet#${boat.slug}`} className="block h-full">
+                    <motion.div
+                      whileHover={{ y: -10 }}
+                      transition={{ type: "spring", stiffness: 300 }}
                       className={`
-                        absolute inset-0 opacity-0 transition-opacity duration-500 bg-linear-to-br pointer-events-none z-0
+                        group relative h-full flex flex-col rounded-[2.5rem] border transition-all duration-500 overflow-hidden cursor-pointer
                         ${
                           isDarkCard
-                            ? "from-[#0D4168] via-[#144B51] to-[#1E6F73] group-hover:opacity-100"
-                            : "from-white via-[#F2EAD6] to-[#F9F5EB] group-hover:opacity-100"
+                            ? "bg-[#144B51] border-[#1E6F73] text-white shadow-2xl shadow-[#144B51]/20"
+                            : "bg-[#F9F5EB] border-[#F9F5EB] text-[#144B51] shadow-xl hover:shadow-2xl hover:shadow-[#144B51]/10"
                         }
                       `}
-                    />
-
-                    {/* Card Image Header */}
-                    <div className="relative h-64 w-full shrink-0 z-10 border-b-4 border-transparent group-hover:border-[#E3891F] transition-colors duration-500">
-                      <Image
-                        src={boat.image}
-                        alt={boat.name}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover"
-                      />
-                    </div>
-
-                    {/* Card Content Body */}
-                    <div className="relative z-10 flex flex-col gap-5 p-6 md:p-8 grow">
-                      {/* Headers */}
-                      <div>
-                        <h3 className="font-ubuntu text-[24px] xl:text-[28px] font-bold leading-tight tracking-normal">
-                          {boat.name}
-                        </h3>
-                        <div className="flex flex-wrap items-center gap-2 mt-2">
-                          <span className="font-ubuntu text-[16px] xl:text-[18px] font-normal text-[#E3891F]">
-                            {boat.category}
-                          </span>
-                          <span
-                            className={`font-ubuntu text-[14px] xl:text-[16px] font-normal ${isDarkCard ? "text-[#8A9A9C]" : "text-gray-400"}`}
-                          >
-                            | With skipper / Bareboat
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Specs Row */}
-                      <div className="flex items-center gap-6 py-2">
-                        <div className="flex items-center gap-2">
-                          <Image
-                            src="/icons/group.svg"
-                            alt="Capacity"
-                            width={32}
-                            height={32}
-                            className={`w-8 h-8 ${isDarkCard ? "brightness-0 invert" : ""}`}
-                          />
-                          <span className="font-open text-[20px] font-normal">
-                            {boat.capacity}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Image
-                            src="/icons/straighten.svg"
-                            alt="Length"
-                            width={32}
-                            height={32}
-                            className={`w-8 h-8 ${isDarkCard ? "brightness-0 invert" : ""}`}
-                          />
-                          <span className="font-open text-[20px] font-normal">
-                            {boat.length}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Description text pushing to bottom */}
-                      <p
-                        className={`font-open text-[16px] xl:text-[18px] leading-relaxed mt-auto ${isDarkCard ? "text-gray-200" : "text-[#144B51]"}`}
-                      >
-                        {boat.shortDescription}
-                      </p>
-
-                      {/* Inner Card Link Footer */}
+                    >
+                      {/* Decorative Background Gradient */}
                       <div
-                        className={`pt-6 flex items-center mt-4 border-t ${isDarkCard ? "border-white/10" : "border-[#144B51]/10"}`}
-                      >
-                        <Link
-                          href={`/fleet#${boat.slug}`}
-                          className={`flex items-center gap-3 group/link w-fit font-ubuntu uppercase tracking-wider text-sm font-bold transition-colors ${
+                        className={`
+                          absolute inset-0 opacity-0 transition-opacity duration-500 bg-linear-to-br pointer-events-none z-0
+                          ${
                             isDarkCard
-                              ? "text-[#E3891F] hover:text-white"
-                              : "text-[#144B51] hover:text-[#E3891F]"
-                          }`}
+                              ? "from-[#0D4168] via-[#144B51] to-[#1E6F73] group-hover:opacity-100"
+                              : "from-white via-[#F2EAD6] to-[#F9F5EB] group-hover:opacity-100"
+                          }
+                        `}
+                      />
+
+                      {/* Card Image Header */}
+                      <div className="relative h-64 w-full shrink-0 z-10 border-b-4 border-transparent group-hover:border-[#E3891F] transition-colors duration-500">
+                        <Image
+                          src={boat.image}
+                          alt={boat.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover"
+                        />
+                      </div>
+
+                      {/* Card Content Body */}
+                      <div className="relative z-10 flex flex-col gap-5 p-6 md:p-8 grow">
+                        {/* Headers */}
+                        <div>
+                          <h3 className="font-ubuntu text-[24px] xl:text-[28px] font-bold leading-tight tracking-normal">
+                            {boat.name}
+                          </h3>
+                          <div className="flex flex-wrap items-center gap-2 mt-2">
+                            <span className="font-ubuntu text-[16px] xl:text-[18px] font-normal text-[#E3891F]">
+                              {boat.category}
+                            </span>
+                            <span
+                              className={`font-ubuntu text-[14px] xl:text-[16px] font-normal ${isDarkCard ? "text-[#8A9A9C]" : "text-gray-400"}`}
+                            >
+                              | With skipper / Bareboat
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Specs Row */}
+                        <div className="flex items-center gap-6 py-2">
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src="/icons/group.svg"
+                              alt="Capacity"
+                              width={32}
+                              height={32}
+                              className={`w-8 h-8 ${isDarkCard ? "brightness-0 invert" : ""}`}
+                            />
+                            <span className="font-open text-[20px] font-normal">
+                              {boat.capacity}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src="/icons/straighten.svg"
+                              alt="Length"
+                              width={32}
+                              height={32}
+                              className={`w-8 h-8 ${isDarkCard ? "brightness-0 invert" : ""}`}
+                            />
+                            <span className="font-open text-[20px] font-normal">
+                              {boat.length}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Description text */}
+                        <p
+                          className={`font-open text-[16px] xl:text-[18px] leading-relaxed mt-auto ${isDarkCard ? "text-gray-200" : "text-[#144B51]"}`}
                         >
-                          <span>View More</span>
+                          {boat.shortDescription}
+                        </p>
+
+                        {/* RESTORED: Inner Card Link Footer */}
+                        <div
+                          className={`pt-6 flex items-center mt-4 border-t ${isDarkCard ? "border-white/10" : "border-[#144B51]/10"}`}
+                        >
                           <div
-                            className={`p-2 rounded-full border transition-all duration-300 ${
+                            className={`flex items-center gap-3 group/link w-fit font-ubuntu uppercase tracking-wider text-sm font-bold transition-colors ${
                               isDarkCard
-                                ? "border-[#E3891F]/30 group-hover/link:border-white"
-                                : "border-[#144B51]/30 group-hover/link:border-[#E3891F]"
+                                ? "text-[#E3891F] group-hover:text-white"
+                                : "text-[#144B51] group-hover:text-[#E3891F]"
                             }`}
                           >
-                            {/* THE FIX: Conditional rendering to enforce orange icon on light cards */}
-                            {isDarkCard ? (
-                              <Image
-                                src="/icons/trending_flat.svg"
-                                alt="arrow"
-                                width={16}
-                                height={16}
-                                className="transition-transform duration-300 group-hover/link:translate-x-1 brightness-0 invert"
-                              />
-                            ) : (
-                              <div
-                                className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1"
-                                style={{
-                                  backgroundColor: "#E3891F",
-                                  maskImage: "url('/icons/trending_flat.svg')",
-                                  maskSize: "contain",
-                                  maskRepeat: "no-repeat",
-                                  maskPosition: "center",
-                                }}
-                              />
-                            )}
+                            <span>View Details</span>
+                            <div
+                              className={`p-2 rounded-full border transition-all duration-300 ${
+                                isDarkCard
+                                  ? "border-[#E3891F]/30 group-hover:border-white"
+                                  : "border-[#144B51]/30 group-hover:border-[#E3891F]"
+                              }`}
+                            >
+                              {isDarkCard ? (
+                                <Image
+                                  src="/icons/trending_flat.svg"
+                                  alt="arrow"
+                                  width={16}
+                                  height={16}
+                                  className="transition-transform duration-300 group-hover:translate-x-1 brightness-0 invert"
+                                />
+                              ) : (
+                                <div
+                                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                                  style={{
+                                    backgroundColor: "#E3891F",
+                                    maskImage:
+                                      "url('/icons/trending_flat.svg')",
+                                    maskSize: "contain",
+                                    maskRepeat: "no-repeat",
+                                    maskPosition: "center",
+                                  }}
+                                />
+                              )}
+                            </div>
                           </div>
-                        </Link>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
+                    </motion.div>
+                  </Link>
                 </SwiperSlide>
               );
             })}

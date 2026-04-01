@@ -6,8 +6,6 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
 
 // --- Interfaces & Data ---
 
@@ -21,6 +19,8 @@ interface BoatData {
   slug: string;
   name: string;
   category: string;
+  // THE FIX: Added an optional property for the charter text
+  charterOptions?: string;
   capacity: number;
   length: string;
   // Unique description for the entire boat
@@ -38,6 +38,8 @@ const fleetData: BoatData[] = [
     slug: "deus-ribco-28",
     name: "DEUS - Ribco 28",
     category: "Day Cruise",
+    // THE FIX: Defined for the first boat
+    charterOptions: "| With skipper / Bareboat",
     capacity: 8,
     length: "8.5m",
     description:
@@ -62,6 +64,8 @@ const fleetData: BoatData[] = [
     slug: "filippos-blade-7-rib",
     name: "FILIPPOS – Blade 7 RIB",
     category: "Day Cruise",
+    // THE FIX: Defined for the second boat
+    charterOptions: "| With skipper / Bareboat",
     capacity: 8,
     length: "7m",
     description:
@@ -80,6 +84,7 @@ const fleetData: BoatData[] = [
     category: "Day Cruise",
     capacity: 10,
     length: "9m",
+    // THE FIX: Omitted here
     description:
       "Discover the perfect combination of comfort, performance, and modern Scandinavian design aboard our Axopar 28 Cabin ideal for private cruises, transfers and unforgettable sea experiences in the Saronic Gulf. The Axopar 28 Cabin is ideal for exploring nearby islands such as Aegina, Agistri, Poros, and Hydra, as well as discovering hidden beaches and crystal-clear swimming spots along the Greek coastline. Whether you are planning a luxury day cruise, a private boat tour from Athens, or a relaxing sea escape, this modern cabin boat offers the perfect balance of speed, comfort, and style.",
     images: [
@@ -104,6 +109,7 @@ const fleetData: BoatData[] = [
     category: "Day Cruise",
     capacity: 12,
     length: "12m",
+    // THE FIX: Omitted here
     description:
       "Experience the ultimate combination of performance, elegance and style. Board the Seafighter Shadow 40, powered with 2 400hp Mercury v10, a premium RIB designed for unforgettable sea adventures in the Aegean Sea. Features large sunbathing areas, spacious seating zones, and a modern deck layout designed for relaxation and socializing while enjoying the spectacular scenery with smooth cruising, and exceptional stability, allowing guests to travel quickly and comfortably between some of the most beautiful greek islands. Whether you are looking for a luxury private cruise, a VIP island transfer, or an exciting day exploring hidden beaches and crystal-clear waters, the Shadow 40 offers a premium boating experience that combines performance, comfort, and style.",
     images: [
@@ -136,6 +142,7 @@ const fleetData: BoatData[] = [
     category: "Day Cruise",
     capacity: 11,
     length: "12m",
+    // THE FIX: Omitted here
     description:
       "Experience the perfect blend of Scandinavian design, luxury, and performance aboard the Nimbus T11, a premium day cruiser designed for unforgettable sea experiences in the Saronic Gulf. Powered by high-performance outboard engines, 2x300HP V8 Verado, the Nimbus T11 delivers smooth cruising, impressive speed, and outstanding stability, allowing guests to explore the Saronic Gulf islands comfortably and efficiently. This luxury day cruiser is perfect for discovering beautiful destinations near Athens such as Aegina, Agistri, Poros, and Hydra, as well as hidden beaches and crystal-clear swimming spots along the coast. Whether you are looking for a luxury private cruise, a VIP boat experience, or an exclusive island hopping adventure, the Nimbus T11 offers an exceptional boating experience that combines comfort, performance, and style.",
     images: [
@@ -251,9 +258,12 @@ const BoatCard = ({ boat }: { boat: BoatData }) => {
           <span className="font-ubuntu text-lg xl:text-[24px] font-normal text-[#E3891F]">
             {boat.category}
           </span>
-          <span className="font-ubuntu text-lg xl:text-[18px] font-normal text-[#8A9A9C]">
-            | With skipper / Bareboat
-          </span>
+          {/* THE FIX: Conditionally render the charter options if they exist in the data */}
+          {boat.charterOptions && (
+            <span className="font-ubuntu text-lg xl:text-[18px] font-normal text-[#8A9A9C]">
+              {boat.charterOptions}
+            </span>
+          )}
         </div>
 
         {/* Specs Row */}
