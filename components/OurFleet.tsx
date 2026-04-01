@@ -93,6 +93,60 @@ const boats: Boat[] = [
       },
     ],
   },
+  {
+    id: 4,
+    slug: "sea-wolf-seafighter-shadow-40",
+    name: "Sea Wolf - Seafighter Shadow 40",
+    category: "Day Cruise",
+    capacity: 12,
+    length: "12m",
+    shortDescription:
+      "Experience the ultimate combination of performance, elegance and style. Board the Seafighter Shadow 40, powered with 2 400hp Mercury v10, a premium RIB designed for unforgettable sea adventures in the Aegean Sea.",
+    description:
+      "Experience the ultimate combination of performance, elegance and style. Board the Seafighter Shadow 40, powered with 2 400hp Mercury v10, a premium RIB designed for unforgettable sea adventures in the Aegean Sea. Features large sunbathing areas, spacious seating zones, and a modern deck layout designed for relaxation and socializing while enjoying the spectacular scenery with smooth cruising, and exceptional stability, allowing guests to travel quickly and comfortably between some of the most beautiful greek islands. Whether you are looking for a luxury private cruise, a VIP island transfer, or an exciting day exploring hidden beaches and crystal-clear waters, the Shadow 40 offers a premium boating experience that combines performance, comfort, and style.",
+    image: "/images/boats/sea-lion.png",
+    thumbnails: [
+      {
+        src: "/images/boats/apoxar1.jpg",
+        alt: "Boat 3 View A",
+      },
+      {
+        src: "/images/boats/apoxar2.jpg",
+        alt: "Boat 3 View B",
+      },
+      {
+        src: "/images/boats/apoxar3.jpg",
+        alt: "Boat 3 View C",
+      },
+    ],
+  },
+  {
+    id: 5,
+    slug: "nimbus-t11",
+    name: "NIMBUS T11",
+    category: "Day Cruise",
+    capacity: 11,
+    length: "12m",
+    shortDescription:
+      "Experience the perfect blend of Scandinavian design, luxury, and performance aboard the Nimbus T11, a premium day cruiser designed for unforgettable sea experiences in the Saronic Gulf.",
+    description:
+      "Experience the perfect blend of Scandinavian design, luxury, and performance aboard the Nimbus T11, a premium day cruiser designed for unforgettable sea experiences in the Saronic Gulf. Powered by high-performance outboard engines, 2x300HP V8 Verado, the Nimbus T11 delivers smooth cruising, impressive speed, and outstanding stability, allowing guests to explore the Saronic Gulf islands comfortably and efficiently. This luxury day cruiser is perfect for discovering beautiful destinations near Athens such as Aegina, Agistri, Poros, and Hydra, as well as hidden beaches and crystal-clear swimming spots along the coast. Whether you are looking for a luxury private cruise, a VIP boat experience, or an exclusive island hopping adventure, the Nimbus T11 offers an exceptional boating experience that combines comfort, performance, and style.",
+    image: "/images/boats/nimbus2nabeiproti.jpg",
+    thumbnails: [
+      {
+        src: "/images/boats/apoxar1.jpg",
+        alt: "Boat 3 View A",
+      },
+      {
+        src: "/images/boats/apoxar2.jpg",
+        alt: "Boat 3 View B",
+      },
+      {
+        src: "/images/boats/apoxar3.jpg",
+        alt: "Boat 3 View C",
+      },
+    ],
+  },
 ];
 
 export default function OurFleet() {
@@ -188,15 +242,12 @@ export default function OurFleet() {
           }}
           className="h-auto w-full"
         >
-          {boats.map((boat) => (
-            <SwiperSlide key={boat.id} className="bg-transparent">
+          {boats.map((boat, index) => (
+            <SwiperSlide key={`${boat.id}-${index}`} className="bg-transparent">
               {" "}
               <div className="relative grid h-full w-full grid-cols-1 gap-8 xl:grid-cols-[500px_1fr] xl:gap-16">
-                {/* Boat Image -> Navigates to fleet specific section */}
-                <Link
-                  href={`/fleet#${boat.slug}`} // THE FIX: Updated Link
-                  className="relative block w-full xl:w-125 cursor-pointer"
-                >
+                {/* Boat Image -> Clicks disabled to prevent Swiper clone routing bugs */}
+                <div className="relative block w-full xl:w-125">
                   <div className="relative h-64 xl:h-125 w-full overflow-hidden rounded-[20px] bg-gray-200">
                     <div
                       className="absolute inset-0 z-10 hidden xl:block pointer-events-none transition-opacity duration-500 ease-out opacity-0 in-[.swiper-slide-next]:opacity-100"
@@ -216,7 +267,7 @@ export default function OurFleet() {
                       className="object-cover opacity-0 transition-opacity duration-500 ease-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
                     />
                   </div>
-                </Link>
+                </div>
 
                 {/* Boat Details Column */}
                 <div className="flex flex-col h-full pt-0">
@@ -263,41 +314,6 @@ export default function OurFleet() {
                   <p className="font-open mt-6 max-w-112.75 h-auto text-[18px] font-normal tracking-normal text-[#144B51]">
                     {boat.shortDescription || boat.description}
                   </p>
-
-                  {/* "See More" Button -> Navigates to fleet specific section */}
-                  <Link
-                    href={`/fleet#${boat.slug}`} // THE FIX: Updated Link
-                    className="mt-6 flex h-11.5 w-46.25 shrink-0 items-center justify-center gap-2 rounded-full bg-[#144B51] text-white transition-opacity hover:bg-[#144B5180] cursor-pointer ps-6 py-2.25 pe-[11.4px]"
-                  >
-                    <span className="font-ubuntu text-[24px] font-normal leading-none">
-                      See More
-                    </span>
-                    <Image
-                      src="/icons/trending_flat.svg"
-                      alt="arrow"
-                      width={24}
-                      height={24}
-                    />
-                  </Link>
-
-                  {/* Thumbnails -> Navigates to fleet specific section */}
-                  <div className="mt-8 xl:mt-auto flex gap-4">
-                    {boat.thumbnails?.map((thumb, index) => (
-                      <Link
-                        key={index}
-                        href={`/fleet#${boat.slug}`} // THE FIX: Updated Link
-                        className="relative block h-16 w-16 xl:h-20.25 xl:w-20.25 mt-0 xl:mt-6 rounded-2xl xl:rounded-[20px] bg-gray-200 overflow-hidden cursor-pointer"
-                      >
-                        <Image
-                          src={thumb.src}
-                          alt={thumb.alt}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover opacity-0 transition-opacity duration-1200 ease-in-out [.swiper-slide-active_&,.swiper-slide-next_&]:opacity-100"
-                        />
-                      </Link>
-                    ))}
-                  </div>
                 </div>
 
                 {/* Next Slide Arrow Button */}
