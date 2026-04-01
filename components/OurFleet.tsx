@@ -13,6 +13,7 @@ export interface Boat {
   slug: string;
   name: string;
   category: string;
+  charterOptions?: string; // THE FIX: Added optional property for charter text
   capacity: number;
   length: string;
   description: string;
@@ -27,6 +28,7 @@ const boats: Boat[] = [
     slug: "deus-ribco-28",
     name: "DEUS - Ribco 28",
     category: "Day Cruise",
+    charterOptions: "| With skipper / Bareboat", // THE FIX: Added to boat 1
     capacity: 8,
     length: "8.5m",
     shortDescription:
@@ -40,6 +42,7 @@ const boats: Boat[] = [
     slug: "filippos-blade-7-rib",
     name: "FILIPPOS – Blade 7 RIB",
     category: "Day Cruise",
+    charterOptions: "| With skipper / Bareboat", // THE FIX: Added to boat 2
     capacity: 8,
     length: "7m",
     shortDescription:
@@ -145,7 +148,6 @@ export default function OurFleet() {
 
               return (
                 <SwiperSlide key={boat.id} className="h-auto">
-                  {/* THE FIX: Entire card is wrapped in a Link, just like the saved services component */}
                   <Link href={`/fleet#${boat.slug}`} className="block h-full">
                     <motion.div
                       whileHover={{ y: -10 }}
@@ -193,11 +195,18 @@ export default function OurFleet() {
                             <span className="font-ubuntu text-[16px] xl:text-[18px] font-normal text-[#E3891F]">
                               {boat.category}
                             </span>
-                            <span
-                              className={`font-ubuntu text-[14px] xl:text-[16px] font-normal ${isDarkCard ? "text-[#8A9A9C]" : "text-gray-400"}`}
-                            >
-                              | With skipper / Bareboat
-                            </span>
+                            {/* THE FIX: Conditionally rendering the charterOptions */}
+                            {boat.charterOptions && (
+                              <span
+                                className={`font-ubuntu text-[14px] xl:text-[16px] font-normal ${
+                                  isDarkCard
+                                    ? "text-[#8A9A9C]"
+                                    : "text-gray-400"
+                                }`}
+                              >
+                                {boat.charterOptions}
+                              </span>
+                            )}
                           </div>
                         </div>
 
@@ -236,7 +245,7 @@ export default function OurFleet() {
                           {boat.shortDescription}
                         </p>
 
-                        {/* RESTORED: Inner Card Link Footer */}
+                        {/* Inner Card Link Footer */}
                         <div
                           className={`pt-6 flex items-center mt-4 border-t ${isDarkCard ? "border-white/10" : "border-[#144B51]/10"}`}
                         >
